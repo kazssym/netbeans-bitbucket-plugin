@@ -1,0 +1,40 @@
+# bitbucket-pipelines.yml - Bitbucket Pipelines configuration
+# Copyright (C) 2016-2018 Kaz Nishimura
+#
+# Copying and distribution of this file, with or without modification, are
+# permitted in any medium without royalty provided the copyright notice and
+# this notice are preserved.  This file is offered as-is, without any warranty.
+
+# See <https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html>
+# for details.
+---
+image: maven:3-jdk-8
+pipelines:
+  default:
+    - step:
+        caches:
+          - maven
+        script:
+          - mvn -B -s etc/settings.xml test
+  branches:
+    production:
+      - step:
+          deployment: production
+          caches:
+            - maven
+          script:
+            - export GNUPGHOME=`mktemp -d`
+            - gpg --dump-options | grep -qx -e --pinentry-mode && (echo pinentry-mode loopback) >> $GNUPGHOME/gpg.conf
+            - gpg --batch --import < etc/keys.asc
+            - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
+  custom:
+    snapshot:
+      - step:
+          deployment: test
+          caches:
+            - maven
+          script:
+            - export GNUPGHOME=`mktemp -d`
+            - gpg --dump-options | grep -qx -e --pinentry-mode && (echo pinentry-mode loopback) >> $GNUPGHOME/gpg.conf
+            - gpg --batch --import < etc/keys.asc
+            - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
