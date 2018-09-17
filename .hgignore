@@ -1,0 +1,10 @@
+syntax: regexp
+(^|/)target$
+(^|/)\.env$
+(^|/)\.project$
+(^|/)\.classpath$
+(^|/)\.settings$
+\.log$
+\.rej$
+\.orig$
+~$
