@@ -76,7 +76,7 @@ public class BitbucketRepositoryController implements RepositoryController
     @Override
     public HelpCtx getHelpCtx()
     {
-        return null; // @todo Check the interface.
+        return HelpCtx.DEFAULT_HELP;
     }
 
     /**
