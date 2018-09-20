@@ -34,7 +34,8 @@ import org.openide.util.HelpCtx;
  *
  * @author Kaz Nishimura
  */
-public class BitbucketRepositoryController implements RepositoryController
+public final class BitbucketRepositoryController
+    implements RepositoryController
 {
     /**
      * Change listeners.
@@ -125,7 +126,7 @@ public class BitbucketRepositoryController implements RepositoryController
      * {@inheritDoc}
      */
     @Override
-    public void addChangeListener(ChangeListener listener)
+    public void addChangeListener(final ChangeListener listener)
     {
         changeListenerSet.add(listener);
     }
@@ -134,7 +135,7 @@ public class BitbucketRepositoryController implements RepositoryController
      * {@inheritDoc}
      */
     @Override
-    public void removeChangeListener(ChangeListener listener)
+    public void removeChangeListener(final ChangeListener listener)
     {
         changeListenerSet.remove(listener);
     }
