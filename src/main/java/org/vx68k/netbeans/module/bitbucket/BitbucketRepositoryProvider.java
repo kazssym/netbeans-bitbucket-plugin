@@ -38,14 +38,28 @@ public final class BitbucketRepositoryProvider
         BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
     /**
+     * Identifier of the Bitbucket Cloud connector.
+     */
+    public static final String ID = "org.vx68k.netbeans.module.bitbucket";
+
+    /**
+     * Display name of the Bitbucket Cloud connector.
+     */
+    public static final String DISPLAY_NAME = "Bitbucket Cloud (by VX68k.org)";
+
+    /**
+     * Tooltip text of the Bitbucket Cloud connector.
+     */
+    public static final String TOOLTIP = "Bitbucket Cloud Task Repository";
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository r)
     {
         return new RepositoryInfo(
-            BitbucketConnector.ID, "test", "https://bitbucket.org/",
-            BitbucketConnector.DISPLAY_NAME, "");
+            ID, "test", "https://bitbucket.org/", DISPLAY_NAME, TOOLTIP);
     }
 
     /**
