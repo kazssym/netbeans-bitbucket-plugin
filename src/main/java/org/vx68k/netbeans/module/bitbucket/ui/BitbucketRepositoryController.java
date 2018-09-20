@@ -42,6 +42,14 @@ public class BitbucketRepositoryController implements RepositoryController
     private final Set<ChangeListener> changeListenerSet;
 
     /**
+     * Constructs this object.
+     */
+    public BitbucketRepositoryController()
+    {
+        changeListenerSet = new HashSet<>();
+    }
+
+    /**
      * Fires a change event.
      *
      * @param event change event to fire
@@ -51,14 +59,6 @@ public class BitbucketRepositoryController implements RepositoryController
         changeListenerSet.forEach((listener) -> {
             listener.stateChanged(event);
         });
-    }
-
-    /**
-     * Constructs this object.
-     */
-    public BitbucketRepositoryController()
-    {
-        changeListenerSet = new HashSet<>();
     }
 
     /**
