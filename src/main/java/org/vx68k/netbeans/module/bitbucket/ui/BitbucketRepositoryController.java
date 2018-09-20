@@ -85,7 +85,7 @@ public class BitbucketRepositoryController implements RepositoryController
     @Override
     public boolean isValid()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -102,7 +102,7 @@ public class BitbucketRepositoryController implements RepositoryController
     @Override
     public String getErrorMessage()
     {
-        return "Not implemented.";
+        return null;
     }
 
     /**
