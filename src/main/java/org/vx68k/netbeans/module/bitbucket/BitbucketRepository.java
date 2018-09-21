@@ -40,7 +40,7 @@ final class BitbucketRepository
     /**
      * Constructs this objects.
      */
-    public BitbucketRepository()
+    BitbucketRepository()
     {
         propertyChangeListenerSet = new HashSet<>();
     }
