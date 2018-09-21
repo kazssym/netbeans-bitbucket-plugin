@@ -33,9 +33,8 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
  *
  * @author Kaz Nishimura
  */
-public final class BitbucketRepositoryProvider
-    implements RepositoryProvider<
-        BitbucketRepository, BitbucketQuery, BitbucketIssue>
+final class BitbucketRepositoryProvider implements RepositoryProvider<
+    BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
     /**
      * Identifier of the Bitbucket Cloud connector.
@@ -159,8 +158,10 @@ public final class BitbucketRepositoryProvider
      */
     @Override
     public void addPropertyChangeListener(
-        final BitbucketRepository r, final PropertyChangeListener pl)
+        final BitbucketRepository repository,
+        final PropertyChangeListener listener)
     {
+        repository.addPropertyChangeListener(listener);
     }
 
     /**
@@ -168,7 +169,9 @@ public final class BitbucketRepositoryProvider
      */
     @Override
     public void removePropertyChangeListener(
-        final BitbucketRepository r, final PropertyChangeListener pl)
+        final BitbucketRepository repository,
+        final PropertyChangeListener listener)
     {
+        repository.removePropertyChangeListener(listener);
     }
 }
