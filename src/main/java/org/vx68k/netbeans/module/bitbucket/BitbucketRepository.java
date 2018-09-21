@@ -30,8 +30,13 @@ import java.util.Set;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketRepository
+public final class BitbucketRepository
 {
+    /**
+     * Full name of the repository.
+     */
+    private String fullName = null;
+
     /**
      * Property change listeners.
      */
@@ -43,6 +48,27 @@ final class BitbucketRepository
     BitbucketRepository()
     {
         propertyChangeListenerSet = new HashSet<>();
+    }
+
+    /**
+     * Returns the full name of the repository.
+     *
+     * @return the full name
+     */
+    public String getFullName()
+    {
+        return fullName;
+    }
+
+    /**
+     * Sets the full name of the repository to a {@link String} value.
+     *
+     * @param value {@link String} value to which the full name shall be set
+     */
+    public void setFullName(final String value)
+    {
+        firePropertyChange("fullName", fullName, value);
+        fullName = value;
     }
 
     /**
