@@ -1,5 +1,5 @@
 /*
- * BitbucketRepositoryController.java
+ * BitbucketRepositoryController.java - class BitbucketRepositoryController
  * Copyright (C) 2018 Kaz Nishimura
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -20,9 +20,12 @@
 
 package org.vx68k.netbeans.module.bitbucket.ui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -30,13 +33,23 @@ import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
 
 /**
- * {@link RepositoryController} implementation for Bitbucket Cloud.
+ * Implementation of {@link RepositoryController} for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
 public final class BitbucketRepositoryController
     implements RepositoryController
 {
+    /**
+     * Layout of the visual component.
+     */
+    private final GridBagLayout layout;
+
+    /**
+     * Visual component.
+     */
+    private final JPanel component;
+
     /**
      * Change listeners.
      */
@@ -47,16 +60,17 @@ public final class BitbucketRepositoryController
      */
     public BitbucketRepositoryController()
     {
+        layout = new GridBagLayout();
+        component = new JPanel(layout);
         changeListenerSet = new HashSet<>();
     }
 
     /**
      * Fires a change event.
-     *
-     * @param event change event to fire
      */
-    protected void fire(final ChangeEvent event)
+    protected void fireChange()
     {
+        final ChangeEvent event = new ChangeEvent(this);
         changeListenerSet.forEach((listener) -> {
             listener.stateChanged(event);
         });
@@ -68,7 +82,7 @@ public final class BitbucketRepositoryController
     @Override
     public JComponent getComponent()
     {
-        return new JPanel();
+        return component;
     }
 
     /**
@@ -95,6 +109,9 @@ public final class BitbucketRepositoryController
     @Override
     public void populate()
     {
+        component.removeAll();
+        component.add(
+            new JLabel("Hello, NetBeans!"), GridBagConstraints.RELATIVE);
     }
 
     /**
