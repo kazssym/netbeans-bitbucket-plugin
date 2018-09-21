@@ -178,7 +178,7 @@
 <OpenIDE-Module-Name>Bitbucket Cloud</OpenIDE-Module-Name>
 <OpenIDE-Module-Display-Category>Base IDE</OpenIDE-Module-Display-Category>
 <OpenIDE-Module-Short-Description>Bitbucket Cloud Task Repository.</OpenIDE-Module-Short-Description>
-<OpenIDE-Module-Long-Description>Supports Bitbucket Cloud issue trackers.</OpenIDE-Module-Long-Description>
+<OpenIDE-Module-Long-Description>Support for Bitbucket Cloud repositories.</OpenIDE-Module-Long-Description>
 </manifestEntries>
 </archive>
 </configuration>
