@@ -20,10 +20,67 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
+ * Repository data for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
 final class BitbucketRepository
 {
+    /**
+     * Property change listeners.
+     */
+    private final Set<PropertyChangeListener> propertyChangeListenerSet;
+
+    /**
+     * Constructs this objects.
+     */
+    public BitbucketRepository()
+    {
+        propertyChangeListenerSet = new HashSet<>();
+    }
+
+    /**
+     * Fires a property change event.
+     *
+     * @param name name of the property whose value is being changed
+     * @param oldValue old value of the property
+     * @param newValue new value of the property
+     */
+    protected void firePropertyChange(
+        final String name, final Object oldValue, final Object newValue)
+    {
+        final PropertyChangeEvent event =
+            new PropertyChangeEvent(this, name, oldValue, newValue);
+        propertyChangeListenerSet.forEach((listener) -> {
+            listener.propertyChange(event);
+        });
+    }
+
+    /**
+     * Adds a property change listener.
+     *
+     * @param listener property change listener to add
+     */
+    public void addPropertyChangeListener(
+        final PropertyChangeListener listener)
+    {
+        propertyChangeListenerSet.add(listener);
+    }
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param listener property change listener to remove
+     */
+    public void removePropertyChangeListener(
+        final PropertyChangeListener listener)
+    {
+        propertyChangeListenerSet.remove(listener);
+    }
 }
