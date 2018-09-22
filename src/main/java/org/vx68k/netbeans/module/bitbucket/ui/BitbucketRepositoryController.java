@@ -24,13 +24,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
+import org.vx68k.netbeans.module.bitbucket.BitbucketRepository;
 
 /**
  * Implementation of {@link RepositoryController} for Bitbucket Cloud.
@@ -41,14 +47,39 @@ public final class BitbucketRepositoryController
     implements RepositoryController
 {
     /**
-     * Layout of the visual component.
+     * Number of columns in text fields.
      */
-    private final GridBagLayout layout;
+    private static final int TEXT_COLUMNS = 20;
+
+    /**
+     * Regular expression pattern to validate the full name.
+     */
+    private static final String FULL_NAME_PATTERN = "[^/]+/[^/]+";
+
+    /**
+     * Repository to apply changes.
+     */
+    private final BitbucketRepository repository;
 
     /**
      * Visual component.
      */
-    private final JPanel component;
+    private final JComponent component;
+
+    /**
+     * Text field for the full name.
+     */
+    private final JTextComponent fullNameText;
+
+    /**
+     * Text field for the display name.
+     */
+    private final JTextComponent displayNameText;
+
+    /**
+     * Error message to show if values are not valid.
+     */
+    private String errorMessage = null;
 
     /**
      * Change listeners.
@@ -57,12 +88,75 @@ public final class BitbucketRepositoryController
 
     /**
      * Constructs this object.
+     *
+     * @param r repository to apply changes
      */
-    public BitbucketRepositoryController()
+    public BitbucketRepositoryController(final BitbucketRepository r)
     {
-        layout = new GridBagLayout();
-        component = new JPanel(layout);
+        repository = r;
+        component = new JPanel(new GridBagLayout());
+        fullNameText = new JTextField(TEXT_COLUMNS);
+        displayNameText = new JTextField(TEXT_COLUMNS);
         changeListenerSet = new HashSet<>();
+
+        initComponent();
+    }
+
+    /**
+     * Initializes the visual component.
+     */
+    private void initComponent()
+    {
+        JLabel fullNameLabel = new JLabel("Repository name: ");
+        fullNameLabel.setLabelFor(fullNameText);
+        fullNameLabel.setDisplayedMnemonic('R');
+
+        JLabel displayNameLabel = new JLabel("Display name: ");
+        displayNameLabel.setLabelFor(displayNameText);
+        displayNameLabel.setDisplayedMnemonic('D');
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.BASELINE_LEADING;
+        // The first row.
+        c.gridy = 0;
+        c.weighty = 0.0;
+        c.weightx = 0.0;
+        component.add(fullNameLabel, c);
+        component.add(fullNameText, c);
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+        // The second row.
+        c.gridy++;
+        c.weightx = 0.0;
+        component.add(displayNameLabel, c);
+        component.add(displayNameText, c);
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+        // The last row to fill the rest of the vertical space.
+        c.gridy++;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weighty = 1.0;
+        component.add(new JPanel(), c);
+
+        fullNameText.getDocument()
+            .addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent event)
+            {
+                fireChange();
+            }
+
+            @Override
+            public void removeUpdate(final DocumentEvent event)
+            {
+                fireChange();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent event)
+            {
+            }
+        });
     }
 
     /**
@@ -98,20 +192,24 @@ public final class BitbucketRepositoryController
      * {@inheritDoc}
      */
     @Override
-    public boolean isValid()
+    public void populate()
     {
-        return true;
+        fullNameText.setText(repository.getFullName());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void populate()
+    public boolean isValid()
     {
-        component.removeAll();
-        component.add(
-            new JLabel("Hello, NetBeans!"), GridBagConstraints.RELATIVE);
+        Pattern p = Pattern.compile(FULL_NAME_PATTERN); // @todo Reuse.
+        if (!p.matcher(fullNameText.getText()).matches()) {
+            errorMessage = "Repository name must be OWNER/REPO.";
+            return false;
+        }
+        errorMessage = null;
+        return true;
     }
 
     /**
@@ -120,7 +218,7 @@ public final class BitbucketRepositoryController
     @Override
     public String getErrorMessage()
     {
-        return null;
+        return errorMessage;
     }
 
     /**
@@ -129,6 +227,7 @@ public final class BitbucketRepositoryController
     @Override
     public void applyChanges()
     {
+        repository.setFullName(fullNameText.getText());
     }
 
     /**
@@ -137,6 +236,7 @@ public final class BitbucketRepositoryController
     @Override
     public void cancelChanges()
     {
+        fullNameText.setText(repository.getFullName());
     }
 
     /**

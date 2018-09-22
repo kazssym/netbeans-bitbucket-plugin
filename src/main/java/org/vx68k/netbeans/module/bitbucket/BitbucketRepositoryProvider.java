@@ -55,10 +55,11 @@ final class BitbucketRepositoryProvider implements RepositoryProvider<
      * {@inheritDoc}
      */
     @Override
-    public RepositoryInfo getInfo(final BitbucketRepository r)
+    public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
         return new RepositoryInfo(
-            ID, "test", "https://bitbucket.org/", DISPLAY_NAME, TOOLTIP);
+            ID, repository.getFullName(), "https://bitbucket.org/",
+            DISPLAY_NAME, TOOLTIP);
     }
 
     /**
@@ -74,16 +75,6 @@ final class BitbucketRepositoryProvider implements RepositoryProvider<
      * {@inheritDoc}
      */
     @Override
-    public Collection<BitbucketIssue> getIssues(
-        final BitbucketRepository r, final String... strings)
-    {
-        return Collections.emptyList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void removed(final BitbucketRepository r)
     {
     }
@@ -92,9 +83,20 @@ final class BitbucketRepositoryProvider implements RepositoryProvider<
      * {@inheritDoc}
      */
     @Override
-    public RepositoryController getController(final BitbucketRepository r)
+    public RepositoryController getController(
+        final BitbucketRepository repository)
     {
-        return new BitbucketRepositoryController();
+        return new BitbucketRepositoryController(repository);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<BitbucketIssue> getIssues(
+        final BitbucketRepository r, final String... strings)
+    {
+        return Collections.emptyList();
     }
 
     /**
