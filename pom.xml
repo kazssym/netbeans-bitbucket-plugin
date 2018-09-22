@@ -34,7 +34,7 @@
 <connection>scm:hg:https://bitbucket.org/vx68k/bitbucket-netbeans-plugin</connection>
 <developerConnection>scm:hg:ssh://hg@bitbucket.org/vx68k/bitbucket-netbeans-plugin</developerConnection>
 <tag>master</tag>
-<url>https://bitbucket.org/vx68k/bitbucket-netbeans-plugin/src/master</url>
+<url>https://bitbucket.org/vx68k/bitbucket-netbeans-plugin/src/${project.scm.tag}/</url>
 </scm>
 
 <issueManagement>
