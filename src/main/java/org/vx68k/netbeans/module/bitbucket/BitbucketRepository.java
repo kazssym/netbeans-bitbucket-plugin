@@ -1,5 +1,5 @@
 /*
- * BitbucketRepository.java
+ * BitbucketRepository.java - class BitbucketRepository
  * Copyright (C) 2018 Kaz Nishimura
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -23,7 +23,9 @@ package org.vx68k.netbeans.module.bitbucket;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 
 /**
  * Repository data for Bitbucket Cloud.
@@ -35,7 +37,12 @@ public final class BitbucketRepository
     /**
      * Full name of the repository.
      */
-    private String fullName = null;
+    private String fullName = "";
+
+    /**
+     * Display name of the repository.
+     */
+    private String displayName = "";
 
     /**
      * Property change listeners.
@@ -48,6 +55,20 @@ public final class BitbucketRepository
     BitbucketRepository()
     {
         propertyChangeListenerSet = new HashSet<>();
+    }
+
+    /**
+     * Constructs this objects.
+     *
+     * @param info repository information
+     */
+    BitbucketRepository(final RepositoryInfo info)
+    {
+        this();
+        if (info != null) {
+            fullName = info.getID();
+            displayName = info.getDisplayName();
+        }
     }
 
     /**
@@ -67,8 +88,38 @@ public final class BitbucketRepository
      */
     public void setFullName(final String value)
     {
-        firePropertyChange("fullName", fullName, value);
-        fullName = value;
+        if (!Objects.equals(fullName, value)) {
+            firePropertyChange("fullName", fullName, value);
+            fullName = value;
+        }
+    }
+
+    /**
+     * Returns the display name of the repository.
+     *
+     * @return the display name
+     */
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    /**
+     * Sets the display name of the repository to a {@link String} value.
+     *
+     * @param value {@link String} value to which the display name shall be set
+     */
+    public void setDisplayName(final String value)
+    {
+        String realValue = value;
+        if (realValue == null || "".equals(realValue)) {
+            realValue = fullName;
+        }
+
+        if (!Objects.equals(displayName, realValue)) {
+            firePropertyChange("displayName", displayName, realValue);
+            displayName = realValue;
+        }
     }
 
     /**
