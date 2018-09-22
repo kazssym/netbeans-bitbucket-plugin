@@ -59,7 +59,7 @@ public final class BitbucketRepositoryController
     /**
      * Repository to apply changes.
      */
-    private final BitbucketRepository repository;
+    private BitbucketRepository repository = null;
 
     /**
      * Visual component.
@@ -69,12 +69,12 @@ public final class BitbucketRepositoryController
     /**
      * Text field for the full name.
      */
-    private final JTextComponent fullNameText;
+    private final JTextComponent fullNameField;
 
     /**
      * Text field for the display name.
      */
-    private final JTextComponent displayNameText;
+    private final JTextComponent displayNameField;
 
     /**
      * Error message to show if values are not valid.
@@ -88,31 +88,48 @@ public final class BitbucketRepositoryController
 
     /**
      * Constructs this object.
-     *
-     * @param r repository to apply changes
      */
-    public BitbucketRepositoryController(final BitbucketRepository r)
+    public BitbucketRepositoryController()
     {
-        repository = r;
         component = new JPanel(new GridBagLayout());
-        fullNameText = new JTextField(TEXT_COLUMNS);
-        displayNameText = new JTextField(TEXT_COLUMNS);
+        fullNameField = new JTextField(TEXT_COLUMNS);
+        displayNameField = new JTextField(TEXT_COLUMNS);
         changeListenerSet = new HashSet<>();
 
-        initComponent();
+        initComponents();
     }
 
     /**
-     * Initializes the visual component.
+     * Returns the associated repository.
+     *
+     * @return the associated repository
      */
-    private void initComponent()
+    public BitbucketRepository getRepository()
+    {
+        return repository;
+    }
+
+    /**
+     * Sets the associated repository to a value.
+     *
+     * @param value value to which the associated repository shall be set
+     */
+    public void setRepository(final BitbucketRepository value)
+    {
+        repository = value;
+    }
+
+    /**
+     * Initializes visual components.
+     */
+    private void initComponents()
     {
         JLabel fullNameLabel = new JLabel("Repository name: ");
-        fullNameLabel.setLabelFor(fullNameText);
+        fullNameLabel.setLabelFor(fullNameField);
         fullNameLabel.setDisplayedMnemonic('R');
 
         JLabel displayNameLabel = new JLabel("Display name: ");
-        displayNameLabel.setLabelFor(displayNameText);
+        displayNameLabel.setLabelFor(displayNameField);
         displayNameLabel.setDisplayedMnemonic('D');
 
         GridBagConstraints c = new GridBagConstraints();
@@ -122,14 +139,14 @@ public final class BitbucketRepositoryController
         c.weighty = 0.0;
         c.weightx = 0.0;
         component.add(fullNameLabel, c);
-        component.add(fullNameText, c);
+        component.add(fullNameField, c);
         c.weightx = 1.0;
         component.add(new JLabel(), c);
         // The second row.
         c.gridy++;
         c.weightx = 0.0;
         component.add(displayNameLabel, c);
-        component.add(displayNameText, c);
+        component.add(displayNameField, c);
         c.weightx = 1.0;
         component.add(new JLabel(), c);
         // The last row to fill the rest of the vertical space.
@@ -138,7 +155,7 @@ public final class BitbucketRepositoryController
         c.weighty = 1.0;
         component.add(new JPanel(), c);
 
-        fullNameText.getDocument()
+        fullNameField.getDocument()
             .addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(final DocumentEvent event)
@@ -194,7 +211,8 @@ public final class BitbucketRepositoryController
     @Override
     public void populate()
     {
-        fullNameText.setText(repository.getFullName());
+        fullNameField.setText(repository.getFullName());
+        displayNameField.setText(repository.getDisplayName());
     }
 
     /**
@@ -204,7 +222,7 @@ public final class BitbucketRepositoryController
     public boolean isValid()
     {
         Pattern p = Pattern.compile(FULL_NAME_PATTERN); // @todo Reuse.
-        if (!p.matcher(fullNameText.getText()).matches()) {
+        if (!p.matcher(fullNameField.getText()).matches()) {
             errorMessage = "Repository name must be OWNER/REPO.";
             return false;
         }
@@ -227,7 +245,9 @@ public final class BitbucketRepositoryController
     @Override
     public void applyChanges()
     {
-        repository.setFullName(fullNameText.getText());
+        repository.setFullName(fullNameField.getText());
+        repository.setDisplayName(displayNameField.getText());
+        setRepository(null);
     }
 
     /**
@@ -236,7 +256,7 @@ public final class BitbucketRepositoryController
     @Override
     public void cancelChanges()
     {
-        fullNameText.setText(repository.getFullName());
+        setRepository(null);
     }
 
     /**

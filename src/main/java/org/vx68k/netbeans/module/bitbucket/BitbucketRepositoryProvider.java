@@ -33,23 +33,30 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketRepositoryProvider implements RepositoryProvider<
-    BitbucketRepository, BitbucketQuery, BitbucketIssue>
+final class BitbucketRepositoryProvider
+    implements RepositoryProvider<
+        BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
     /**
      * Identifier of the Bitbucket Cloud connector.
      */
-    public static final String ID = "org.vx68k.netbeans.module.bitbucket";
+    private final String connectorId;
 
     /**
-     * Display name of the Bitbucket Cloud connector.
+     * Controller object.
      */
-    public static final String DISPLAY_NAME = "Bitbucket Cloud (by VX68k.org)";
+    private final BitbucketRepositoryController controller;
 
     /**
-     * Tooltip text of the Bitbucket Cloud connector.
+     * Constructs this object.
+     *
+     * @param id identifier of the connector
      */
-    public static final String TOOLTIP = "Bitbucket Cloud Task Repository";
+    BitbucketRepositoryProvider(final String id)
+    {
+        connectorId = id;
+        controller = new BitbucketRepositoryController();
+    }
 
     /**
      * {@inheritDoc}
@@ -57,9 +64,10 @@ final class BitbucketRepositoryProvider implements RepositoryProvider<
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
+        String id = repository.getFullName();
+        String displayName = repository.getDisplayName();
         return new RepositoryInfo(
-            ID, repository.getFullName(), "https://bitbucket.org/",
-            DISPLAY_NAME, TOOLTIP);
+            id, connectorId, "https://bitbucket.org/", displayName, id);
     }
 
     /**
@@ -86,7 +94,8 @@ final class BitbucketRepositoryProvider implements RepositoryProvider<
     public RepositoryController getController(
         final BitbucketRepository repository)
     {
-        return new BitbucketRepositoryController(repository);
+        controller.setRepository(repository);
+        return controller;
     }
 
     /**
