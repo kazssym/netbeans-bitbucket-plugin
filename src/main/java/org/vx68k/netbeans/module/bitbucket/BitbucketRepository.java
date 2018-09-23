@@ -22,6 +22,7 @@ package org.vx68k.netbeans.module.bitbucket;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashSet;
 import java.util.Set;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
@@ -49,17 +50,9 @@ public final class BitbucketRepository
     private String displayName = null;
 
     /**
-     * Property change listeners.
+     * Property change support.
      */
-    private final Set<PropertyChangeListener> propertyChangeListenerSet;
-
-    /**
-     * Constructs this objects.
-     */
-    BitbucketRepository()
-    {
-        this(null);
-    }
+    private PropertyChangeSupport support;
 
     /**
      * Constructs this objects.
@@ -68,7 +61,8 @@ public final class BitbucketRepository
      */
     BitbucketRepository(final RepositoryInfo info)
     {
-        propertyChangeListenerSet = new HashSet<>();
+        support = new PropertyChangeSupport(this);
+
         if (info != null) {
             id = info.getID();
             fullName = info.getUrl();
@@ -95,7 +89,7 @@ public final class BitbucketRepository
     {
         String oldValue = id;
         id = value;
-        firePropertyChange("id", oldValue, id);
+        support.firePropertyChange("id", oldValue, id);
     }
 
     /**
@@ -117,7 +111,7 @@ public final class BitbucketRepository
     {
         String oldValue = fullName;
         fullName = value;
-        firePropertyChange("fullName", oldValue, fullName);
+        support.firePropertyChange("fullName", oldValue, fullName);
     }
 
     /**
@@ -144,24 +138,7 @@ public final class BitbucketRepository
 
         String oldValue = displayName;
         displayName = realValue;
-        firePropertyChange("displayName", oldValue, displayName);
-    }
-
-    /**
-     * Fires a property change event.
-     *
-     * @param name name of the property whose value is being changed
-     * @param oldValue old value of the property
-     * @param newValue new value of the property
-     */
-    protected void firePropertyChange(
-        final String name, final Object oldValue, final Object newValue)
-    {
-        final PropertyChangeEvent event =
-            new PropertyChangeEvent(this, name, oldValue, newValue);
-        propertyChangeListenerSet.forEach((listener) -> {
-            listener.propertyChange(event);
-        });
+        support.firePropertyChange("displayName", oldValue, displayName);
     }
 
     /**
@@ -172,7 +149,7 @@ public final class BitbucketRepository
     public void addPropertyChangeListener(
         final PropertyChangeListener listener)
     {
-        propertyChangeListenerSet.add(listener);
+        support.addPropertyChangeListener(listener);
     }
 
     /**
@@ -183,6 +160,6 @@ public final class BitbucketRepository
     public void removePropertyChangeListener(
         final PropertyChangeListener listener)
     {
-        propertyChangeListenerSet.remove(listener);
+        support.removePropertyChangeListener(listener);
     }
 }
