@@ -149,8 +149,7 @@ public final class BitbucketRepositoryController implements
         c.weighty = 1.0;
         component.add(new JPanel(), c);
 
-        fullNameField.getDocument()
-            .addDocumentListener(new DocumentListener() {
+        DocumentListener textUpdate = new DocumentListener() {
             @Override
             public void insertUpdate(final DocumentEvent event)
             {
@@ -167,7 +166,9 @@ public final class BitbucketRepositoryController implements
             public void changedUpdate(final DocumentEvent event)
             {
             }
-        });
+        };
+        fullNameField.getDocument().addDocumentListener(textUpdate);
+        displayNameField.getDocument().addDocumentListener(textUpdate);
     }
 
     /**
