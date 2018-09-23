@@ -24,6 +24,8 @@ import java.awt.Image;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
@@ -42,6 +44,11 @@ final class BitbucketRepositoryProvider implements
     private final String connectorId;
 
     /**
+     * Map for repository information object.
+     */
+    private final Map<BitbucketRepository, RepositoryInfo> infoMap;
+
+    /**
      * Controller object.
      */
     private final BitbucketRepositoryController controller;
@@ -54,6 +61,7 @@ final class BitbucketRepositoryProvider implements
     BitbucketRepositoryProvider(final String id)
     {
         connectorId = id;
+        infoMap = new HashMap<>();
         controller = new BitbucketRepositoryController();
     }
 
@@ -63,10 +71,13 @@ final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
-        String id = repository.getFullName();
-        String displayName = repository.getDisplayName();
-        return new RepositoryInfo(
-            id, connectorId, "https://bitbucket.org/", displayName, id);
+        if (!infoMap.containsKey(repository)) {
+            String fullName = repository.getFullName();
+            String displayName = repository.getDisplayName();
+            infoMap.put(repository, new RepositoryInfo(
+                fullName, connectorId, null, displayName, fullName));
+        }
+        return infoMap.get(repository);
     }
 
     /**
@@ -82,8 +93,9 @@ final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public void removed(final BitbucketRepository r)
+    public void removed(final BitbucketRepository repository)
     {
+        infoMap.remove(repository);
     }
 
     /**
