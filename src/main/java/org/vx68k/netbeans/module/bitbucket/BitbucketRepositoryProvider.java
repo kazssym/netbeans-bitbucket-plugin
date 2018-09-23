@@ -65,9 +65,13 @@ final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
-        return new RepositoryInfo(
-            repository.getId(), connectorId, repository.getFullName(),
-            repository.getDisplayName(), repository.getFullName());
+        RepositoryInfo value = null;
+        if (repository.getId() != null) {
+            value = new RepositoryInfo(
+                repository.getId(), connectorId, repository.getFullName(),
+                repository.getDisplayName(), repository.getFullName());
+        }
+        return value;
     }
 
     /**

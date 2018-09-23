@@ -24,6 +24,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -238,6 +239,7 @@ public final class BitbucketRepositoryController implements
     @Override
     public void applyChanges()
     {
+        repository.setId(UUID.randomUUID().toString());
         repository.setFullName(fullNameField.getText());
         repository.setDisplayName(displayNameField.getText());
     }
