@@ -180,34 +180,4 @@ public final class BitbucketRepository
     {
         propertyChangeListenerSet.remove(listener);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode()
-    {
-        int value = getClass().hashCode();
-        value ^= Objects.hashCode(id);
-        return value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object object)
-    {
-        if (this != object) {
-            if (object == null || object.getClass() != getClass()) {
-                return false;
-            }
-
-            BitbucketRepository other = (BitbucketRepository) object;
-            if (!Objects.equals(id, other.id)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
