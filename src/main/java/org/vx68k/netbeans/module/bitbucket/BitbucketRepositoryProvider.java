@@ -44,11 +44,6 @@ final class BitbucketRepositoryProvider implements
     private final String connectorId;
 
     /**
-     * Map for repository information objects.
-     */
-    private final Map<BitbucketRepository, RepositoryInfo> infoMap;
-
-    /**
      * Map for controller objects.
      */
     private Map<BitbucketRepository, BitbucketRepositoryController>
@@ -62,7 +57,6 @@ final class BitbucketRepositoryProvider implements
     BitbucketRepositoryProvider(final String id)
     {
         connectorId = id;
-        infoMap = new HashMap<>();
         controllerMap = new HashMap<>();
     }
 
@@ -72,12 +66,9 @@ final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
-        if (!infoMap.containsKey(repository)) {
-            infoMap.put(repository, new RepositoryInfo(
-                repository.getId(), connectorId, repository.getFullName(),
-                repository.getDisplayName(), repository.getFullName()));
-        }
-        return infoMap.get(repository);
+        return new RepositoryInfo(
+            repository.getId(), connectorId, repository.getFullName(),
+            repository.getDisplayName(), repository.getFullName());
     }
 
     /**
@@ -109,7 +100,6 @@ final class BitbucketRepositoryProvider implements
     @Override
     public void removed(final BitbucketRepository repository)
     {
-        infoMap.remove(repository);
         controllerMap.remove(repository);
     }
 
