@@ -44,14 +44,15 @@ final class BitbucketRepositoryProvider implements
     private final String connectorId;
 
     /**
-     * Map for repository information object.
+     * Map for repository information objects.
      */
     private final Map<BitbucketRepository, RepositoryInfo> infoMap;
 
     /**
-     * Controller object.
+     * Map for controller objects.
      */
-    private final BitbucketRepositoryController controller;
+    private Map<BitbucketRepository, BitbucketRepositoryController>
+        controllerMap;
 
     /**
      * Constructs this object.
@@ -62,7 +63,7 @@ final class BitbucketRepositoryProvider implements
     {
         connectorId = id;
         infoMap = new HashMap<>();
-        controller = new BitbucketRepositoryController();
+        controllerMap = new HashMap<>();
     }
 
     /**
@@ -93,20 +94,24 @@ final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public void removed(final BitbucketRepository repository)
+    public RepositoryController getController(
+        final BitbucketRepository repository)
     {
-        infoMap.remove(repository);
+        if (!controllerMap.containsKey(repository)) {
+            controllerMap.put(repository, new BitbucketRepositoryController());
+            controllerMap.get(repository).setRepository(repository);
+        }
+        return controllerMap.get(repository);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RepositoryController getController(
-        final BitbucketRepository repository)
+    public void removed(final BitbucketRepository repository)
     {
-        controller.setRepository(repository);
-        return controller;
+        infoMap.remove(repository);
+        controllerMap.remove(repository);
     }
 
     /**
