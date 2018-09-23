@@ -20,11 +20,8 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashSet;
-import java.util.Set;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 
 /**
