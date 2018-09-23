@@ -43,8 +43,8 @@ import org.vx68k.netbeans.module.bitbucket.BitbucketRepository;
  *
  * @author Kaz Nishimura
  */
-public final class BitbucketRepositoryController
-    implements RepositoryController
+public final class BitbucketRepositoryController implements
+    RepositoryController
 {
     /**
      * Number of columns in text fields.

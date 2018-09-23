@@ -33,9 +33,8 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketRepositoryProvider
-    implements RepositoryProvider<
-        BitbucketRepository, BitbucketQuery, BitbucketIssue>
+final class BitbucketRepositoryProvider implements
+    RepositoryProvider<BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
     /**
      * Identifier of the Bitbucket Cloud connector.
