@@ -88,9 +88,9 @@ final class BitbucketRepositoryProvider implements
     {
         String id = repository.getId();
         if (!controllerMap.containsKey(id)) {
-            controllerMap.put(id, new BitbucketRepositoryController());
+            controllerMap.put(
+                id, new BitbucketRepositoryController(repository));
         }
-        controllerMap.get(id).setRepository(repository);
         return controllerMap.get(id);
     }
 

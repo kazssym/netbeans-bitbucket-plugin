@@ -59,7 +59,7 @@ public final class BitbucketRepositoryController implements
     /**
      * Repository to apply changes.
      */
-    private BitbucketRepository repository = null;
+    private final BitbucketRepository repository;
 
     /**
      * Visual component.
@@ -88,9 +88,12 @@ public final class BitbucketRepositoryController implements
 
     /**
      * Constructs this object.
+     *
+     * @param r repository descriptor
      */
-    public BitbucketRepositoryController()
+    public BitbucketRepositoryController(final BitbucketRepository r)
     {
+        repository = r;
         component = new JPanel(new GridBagLayout());
         fullNameField = new JTextField(TEXT_COLUMNS);
         displayNameField = new JTextField(TEXT_COLUMNS);
@@ -107,16 +110,6 @@ public final class BitbucketRepositoryController implements
     public BitbucketRepository getRepository()
     {
         return repository;
-    }
-
-    /**
-     * Sets the associated repository to a value.
-     *
-     * @param value value to which the associated repository shall be set
-     */
-    public void setRepository(final BitbucketRepository value)
-    {
-        repository = value;
     }
 
     /**
@@ -247,7 +240,6 @@ public final class BitbucketRepositoryController implements
     {
         repository.setFullName(fullNameField.getText());
         repository.setDisplayName(displayNameField.getText());
-        setRepository(null);
     }
 
     /**
@@ -256,7 +248,6 @@ public final class BitbucketRepositoryController implements
     @Override
     public void cancelChanges()
     {
-        setRepository(null);
     }
 
     /**
