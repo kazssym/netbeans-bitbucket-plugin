@@ -46,8 +46,7 @@ final class BitbucketRepositoryProvider implements
     /**
      * Map for controller objects.
      */
-    private Map<BitbucketRepository, BitbucketRepositoryController>
-        controllerMap;
+    private Map<String, BitbucketRepositoryController> controllerMap;
 
     /**
      * Constructs this object.
@@ -87,11 +86,12 @@ final class BitbucketRepositoryProvider implements
     public RepositoryController getController(
         final BitbucketRepository repository)
     {
-        if (!controllerMap.containsKey(repository)) {
-            controllerMap.put(repository, new BitbucketRepositoryController());
+        String id = repository.getId();
+        if (!controllerMap.containsKey(id)) {
+            controllerMap.put(id, new BitbucketRepositoryController());
         }
-        controllerMap.get(repository).setRepository(repository);
-        return controllerMap.get(repository);
+        controllerMap.get(id).setRepository(repository);
+        return controllerMap.get(id);
     }
 
     /**
@@ -100,7 +100,7 @@ final class BitbucketRepositoryProvider implements
     @Override
     public void removed(final BitbucketRepository repository)
     {
-        controllerMap.remove(repository);
+        controllerMap.remove(repository.getId());
     }
 
     /**
