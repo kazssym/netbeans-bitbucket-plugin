@@ -23,9 +23,7 @@ package org.vx68k.netbeans.module.bitbucket;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 
 /**
@@ -38,7 +36,7 @@ public final class BitbucketRepository
     /**
      * Identifier of the repository.
      */
-    private final String id;
+    private String id = null;
 
     /**
      * Full name of the repository.
@@ -76,9 +74,6 @@ public final class BitbucketRepository
             fullName = info.getUrl();
             displayName = info.getDisplayName();
         }
-        else {
-            id = UUID.randomUUID().toString();
-        }
     }
 
     /**
@@ -89,6 +84,18 @@ public final class BitbucketRepository
     public String getId()
     {
         return id;
+    }
+
+    /**
+     * Sets the identifier.
+     *
+     * @param value {@link String} value to which the identifier shall be set
+     */
+    public void setId(final String value)
+    {
+        String oldValue = id;
+        id = value;
+        firePropertyChange("id", oldValue, id);
     }
 
     /**
@@ -108,10 +115,9 @@ public final class BitbucketRepository
      */
     public void setFullName(final String value)
     {
-        if (!Objects.equals(fullName, value)) {
-            firePropertyChange("fullName", fullName, value);
-            fullName = value;
-        }
+        String oldValue = fullName;
+        fullName = value;
+        firePropertyChange("fullName", oldValue, fullName);
     }
 
     /**
@@ -136,10 +142,9 @@ public final class BitbucketRepository
             realValue = fullName;
         }
 
-        if (!Objects.equals(displayName, realValue)) {
-            firePropertyChange("displayName", displayName, realValue);
-            displayName = realValue;
-        }
+        String oldValue = displayName;
+        displayName = realValue;
+        firePropertyChange("displayName", oldValue, displayName);
     }
 
     /**
