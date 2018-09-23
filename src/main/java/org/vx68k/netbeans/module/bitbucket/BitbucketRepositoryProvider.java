@@ -73,10 +73,9 @@ final class BitbucketRepositoryProvider implements
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
         if (!infoMap.containsKey(repository)) {
-            String fullName = repository.getFullName();
-            String displayName = repository.getDisplayName();
             infoMap.put(repository, new RepositoryInfo(
-                fullName, connectorId, null, displayName, fullName));
+                repository.getId(), connectorId, repository.getFullName(),
+                repository.getDisplayName(), repository.getFullName()));
         }
         return infoMap.get(repository);
     }
@@ -99,8 +98,8 @@ final class BitbucketRepositoryProvider implements
     {
         if (!controllerMap.containsKey(repository)) {
             controllerMap.put(repository, new BitbucketRepositoryController());
-            controllerMap.get(repository).setRepository(repository);
         }
+        controllerMap.get(repository).setRepository(repository);
         return controllerMap.get(repository);
     }
 

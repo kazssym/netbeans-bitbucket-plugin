@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 
 /**
@@ -35,14 +36,19 @@ import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 public final class BitbucketRepository
 {
     /**
+     * Identifier of the repository.
+     */
+    private final String id;
+
+    /**
      * Full name of the repository.
      */
-    private String fullName = "";
+    private String fullName = null;
 
     /**
      * Display name of the repository.
      */
-    private String displayName = "";
+    private String displayName = null;
 
     /**
      * Property change listeners.
@@ -54,7 +60,7 @@ public final class BitbucketRepository
      */
     BitbucketRepository()
     {
-        propertyChangeListenerSet = new HashSet<>();
+        this(null);
     }
 
     /**
@@ -64,11 +70,25 @@ public final class BitbucketRepository
      */
     BitbucketRepository(final RepositoryInfo info)
     {
-        this();
+        propertyChangeListenerSet = new HashSet<>();
         if (info != null) {
-            fullName = info.getID();
+            id = info.getID();
+            fullName = info.getUrl();
             displayName = info.getDisplayName();
         }
+        else {
+            id = UUID.randomUUID().toString();
+        }
+    }
+
+    /**
+     * Returns the identifier.
+     *
+     * @return the identifier
+     */
+    public String getId()
+    {
+        return id;
     }
 
     /**
@@ -168,7 +188,7 @@ public final class BitbucketRepository
     public int hashCode()
     {
         int value = getClass().hashCode();
-        value ^= Objects.hashCode(fullName);
+        value ^= Objects.hashCode(id);
         return value;
     }
 
@@ -184,7 +204,7 @@ public final class BitbucketRepository
             }
 
             BitbucketRepository other = (BitbucketRepository) object;
-            if (!Objects.equals(fullName, other.fullName)) {
+            if (!Objects.equals(id, other.id)) {
                 return false;
             }
         }
