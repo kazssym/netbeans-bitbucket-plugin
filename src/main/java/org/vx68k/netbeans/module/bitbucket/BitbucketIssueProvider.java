@@ -27,59 +27,87 @@ import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.netbeans.modules.bugtracking.spi.IssueProvider;
 
 /**
+ * Implementation of {@link IssueProvider} for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
 class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDisplayName(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTooltip(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getID(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<String> getSubtasks(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSummary(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNew(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFinished(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean refresh(final BitbucketIssue i)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addComment(
         final BitbucketIssue i, final String string, final boolean bln)
@@ -87,6 +115,9 @@ class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void attachFile(
         final BitbucketIssue i, final File file, final String string,
@@ -95,6 +126,9 @@ class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueController getController(final BitbucketIssue i)
     {
