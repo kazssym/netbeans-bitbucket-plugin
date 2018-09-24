@@ -24,6 +24,7 @@ import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.netbeans.modules.bugtracking.spi.QueryProvider;
 
 /**
+ * Implementation of {@link QueryProvider} for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */

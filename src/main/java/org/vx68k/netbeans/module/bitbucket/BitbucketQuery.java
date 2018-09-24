@@ -1,5 +1,5 @@
 /*
- * BitbucketQuery.java
+ * BitbucketQuery.java - class BitbucketQuery
  * Copyright (C) 2018 Kaz Nishimura
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -21,6 +21,7 @@
 package org.vx68k.netbeans.module.bitbucket;
 
 /**
+ * Query descriptor for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
