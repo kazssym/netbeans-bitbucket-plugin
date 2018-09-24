@@ -1,5 +1,5 @@
 #!/bin/sh
-# gpginit.sh
+# gpginit.sh - GnuPG key initialization for BitbucketPipelines
 # Copyright (C) 2018 Kaz Nishimura
 #
 # Copying and distribution of this file, with or without modification, are
