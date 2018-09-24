@@ -27,4 +27,38 @@ package org.vx68k.netbeans.module.bitbucket;
  */
 final class BitbucketQuery
 {
+    /**
+     * Display name of the query.
+     */
+    private String displayName;
+
+    /**
+     * Constructs this object.
+     *
+     * @param displayNameValue initial value for the display name
+     */
+    BitbucketQuery(final String displayNameValue)
+    {
+        displayName = displayNameValue;
+    }
+
+    /**
+     * Returns the display name of the query.
+     *
+     * @return the display name
+     */
+    String getDisplayName()
+    {
+        return displayName;
+    }
+
+    /**
+     * Sets the display name of the query to a {@link String} value.
+     *
+     * @param newValue new value for the display name
+     */
+    void setDisplayName(final String newValue)
+    {
+        displayName = newValue;
+    }
 }

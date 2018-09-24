@@ -121,9 +121,9 @@ final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public BitbucketQuery createQuery(final BitbucketRepository r)
+    public BitbucketQuery createQuery(final BitbucketRepository repository)
     {
-        return new BitbucketQuery();
+        return new BitbucketQuery(null);
     }
 
     /**

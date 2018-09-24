@@ -35,9 +35,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public String getDisplayName(final BitbucketQuery q)
+    public String getDisplayName(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return query.getDisplayName();
     }
 
     /**
