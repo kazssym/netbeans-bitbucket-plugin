@@ -149,9 +149,10 @@ final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public Collection<BitbucketQuery> getQueries(final BitbucketRepository r)
+    public Collection<BitbucketQuery> getQueries(
+        final BitbucketRepository repository)
     {
-        return Collections.emptyList();
+        return Collections.singletonList(new BitbucketQuery("All Tasks"));
     }
 
     /**

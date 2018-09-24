@@ -44,9 +44,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public String getTooltip(final BitbucketQuery q)
+    public String getTooltip(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     /**
@@ -62,9 +62,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public boolean canRemove(final BitbucketQuery q)
+    public boolean canRemove(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
     /**
@@ -80,9 +80,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public boolean canRename(final BitbucketQuery q)
+    public boolean canRename(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
     /**
@@ -99,17 +99,18 @@ final class BitbucketQueryProvider implements
      */
     @Override
     public void setIssueContainer(
-        final BitbucketQuery q, final IssueContainer<BitbucketIssue> ic)
+        final BitbucketQuery query,
+        final IssueContainer<BitbucketIssue> newValue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // @todo Implement this method.
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void refresh(final BitbucketQuery q)
+    public void refresh(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // @todo Implement this method.
     }
 }
