@@ -147,7 +147,7 @@ public final class BitbucketRepositoryController implements
         c.gridy++;
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
-        component.add(new JPanel(), c);
+        component.add(new JLabel(), c);
 
         DocumentListener textUpdate = new DocumentListener() {
             @Override
