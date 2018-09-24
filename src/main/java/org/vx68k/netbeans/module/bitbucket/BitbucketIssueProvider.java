@@ -101,17 +101,23 @@ class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addPropertyChangeListener(
-        final BitbucketIssue i, final PropertyChangeListener pl)
+        final BitbucketIssue issue, final PropertyChangeListener listener)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        issue.addPropertyChangeListener(listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removePropertyChangeListener(
-        final BitbucketIssue i, final PropertyChangeListener pl)
+        final BitbucketIssue issue, final PropertyChangeListener listener)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        issue.removePropertyChangeListener(listener);
     }
 }

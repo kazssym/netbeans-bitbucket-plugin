@@ -20,10 +20,48 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /**
+ * Issue descriptor for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
-final class BitbucketIssue
+public final class BitbucketIssue
 {
+    /**
+     * Support object for {@link PropertyChangeListener}s.
+     */
+    private final PropertyChangeSupport support;
+
+    /**
+     * Construct this object.
+     */
+    BitbucketIssue()
+    {
+        support = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Adds a listener for {@link java.beans.PropertyChangeEvent}s.
+     *
+     * @param listener {@link PropertyChangeListener} object to add
+     */
+    public void addPropertyChangeListener(
+        final PropertyChangeListener listener)
+    {
+        support.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Removes a listener for {@link java.beans.PropertyChangeEvent}s.
+     *
+     * @param listener {@link PropertyChangeListener} object to remove
+     */
+    public void removePropertyChangeListener(
+        final PropertyChangeListener listener)
+    {
+        support.removePropertyChangeListener(listener);
+    }
 }
