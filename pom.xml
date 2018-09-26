@@ -202,21 +202,15 @@ Cloud repositories.</description>
 </plugin>
 
 <plugin>
-<groupId>org.sonatype.plugins</groupId>
-<artifactId>nexus-staging-maven-plugin</artifactId>
-<version>1.6.8</version>
-</plugin>
-
-<plugin>
 <groupId>org.codehaus.mojo</groupId>
 <artifactId>nbm-maven-plugin</artifactId>
 <version>4.1</version>
 </plugin>
 
 <plugin>
-<groupId>com.samaxes.maven</groupId>
-<artifactId>minify-maven-plugin</artifactId>
-<version>1.7.6</version>
+<groupId>org.sonatype.plugins</groupId>
+<artifactId>nexus-staging-maven-plugin</artifactId>
+<version>1.6.8</version>
 </plugin>
 </plugins>
 </pluginManagement>
