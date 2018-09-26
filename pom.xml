@@ -214,30 +214,22 @@ Cloud repositories.</description>
 <plugins>
 
 <plugin>
-<groupId>org.codehaus.mojo</groupId>
-<artifactId>nbm-maven-plugin</artifactId>
-<extensions>true</extensions>
-</plugin>
-
-<plugin>
 <groupId>org.apache.maven.plugins</groupId>
 <artifactId>maven-jar-plugin</artifactId>
 <configuration>
 <archive>
-<manifest>
-</manifest>
-<manifestEntries>
-<OpenIDE-Module>org.vx68k.netbeans.module.bitbucket</OpenIDE-Module>
-<OpenIDE-Module-Specification-Version>1.0</OpenIDE-Module-Specification-Version>
-<OpenIDE-Module-Implementation-Version>${project.version}</OpenIDE-Module-Implementation-Version>
-<OpenIDE-Module-Java-Dependencies>Java > ${maven.compiler.target}</OpenIDE-Module-Java-Dependencies>
-<OpenIDE-Module-Module-Dependencies>org.netbeans.modules.bugtracking > 1.85</OpenIDE-Module-Module-Dependencies>
-<OpenIDE-Module-Name>Bitbucket Cloud</OpenIDE-Module-Name>
-<OpenIDE-Module-Display-Category>Base IDE</OpenIDE-Module-Display-Category>
-<OpenIDE-Module-Short-Description>Bitbucket Cloud Task Repository.</OpenIDE-Module-Short-Description>
-<OpenIDE-Module-Long-Description>Support for Bitbucket Cloud repositories.</OpenIDE-Module-Long-Description>
-</manifestEntries>
+<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 </archive>
+</configuration>
+</plugin>
+
+<plugin>
+<groupId>org.codehaus.mojo</groupId>
+<artifactId>nbm-maven-plugin</artifactId>
+<extensions>true</extensions>
+<configuration>
+<sourceManifestFile>${project.basedir}/src/main/nbm/MANIFEST.MF</sourceManifestFile>
+<useOSGiDependencies>true</useOSGiDependencies>
 </configuration>
 </plugin>
 </plugins>
