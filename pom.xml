@@ -227,7 +227,8 @@ Cloud repositories.</description>
 <extensions>true</extensions>
 <configuration>
 <sourceManifestFile>${basedir}/src/main/nbm/MANIFEST.MF</sourceManifestFile>
-<useOSGiDependencies>true</useOSGiDependencies>
+<!-- Using OSGi dependencies properly in a plugin was too hard. -->
+<useOSGiDependencies>false</useOSGiDependencies>
 <licenseName>GNU General Public License</licenseName>
 <licenseFile>${basedir}/COPYING</licenseFile>
 </configuration>
