@@ -89,6 +89,12 @@ Cloud repositories.</description>
 <artifactId>jersey-client</artifactId>
 <version>2.25.1</version>
 </dependency>
+
+<dependency>
+<groupId>junit</groupId>
+<artifactId>junit</artifactId>
+<version>4.12</version>
+</dependency>
 </dependencies>
 </dependencyManagement>
 
@@ -119,6 +125,12 @@ Cloud repositories.</description>
 <groupId>org.glassfish.jersey.core</groupId>
 <artifactId>jersey-client</artifactId>
 <scope>compile</scope>
+</dependency>
+
+<dependency>
+<groupId>junit</groupId>
+<artifactId>junit</artifactId>
+<scope>test</scope>
 </dependency>
 </dependencies>
 
