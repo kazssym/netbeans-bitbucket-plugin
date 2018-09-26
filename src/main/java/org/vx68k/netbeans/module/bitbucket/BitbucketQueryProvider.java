@@ -71,9 +71,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public void remove(final BitbucketQuery q)
+    public void remove(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported");
     }
 
     /**
@@ -89,9 +89,9 @@ final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public void rename(final BitbucketQuery q, final String string)
+    public void rename(final BitbucketQuery query, final String newName)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported");
     }
 
     /**
