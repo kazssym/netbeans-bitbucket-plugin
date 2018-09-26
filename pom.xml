@@ -112,13 +112,13 @@ Cloud repositories.</description>
 <dependency>
 <groupId>org.glassfish</groupId>
 <artifactId>javax.json</artifactId>
-<scope>runtime</scope>
+<scope>compile</scope>
 </dependency>
 
 <dependency>
 <groupId>org.glassfish.jersey.core</groupId>
 <artifactId>jersey-client</artifactId>
-<scope>runtime</scope>
+<scope>compile</scope>
 </dependency>
 </dependencies>
 
