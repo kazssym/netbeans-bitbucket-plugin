@@ -20,6 +20,8 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
+import org.netbeans.modules.bugtracking.spi.QueryProvider.IssueContainer;
+
 /**
  * Query descriptor for Bitbucket Cloud.
  *
@@ -31,6 +33,11 @@ final class BitbucketQuery
      * Display name of the query.
      */
     private String displayName;
+
+    /**
+     * Issue container object.
+     */
+    private IssueContainer<BitbucketIssue> issueContainer = null;
 
     /**
      * Constructs this object.
@@ -60,5 +67,16 @@ final class BitbucketQuery
     void setDisplayName(final String newValue)
     {
         displayName = newValue;
+    }
+
+    /**
+     * Sets the issue container object to a new value.
+     *
+     * @param newValue new value for the issue container
+     */
+    public void setIssueContainer(
+        final IssueContainer<BitbucketIssue> newValue)
+    {
+        issueContainer = newValue;
     }
 }
