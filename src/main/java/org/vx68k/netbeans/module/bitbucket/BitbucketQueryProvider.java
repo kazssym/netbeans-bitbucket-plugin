@@ -102,7 +102,7 @@ final class BitbucketQueryProvider implements
         final BitbucketQuery query,
         final IssueContainer<BitbucketIssue> newValue)
     {
-        // @todo Implement this method.
+        query.setIssueContainer(newValue);
     }
 
     /**
