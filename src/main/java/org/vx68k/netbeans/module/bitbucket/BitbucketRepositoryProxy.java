@@ -35,6 +35,21 @@ import org.vx68k.bitbucket.api.BitbucketRepository;
  */
 final class BitbucketRepositoryProxy implements BitbucketRepository
 {
+    /**
+     * Destination repository.
+     */
+    private BitbucketRepository repository = null;
+
+    /**
+     * Sets the destination repository.
+     *
+     * @param newValue new value of the destination repository
+     */
+    public void setRepository(final BitbucketRepository newValue)
+    {
+        repository = newValue;
+    }
+
     @Override
     public String getSCM()
     {
