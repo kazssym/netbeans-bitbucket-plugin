@@ -81,10 +81,12 @@ public final class BitbucketRepositoryProvider implements
      */
     Descriptor getDescriptor(final BitbucketRepository repository)
     {
-        if (!descriptors.containsKey(repository)) {
-            descriptors.put(repository, new Descriptor());
+        Descriptor value = descriptors.get(repository);
+        if (value == null) {
+            value = new Descriptor();
+            descriptors.put(repository, value);
         }
-        return descriptors.get(repository);
+        return value;
     }
 
     /**
