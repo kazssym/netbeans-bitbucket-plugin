@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
@@ -42,6 +44,12 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 public final class BitbucketRepositoryProvider implements
     RepositoryProvider<BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
+    /**
+     * Regular expression pattern for a full name.
+     */
+    public static final Pattern FULL_NAME_PATTERN =
+        Pattern.compile("([^/]+)/([^/]+)");
+
     /**
      * Bitbucket API client.
      */
@@ -97,14 +105,22 @@ public final class BitbucketRepositoryProvider implements
      */
     BitbucketRepository getRepository(final RepositoryInfo info)
     {
-        BitbucketRepository repository = new BitbucketRepositoryProxy();
+        BitbucketRepositoryProxy value = new BitbucketRepositoryProxy();
         if (info != null) {
-            Descriptor descriptor = getDescriptor(repository);
+            String fullName = info.getUrl();
+            Matcher m = FULL_NAME_PATTERN.matcher(fullName);
+            if (!m.matches()) {
+                throw new IllegalArgumentException("Invalid full name");
+            }
+            value.setRepository(bitbucketClient.getRepository(
+                m.group(1), m.group(2)));
+
+            Descriptor descriptor = getDescriptor(value);
             descriptor.setId(info.getID());
             descriptor.setFullName(info.getUrl());
             descriptor.setDisplayName(info.getDisplayName());
         }
-        return repository;
+        return value;
     }
 
     /**
