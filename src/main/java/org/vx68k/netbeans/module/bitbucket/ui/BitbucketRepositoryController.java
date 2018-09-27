@@ -37,7 +37,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
-import org.vx68k.netbeans.module.bitbucket.BitbucketRepository;
+import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
 
 /**
  * Implementation of {@link RepositoryController} for Bitbucket Cloud.
@@ -60,7 +60,7 @@ public final class BitbucketRepositoryController implements
     /**
      * Repository to apply changes.
      */
-    private final BitbucketRepository repository;
+    private final BitbucketRepositoryProvider.Descriptor descriptor;
 
     /**
      * Visual component.
@@ -88,29 +88,20 @@ public final class BitbucketRepositoryController implements
     private final Set<ChangeListener> changeListenerSet;
 
     /**
-     * Constructs this object.
+     * Initializes this object.
      *
-     * @param r repository descriptor
+     * @param descriptorValue repository descriptor
      */
-    public BitbucketRepositoryController(final BitbucketRepository r)
+    public BitbucketRepositoryController(
+        final BitbucketRepositoryProvider.Descriptor descriptorValue)
     {
-        repository = r;
+        descriptor = descriptorValue;
         component = new JPanel(new GridBagLayout());
         fullNameField = new JTextField(TEXT_COLUMNS);
         displayNameField = new JTextField(TEXT_COLUMNS);
         changeListenerSet = new HashSet<>();
 
         initComponents();
-    }
-
-    /**
-     * Returns the associated repository.
-     *
-     * @return the associated repository
-     */
-    public BitbucketRepository getRepository()
-    {
-        return repository;
     }
 
     /**
@@ -206,8 +197,8 @@ public final class BitbucketRepositoryController implements
     @Override
     public void populate()
     {
-        fullNameField.setText(repository.getFullName());
-        displayNameField.setText(repository.getDisplayName());
+        fullNameField.setText(descriptor.getFullName());
+        displayNameField.setText(descriptor.getDisplayName());
     }
 
     /**
@@ -240,9 +231,20 @@ public final class BitbucketRepositoryController implements
     @Override
     public void applyChanges()
     {
-        repository.setId(UUID.randomUUID().toString());
-        repository.setFullName(fullNameField.getText());
-        repository.setDisplayName(displayNameField.getText());
+        assert isValid();
+
+        String fullName = fullNameField.getText();
+        String displayName = displayNameField.getText();
+        // If the display name is blank, the full name is copied.
+        if ("".equals(displayName.trim())) {
+            displayName = fullName;
+        }
+
+        if (descriptor.getId() == null) {
+            descriptor.setId(UUID.randomUUID().toString());
+        }
+        descriptor.setFullName(fullName);
+        descriptor.setDisplayName(displayName);
     }
 
     /**
