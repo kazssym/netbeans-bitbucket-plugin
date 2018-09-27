@@ -25,6 +25,7 @@ import org.netbeans.modules.bugtracking.spi.BugtrackingConnector;
 import org.netbeans.modules.bugtracking.spi.BugtrackingSupport;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.client.BitbucketClient;
 
 /**
  * Implementation of {@link BugtrackingConnector} for Bitbucket Cloud.
@@ -53,12 +54,17 @@ public class BitbucketConnector implements BugtrackingConnector
     public static final String TOOLTIP = "Bitbucket Cloud Task Repository";
 
     /**
+     * Bitbucket API client.
+     */
+    private final BitbucketClient bitbucketClient;
+
+    /**
      * Repository provider object.
      */
     private final BitbucketRepositoryProvider repositoryProvider;
 
     /**
-     *
+     * Support object.
      */
     private final BugtrackingSupport<
         BitbucketRepository, BitbucketQuery, BitbucketIssue> support;
@@ -68,10 +74,21 @@ public class BitbucketConnector implements BugtrackingConnector
      */
     public BitbucketConnector()
     {
+        bitbucketClient = new BitbucketClient();
         repositoryProvider = new BitbucketRepositoryProvider(ID);
         support = new BugtrackingSupport<>(
             repositoryProvider, new BitbucketQueryProvider(),
             new BitbucketIssueProvider());
+    }
+
+    /**
+     * Returns the Bitbucket API client of this object.
+     *
+     * @return Bitbucket API client
+     */
+    public BitbucketClient getBitbucketClient()
+    {
+        return bitbucketClient;
     }
 
     /**
