@@ -70,12 +70,13 @@ public class BitbucketConnector implements BugtrackingConnector
         BitbucketRepository, BitbucketQuery, BitbucketIssue> support;
 
     /**
-     * Constructs this object.
+     * Initializes this object.
      */
     public BitbucketConnector()
     {
         bitbucketClient = new BitbucketClient();
-        repositoryProvider = new BitbucketRepositoryProvider(ID);
+        repositoryProvider = new BitbucketRepositoryProvider(
+            bitbucketClient, ID);
         support = new BugtrackingSupport<>(
             repositoryProvider, new BitbucketQueryProvider(),
             new BitbucketIssueProvider());

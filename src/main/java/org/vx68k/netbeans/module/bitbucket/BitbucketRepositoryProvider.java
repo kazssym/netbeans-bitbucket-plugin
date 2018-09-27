@@ -31,6 +31,7 @@ import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
 import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 
 /**
@@ -41,6 +42,11 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 public final class BitbucketRepositoryProvider implements
     RepositoryProvider<BitbucketRepository, BitbucketQuery, BitbucketIssue>
 {
+    /**
+     * Bitbucket API client.
+     */
+    private final BitbucketClient bitbucketClient;
+
     /**
      * Identifier of the Bitbucket Cloud connector.
      */
@@ -54,12 +60,16 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Initializes this object.
      *
-     * @param connectorIdValue value of the identifier of the Bitbucket Cloud
+     * @param bitbucketClientInit value of the Bitbucket API client
+     * @param connectorIdInit value of the identifier of the Bitbucket Cloud
      * connector
      */
-    BitbucketRepositoryProvider(final String connectorIdValue)
+    BitbucketRepositoryProvider(
+        final BitbucketClient bitbucketClientInit,
+        final String connectorIdInit)
     {
-        connectorId = connectorIdValue;
+        bitbucketClient = bitbucketClientInit;
+        connectorId = connectorIdInit;
         descriptors = new WeakHashMap<>();
     }
 
