@@ -82,16 +82,6 @@ public class BitbucketConnector implements BugtrackingConnector
     }
 
     /**
-     * Returns the Bitbucket API client of this object.
-     *
-     * @return Bitbucket API client
-     */
-    public BitbucketClient getBitbucketClient()
-    {
-        return bitbucketClient;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
