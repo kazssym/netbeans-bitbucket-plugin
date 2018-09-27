@@ -21,6 +21,7 @@
 package org.vx68k.netbeans.module.bitbucket;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
 import org.vx68k.bitbucket.api.BitbucketAccount;
@@ -53,66 +54,110 @@ final class BitbucketRepositoryProxy implements BitbucketRepository
     @Override
     public String getSCM()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String value = null;
+        if (repository != null) {
+            value = repository.getSCM();
+        }
+        return value;
     }
 
     @Override
     public BitbucketAccount getOwner()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        BitbucketAccount value = null;
+        if (repository != null) {
+            value = repository.getOwner();
+        }
+        return value;
     }
 
     @Override
     public String getName()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String value = null;
+        if (repository != null) {
+            value = repository.getName();
+        }
+        return value;
     }
 
     @Override
     public UUID getUUID()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        UUID value = null;
+        if (repository != null) {
+            value = repository.getUUID();
+        }
+        return value;
     }
 
     @Override
     public String getFullName()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String value = null;
+        if (repository != null) {
+            value = repository.getFullName();
+        }
+        return value;
     }
 
     @Override
     public String getDescription()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String value = null;
+        if (repository != null) {
+            value = repository.getDescription();
+        }
+        return value;
     }
 
     @Override
     public BitbucketBranch getMainBranch()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        BitbucketBranch value = null;
+        if (repository != null) {
+            value = repository.getMainBranch();
+        }
+        return value;
     }
 
     @Override
     public boolean isPrivate()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean value = false;
+        if (repository != null) {
+            value = repository.isPrivate();
+        }
+        return value;
     }
 
     @Override
     public Instant getCreated()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Instant value = null;
+        if (repository != null) {
+            value = repository.getCreated();
+        }
+        return value;
     }
 
     @Override
     public Instant getUpdated()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Instant value = null;
+        if (repository != null) {
+            value = repository.getUpdated();
+        }
+        return value;
     }
 
     @Override
     public Iterator<BitbucketIssue> getIssues()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Iterator<BitbucketIssue> value = Collections.emptyIterator();
+        if (repository != null) {
+            value = repository.getIssues();
+        }
+        return value;
     }
 }
