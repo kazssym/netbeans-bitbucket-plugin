@@ -36,7 +36,7 @@ import org.vx68k.bitbucket.api.client.BitbucketClient;
     id = BitbucketConnector.ID, displayName = BitbucketConnector.DISPLAY_NAME,
     tooltip = BitbucketConnector.TOOLTIP,
     iconPath = "org/vx68k/netbeans/module/bitbucket/icon-16.png")
-public class BitbucketConnector implements BugtrackingConnector
+public final class BitbucketConnector implements BugtrackingConnector
 {
     /**
      * Identifier of the Bitbucket Cloud connector.
