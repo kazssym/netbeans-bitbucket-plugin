@@ -64,6 +64,11 @@ public final class BitbucketConnector implements BugtrackingConnector
     private final BitbucketRepositoryProvider repositoryProvider;
 
     /**
+     * Query provider.
+     */
+    private final BitbucketQueryProvider queryProvider;
+
+    /**
      * Support object.
      */
     private final BugtrackingSupport<
@@ -75,11 +80,30 @@ public final class BitbucketConnector implements BugtrackingConnector
     public BitbucketConnector()
     {
         bitbucketClient = new BitbucketClient();
-        repositoryProvider = new BitbucketRepositoryProvider(
-            bitbucketClient, ID);
+        repositoryProvider = new BitbucketRepositoryProvider(this, ID);
+        queryProvider = new BitbucketQueryProvider(this);
         support = new BugtrackingSupport<>(
-            repositoryProvider, new BitbucketQueryProvider(),
-            new BitbucketIssueProvider());
+            repositoryProvider, queryProvider, new BitbucketIssueProvider());
+    }
+
+    /**
+     * Returns the Bitbucket API client.
+     *
+     * @return Bitbucket API client
+     */
+    BitbucketClient getBitbucketClient()
+    {
+        return bitbucketClient;
+    }
+
+    /**
+     * Returns the query provider.
+     *
+     * @return query provider
+     */
+    BitbucketQueryProvider getQueryProvider()
+    {
+        return queryProvider;
     }
 
     /**

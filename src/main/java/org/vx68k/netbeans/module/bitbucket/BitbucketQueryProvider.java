@@ -20,6 +20,8 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
+import java.util.Map;
+import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.netbeans.modules.bugtracking.spi.QueryProvider;
 
@@ -28,16 +30,68 @@ import org.netbeans.modules.bugtracking.spi.QueryProvider;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketQueryProvider implements
+public final class BitbucketQueryProvider implements
     QueryProvider<BitbucketQuery, BitbucketIssue>
 {
+    /**
+     * Bitbucket Cloud connector.
+     */
+    private final BitbucketConnector connector;
+
+    /**
+     * Map for descriptors.
+     */
+    private final Map<BitbucketQuery, Descriptor> descriptors;
+
+    /**
+     * Initializes this object while preventing public instantiation.
+     *
+     * @param connectorInit value of the Bitbucket Cloud connector
+     */
+    BitbucketQueryProvider(final BitbucketConnector connectorInit)
+    {
+        connector = connectorInit;
+        descriptors = new WeakHashMap<>();
+    }
+
+    /**
+     * Returns the descriptor for a query.
+     *
+     * @param query query
+     * @return descriptor
+     */
+    Descriptor getDescriptor(final BitbucketQuery query)
+    {
+        Descriptor value = descriptors.get(query);
+        if (value == null) {
+            value = new Descriptor();
+            descriptors.put(query, value);
+        }
+        return value;
+    }
+
+    /**
+     * Returns a query for a display name.
+     *
+     * @param displayName display name
+     * @return query
+     */
+    BitbucketQuery getQuery(final String displayName)
+    {
+        BitbucketQuery value = new BitbucketQuery();
+        Descriptor descriptor = getDescriptor(value);
+        descriptor.setDisplayName(displayName);
+        return value;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getDisplayName(final BitbucketQuery query)
     {
-        return query.getDisplayName();
+        Descriptor descriptor = getDescriptor(query);
+        return descriptor.getDisplayName();
     }
 
     /**
@@ -46,7 +100,8 @@ final class BitbucketQueryProvider implements
     @Override
     public String getTooltip(final BitbucketQuery query)
     {
-        return null;
+        Descriptor descriptor = getDescriptor(query);
+        return descriptor.getTooltip();
     }
 
     /**
@@ -102,7 +157,8 @@ final class BitbucketQueryProvider implements
         final BitbucketQuery query,
         final IssueContainer<BitbucketIssue> newValue)
     {
-        query.setIssueContainer(newValue);
+        Descriptor descriptor = getDescriptor(query);
+        descriptor.setIssueContainer(newValue);
     }
 
     /**
@@ -111,6 +167,98 @@ final class BitbucketQueryProvider implements
     @Override
     public void refresh(final BitbucketQuery query)
     {
-        // @todo Implement this method.
+        Descriptor descriptor = getDescriptor(query);
+        descriptor.refresh();
+    }
+
+    /**
+     * Descriptor for a query.
+     */
+    public final class Descriptor
+    {
+        /**
+         * Display name.
+         */
+        private String displayName = null;
+
+        /**
+         * Tooltip text.
+         */
+        private String tooltip = null;
+
+        /**
+         * Issue container object.
+         */
+        private IssueContainer<BitbucketIssue> issueContainer;
+
+        /**
+         * Prevents public initialization.
+         */
+        Descriptor()
+        {
+        }
+
+        /**
+         * Returns the display name.
+         *
+         * @return display name
+         */
+        public String getDisplayName()
+        {
+            return displayName;
+        }
+
+        /**
+         * Sets the display name.
+         *
+         * @param newValue new value of the display name
+         */
+        public void setDisplayName(final String newValue)
+        {
+            displayName = newValue;
+        }
+
+        /**
+         * Returns the tooltip text.
+         *
+         * @return tooltip text
+         */
+        public String getTooltip()
+        {
+            return tooltip;
+        }
+
+        /**
+         * Sets the tooltip text.
+         *
+         * @param newValue new value of the tooltip text
+         */
+        public void setTooltip(final String newValue)
+        {
+            tooltip = newValue;
+        }
+
+        /**
+         * Sets the issue container object.
+         *
+         * @param newValue new value of the issue container object
+         */
+        public void setIssueContainer(
+            final IssueContainer<BitbucketIssue> newValue)
+        {
+            issueContainer = newValue;
+        }
+
+        /**
+         * Refreshes the query.
+         */
+        public void refresh()
+        {
+            if (issueContainer != null) {
+                issueContainer.refreshingStarted();
+                // @todo Add code.
+                issueContainer.refreshingFinished();
+            }
+        }
     }
 }

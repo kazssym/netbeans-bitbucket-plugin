@@ -23,8 +23,10 @@ package org.vx68k.netbeans.module.bitbucket;
 import java.awt.Image;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
@@ -33,7 +35,6 @@ import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
 import org.vx68k.bitbucket.api.BitbucketRepository;
-import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 
 /**
@@ -51,9 +52,9 @@ public final class BitbucketRepositoryProvider implements
         Pattern.compile("([^/]+)/([^/]+)");
 
     /**
-     * Bitbucket API client.
+     * Bitbucket Cloud connector.
      */
-    private final BitbucketClient bitbucketClient;
+    private final BitbucketConnector connector;
 
     /**
      * Identifier of the Bitbucket Cloud connector.
@@ -68,15 +69,15 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Initializes this object.
      *
-     * @param bitbucketClientInit value of the Bitbucket API client
+     * @param connectorInit value of the query provider
      * @param connectorIdInit value of the identifier of the Bitbucket Cloud
      * connector
      */
     BitbucketRepositoryProvider(
-        final BitbucketClient bitbucketClientInit,
+        final BitbucketConnector connectorInit,
         final String connectorIdInit)
     {
-        bitbucketClient = bitbucketClientInit;
+        connector = connectorInit;
         connectorId = connectorIdInit;
         descriptors = new WeakHashMap<>();
     }
@@ -112,8 +113,9 @@ public final class BitbucketRepositoryProvider implements
             if (!m.matches()) {
                 throw new IllegalArgumentException("Invalid full name");
             }
-            value.setRepository(bitbucketClient.getRepository(
-                m.group(1), m.group(2)));
+            value.setRepository(
+                connector.getBitbucketClient().getRepository(
+                    m.group(1), m.group(2)));
 
             Descriptor descriptor = getDescriptor(value);
             descriptor.setId(info.getID());
@@ -184,7 +186,7 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketQuery createQuery(
         final BitbucketRepository repository)
     {
-        return new BitbucketQuery(null);
+        return new BitbucketQuery();
     }
 
     /**
@@ -213,7 +215,9 @@ public final class BitbucketRepositoryProvider implements
     public Collection<BitbucketQuery> getQueries(
         final BitbucketRepository repository)
     {
-        return Collections.singletonList(new BitbucketQuery("All Tasks"));
+        List<BitbucketQuery> value = new ArrayList<>();
+        value.add(connector.getQueryProvider().getQuery("All Tasks"));
+        return value;
     }
 
     /**
