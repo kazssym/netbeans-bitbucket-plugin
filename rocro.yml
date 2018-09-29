@@ -11,4 +11,3 @@ inspecode:
   misspell: {}
   checkstyle:
     config-file: etc/checkstyle.xml
-  pmd: {}
