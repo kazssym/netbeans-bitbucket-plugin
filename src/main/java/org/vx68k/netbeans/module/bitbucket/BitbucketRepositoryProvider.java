@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 
@@ -187,7 +188,8 @@ public final class BitbucketRepositoryProvider implements
     @Override
     public BitbucketIssue createIssue(final BitbucketRepository r)
     {
-        return new BitbucketIssue();
+        // @todo Implement this method.
+        return null;
     }
 
     /**
@@ -197,7 +199,8 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketIssue createIssue(
         final BitbucketRepository r, final String string, final String string1)
     {
-        return new BitbucketIssue();
+        // @todo Implement this method.
+        return null;
     }
 
     /**

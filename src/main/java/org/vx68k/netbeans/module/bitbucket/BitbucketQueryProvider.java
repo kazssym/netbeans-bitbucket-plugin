@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.netbeans.modules.bugtracking.spi.QueryProvider;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 
 /**
  * Implementation of {@link QueryProvider} for Bitbucket Cloud.

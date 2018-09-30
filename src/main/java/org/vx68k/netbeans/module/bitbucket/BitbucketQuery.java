@@ -22,6 +22,7 @@ package org.vx68k.netbeans.module.bitbucket;
 
 import java.util.Collection;
 import java.util.Collections;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
 
 /**

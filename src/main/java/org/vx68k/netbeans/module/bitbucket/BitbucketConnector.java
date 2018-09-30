@@ -24,6 +24,7 @@ import org.netbeans.modules.bugtracking.api.Repository;
 import org.netbeans.modules.bugtracking.spi.BugtrackingConnector;
 import org.netbeans.modules.bugtracking.spi.BugtrackingSupport;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
 

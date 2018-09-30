@@ -21,18 +21,52 @@
 package org.vx68k.netbeans.module.bitbucket;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
+import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.netbeans.modules.bugtracking.spi.IssueProvider;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 
 /**
  * Implementation of {@link IssueProvider} for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */
-class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
+public final class BitbucketIssueProvider implements
+    IssueProvider<BitbucketIssue>
 {
+    /**
+     * Map for descriptors.
+     */
+    private final Map<BitbucketIssue, Descriptor> descriptors;
+
+    /**
+     * Initializes the object.
+     */
+    public BitbucketIssueProvider()
+    {
+        descriptors = new WeakHashMap<>();
+    }
+
+    /**
+     * Returns the descriptor for an issue.
+     *
+     * @param issue an issue
+     * @return the descriptor for an issue
+     */
+    Descriptor getDescriptor(final BitbucketIssue issue)
+    {
+        Descriptor value = descriptors.get(issue);
+        if (value == null) {
+            value = new Descriptor();
+            descriptors.put(issue, value);
+        }
+        return value;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -142,7 +176,8 @@ class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
     public void addPropertyChangeListener(
         final BitbucketIssue issue, final PropertyChangeListener listener)
     {
-        issue.addPropertyChangeListener(listener);
+        Descriptor descriptor = getDescriptor(issue);
+        descriptor.addPropertyChangeListener(listener);
     }
 
     /**
@@ -152,6 +187,48 @@ class BitbucketIssueProvider implements IssueProvider<BitbucketIssue>
     public void removePropertyChangeListener(
         final BitbucketIssue issue, final PropertyChangeListener listener)
     {
-        issue.removePropertyChangeListener(listener);
+        Descriptor descriptor = getDescriptor(issue);
+        descriptor.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * Issue descriptor.
+     */
+    public final class Descriptor
+    {
+        /**
+         * Property change support object.
+         */
+        private final PropertyChangeSupport support;
+
+        /**
+         * Initializes this object.
+         */
+        Descriptor()
+        {
+            support = new PropertyChangeSupport(this);
+        }
+
+        /**
+         * Adds a property change listener.
+         *
+         * @param listener property change listener to add
+         */
+        public void addPropertyChangeListener(
+            final PropertyChangeListener listener)
+        {
+            support.addPropertyChangeListener(listener);
+        }
+
+        /**
+         * Removes a property change listener.
+         *
+         * @param listener property change listener to remove
+         */
+        public void removePropertyChangeListener(
+            final PropertyChangeListener listener)
+        {
+            support.removePropertyChangeListener(listener);
+        }
     }
 }
