@@ -57,11 +57,6 @@ public final class BitbucketRepositoryProvider implements
     private final BitbucketConnector connector;
 
     /**
-     * Identifier of the Bitbucket Cloud connector.
-     */
-    private final String connectorId;
-
-    /**
      * Map for descriptors.
      */
     private final Map<BitbucketRepository, Descriptor> descriptors;
@@ -70,14 +65,10 @@ public final class BitbucketRepositoryProvider implements
      * Initializes this object.
      *
      * @param connector value of the query provider
-     * @param connectorId value of the identifier of the Bitbucket Cloud
-     * connector
      */
-    BitbucketRepositoryProvider(
-        final BitbucketConnector connector, final String connectorId)
+    BitbucketRepositoryProvider(final BitbucketConnector connector)
     {
         this.connector = connector;
-        this.connectorId = connectorId;
         descriptors = new WeakHashMap<>();
     }
 
@@ -132,10 +123,12 @@ public final class BitbucketRepositoryProvider implements
     {
         RepositoryInfo value = null;
         Descriptor descriptor = getDescriptor(repository);
+        // If the descriptor has an identifier, an info object must be created.
         if (descriptor.getId() != null) {
             value = new RepositoryInfo(
-                descriptor.getId(), connectorId, descriptor.getFullName(),
-                descriptor.getDisplayName(), descriptor.getFullName());
+                descriptor.getId(), BitbucketConnector.ID,
+                descriptor.getFullName(), descriptor.getDisplayName(),
+                descriptor.getFullName());
         }
         return value;
     }

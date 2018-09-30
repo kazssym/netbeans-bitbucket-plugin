@@ -80,7 +80,7 @@ public final class BitbucketConnector implements BugtrackingConnector
     public BitbucketConnector()
     {
         bitbucketClient = new BitbucketClient();
-        repositoryProvider = new BitbucketRepositoryProvider(this, ID);
+        repositoryProvider = new BitbucketRepositoryProvider(this);
         queryProvider = new BitbucketQueryProvider(this);
         support = new BugtrackingSupport<>(
             repositoryProvider, queryProvider, new BitbucketIssueProvider());
