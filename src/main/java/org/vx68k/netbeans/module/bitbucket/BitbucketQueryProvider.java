@@ -256,8 +256,12 @@ public final class BitbucketQueryProvider implements
         {
             if (issueContainer != null) {
                 issueContainer.refreshingStarted();
-                // @todo Add code.
-                issueContainer.refreshingFinished();
+                try {
+                    // @todo Add code.
+                }
+                finally {
+                    issueContainer.refreshingFinished();
+                }
             }
         }
     }
