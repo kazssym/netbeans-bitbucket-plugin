@@ -168,7 +168,7 @@ public final class BitbucketQueryProvider implements
     public void refresh(final BitbucketQuery query)
     {
         Descriptor descriptor = getDescriptor(query);
-        descriptor.refresh();
+        descriptor.refresh(query);
     }
 
     /**
@@ -251,13 +251,18 @@ public final class BitbucketQueryProvider implements
 
         /**
          * Refreshes the query.
+         *
+         * @param query the query
          */
-        public void refresh()
+        public void refresh(final BitbucketQuery query)
         {
             if (issueContainer != null) {
                 issueContainer.refreshingStarted();
                 try {
-                    // @todo Add code.
+                    issueContainer.clear();
+                    query.issues().forEach((issue) -> {
+                        issueContainer.add(issue);
+                    });
                 }
                 finally {
                     issueContainer.refreshingFinished();
