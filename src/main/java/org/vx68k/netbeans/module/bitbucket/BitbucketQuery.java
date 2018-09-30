@@ -20,6 +20,10 @@
 
 package org.vx68k.netbeans.module.bitbucket;
 
+import java.util.Collection;
+import java.util.Collections;
+import org.vx68k.bitbucket.api.BitbucketRepository;
+
 /**
  * Query for Bitbucket Cloud.
  *
@@ -27,4 +31,30 @@ package org.vx68k.netbeans.module.bitbucket;
  */
 final class BitbucketQuery
 {
+    /**
+     * Repository where the query searches for issues.
+     */
+    private BitbucketRepository repository = null;
+
+    /**
+     * Sets the repository where the query searches for issues.
+     *
+     * @param newValue a new value of the repository where the query finds
+     * issues
+     */
+    public void setRepository(final BitbucketRepository newValue)
+    {
+        repository = newValue;
+    }
+
+    /**
+     * Returns a {@link Collection} view of the issues found.
+     *
+     * @return a {@link Collection} view of the issues found
+     */
+    public Collection<BitbucketIssue> issues()
+    {
+        // @todo Implement this method.
+        return Collections.emptyList();
+    }
 }
