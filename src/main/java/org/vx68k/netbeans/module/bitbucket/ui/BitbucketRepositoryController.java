@@ -88,14 +88,14 @@ public final class BitbucketRepositoryController implements
     private final Set<ChangeListener> changeListenerSet;
 
     /**
-     * Initializes this object.
+     * Initializes the object.
      *
-     * @param descriptorValue repository descriptor
+     * @param descriptor a repository descriptor
      */
     public BitbucketRepositoryController(
-        final BitbucketRepositoryProvider.Descriptor descriptorValue)
+        final BitbucketRepositoryProvider.Descriptor descriptor)
     {
-        descriptor = descriptorValue;
+        this.descriptor = descriptor;
         component = new JPanel(new GridBagLayout());
         fullNameField = new JTextField(TEXT_COLUMNS);
         displayNameField = new JTextField(TEXT_COLUMNS);

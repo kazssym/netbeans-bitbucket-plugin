@@ -69,16 +69,15 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Initializes this object.
      *
-     * @param connectorInit value of the query provider
-     * @param connectorIdInit value of the identifier of the Bitbucket Cloud
+     * @param connector value of the query provider
+     * @param connectorId value of the identifier of the Bitbucket Cloud
      * connector
      */
     BitbucketRepositoryProvider(
-        final BitbucketConnector connectorInit,
-        final String connectorIdInit)
+        final BitbucketConnector connector, final String connectorId)
     {
-        connector = connectorInit;
-        connectorId = connectorIdInit;
+        this.connector = connector;
+        this.connectorId = connectorId;
         descriptors = new WeakHashMap<>();
     }
 

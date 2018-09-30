@@ -30,7 +30,7 @@ import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
 
 /**
- * Proxy for a Bitbucket Cloud repository.
+ * Repository proxy for Bitbucket Cloud.
  *
  * @author Kaz Nishimura
  */

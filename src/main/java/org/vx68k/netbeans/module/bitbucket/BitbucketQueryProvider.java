@@ -46,11 +46,11 @@ public final class BitbucketQueryProvider implements
     /**
      * Initializes this object while preventing public instantiation.
      *
-     * @param connectorInit value of the Bitbucket Cloud connector
+     * @param connector value of the Bitbucket Cloud connector
      */
-    BitbucketQueryProvider(final BitbucketConnector connectorInit)
+    BitbucketQueryProvider(final BitbucketConnector connector)
     {
-        connector = connectorInit;
+        this.connector = connector;
         descriptors = new WeakHashMap<>();
     }
 
