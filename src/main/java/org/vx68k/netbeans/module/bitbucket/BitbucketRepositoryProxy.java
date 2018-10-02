@@ -21,8 +21,8 @@
 package org.vx68k.netbeans.module.bitbucket;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.UUID;
 import org.vx68k.bitbucket.api.BitbucketAccount;
 import org.vx68k.bitbucket.api.BitbucketBranch;
@@ -152,11 +152,21 @@ final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Iterator<BitbucketIssue> getIssues()
+    public BitbucketIssue getIssue(int id)
     {
-        Iterator<BitbucketIssue> value = Collections.emptyIterator();
+        BitbucketIssue value = null;
         if (repository != null) {
-            value = repository.getIssues();
+            value = repository.getIssue(id);
+        }
+        return value;
+    }
+
+    @Override
+    public Collection<BitbucketIssue>issues()
+    {
+        Collection<BitbucketIssue> value = Collections.emptyList();
+        if (repository != null) {
+            value = repository.issues();
         }
         return value;
     }
