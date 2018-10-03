@@ -169,7 +169,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public BitbucketIssue getIssue(int id)
+    public BitbucketIssue getIssue(final int id)
     {
         BitbucketIssue value = null;
         if (repository != null) {
@@ -179,7 +179,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Collection<BitbucketIssue>issues()
+    public Collection<BitbucketIssue> issues()
     {
         Collection<BitbucketIssue> value = Collections.emptyList();
         if (repository != null) {
