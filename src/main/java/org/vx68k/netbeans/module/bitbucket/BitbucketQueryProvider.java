@@ -264,9 +264,8 @@ public final class BitbucketQueryProvider implements
                 issueContainer.refreshingStarted();
                 try {
                     issueContainer.clear();
-                    query.issues().forEach((issue) -> {
-                        issueContainer.add(issue);
-                    });
+                    query.issues().forEach(
+                        (issue) -> issueContainer.add(issue));
                 }
                 finally {
                     issueContainer.refreshingFinished();
