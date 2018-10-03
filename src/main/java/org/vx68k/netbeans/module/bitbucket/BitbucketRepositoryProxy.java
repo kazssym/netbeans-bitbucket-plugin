@@ -63,7 +63,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
      *
      * @param newValue new value of the destination repository
      */
-    public final void setRepository(final BitbucketRepository newValue)
+    public void setRepository(final BitbucketRepository newValue)
     {
         repository = newValue;
     }
