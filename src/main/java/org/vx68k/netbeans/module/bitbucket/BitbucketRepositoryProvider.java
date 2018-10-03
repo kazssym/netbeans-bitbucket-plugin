@@ -179,7 +179,7 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketQuery createQuery(
         final BitbucketRepository repository)
     {
-        return new BitbucketQuery();
+        return new BitbucketQuery(repository);
     }
 
     /**
@@ -210,8 +210,10 @@ public final class BitbucketRepositoryProvider implements
     public Collection<BitbucketQuery> getQueries(
         final BitbucketRepository repository)
     {
+        BitbucketQueryProvider queryProvider = connector.getQueryProvider();
+
         List<BitbucketQuery> value = new ArrayList<>();
-        value.add(connector.getQueryProvider().getQuery("All Tasks"));
+        value.add(queryProvider.getQuery(repository, "All Tasks"));
         return value;
     }
 

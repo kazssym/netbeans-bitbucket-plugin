@@ -34,17 +34,16 @@ final class BitbucketQuery
     /**
      * Repository where the query searches for issues.
      */
-    private BitbucketRepository repository = null;
+    private final BitbucketRepository repository;
 
     /**
-     * Sets the repository where the query searches for issues.
+     * Initializes the object.
      *
-     * @param newValue a new value of the repository where the query finds
-     * issues
+     * @param repository repository to which the query is bound
      */
-    public void setRepository(final BitbucketRepository newValue)
+    BitbucketQuery(final BitbucketRepository repository)
     {
-        repository = newValue;
+        this.repository = repository;
     }
 
     /**
@@ -54,7 +53,6 @@ final class BitbucketQuery
      */
     public Collection<BitbucketIssue> issues()
     {
-        // @todo Implement this method.
         return repository.issues();
     }
 }
