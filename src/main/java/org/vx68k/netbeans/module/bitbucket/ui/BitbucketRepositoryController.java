@@ -93,6 +93,7 @@ public final class BitbucketRepositoryController implements
     /**
      * Initializes the object.
      *
+     * @param repository a repository
      * @param descriptor a repository descriptor
      */
     public BitbucketRepositoryController(

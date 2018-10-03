@@ -75,6 +75,7 @@ public final class BitbucketQueryProvider implements
     /**
      * Returns a query for a display name.
      *
+     * @param repository a repository
      * @param displayName display name
      * @return query
      */

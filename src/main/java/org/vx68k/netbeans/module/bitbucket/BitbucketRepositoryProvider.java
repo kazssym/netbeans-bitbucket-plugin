@@ -299,8 +299,9 @@ public final class BitbucketRepositoryProvider implements
         }
 
         /**
-         * Returns the controller object for the repository.
+         * Returns the controller object for a repository.
          *
+         * @param repository a repository
          * @return controller object
          */
         public BitbucketRepositoryController getController(
