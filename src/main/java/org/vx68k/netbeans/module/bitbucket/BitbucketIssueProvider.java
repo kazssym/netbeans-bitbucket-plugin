@@ -71,72 +71,72 @@ public final class BitbucketIssueProvider implements
      * {@inheritDoc}
      */
     @Override
-    public String getDisplayName(final BitbucketIssue i)
+    public String getDisplayName(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "#0";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getTooltip(final BitbucketIssue i)
+    public String getTooltip(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getID(final BitbucketIssue i)
+    public String getID(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "#" + issue.getId();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Collection<String> getSubtasks(final BitbucketIssue i)
+    public Collection<String> getSubtasks(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getSummary(final BitbucketIssue i)
+    public String getSummary(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isNew(final BitbucketIssue i)
+    public boolean isNew(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isFinished(final BitbucketIssue i)
+    public boolean isFinished(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean refresh(final BitbucketIssue i)
+    public boolean refresh(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
     /**
