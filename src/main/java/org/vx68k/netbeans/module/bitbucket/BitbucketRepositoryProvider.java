@@ -23,6 +23,7 @@ package org.vx68k.netbeans.module.bitbucket;
 import java.awt.Image;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,14 +122,13 @@ public final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
-        Descriptor descriptor = getDescriptor(repository);
-        // If the descriptor has a display name, an info must be created.
         RepositoryInfo value = null;
-        if (descriptor.getDisplayName() != null) {
+        if (repository.getFullName() != null) {
+            Descriptor descriptor = getDescriptor(repository);
             value = new RepositoryInfo(
                 repository.getFullName(), BitbucketConnector.ID,
                 repository.getFullName(), descriptor.getDisplayName(),
-                repository.getFullName());
+                descriptor.getTooltip());
         }
         return value;
     }
@@ -262,7 +262,7 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Descriptor of a repository.
      */
-    public final class Descriptor
+    public static final class Descriptor
     {
         /**
          * Bitbucket API client for the repository.
@@ -280,9 +280,14 @@ public final class BitbucketRepositoryProvider implements
         private String displayName = null;
 
         /**
+         * Tooltip text for the repository.
+         */
+        private String tooltip = null;
+
+        /**
          * Controller object.
          */
-        private BitbucketRepositoryController controller = null;
+        private WeakReference<RepositoryController> controller = null;
 
         /**
          * Initializes this object.
@@ -326,19 +331,41 @@ public final class BitbucketRepositoryProvider implements
         }
 
         /**
+         * Returns the tooltip text for the repository.
+         *
+         * @return the tooltip text for the repository
+         */
+        public String getTooltip()
+        {
+            return tooltip;
+        }
+
+        /**
+         * Sets the tooltip text for the repository.
+         *
+         * @param newValue new value of the tooltip text for the repository
+         */
+        public void setTooltip(final String newValue)
+        {
+            String oldValue = tooltip;
+            tooltip = newValue;
+            support.firePropertyChange("tooltip", oldValue, newValue);
+        }
+
+        /**
          * Returns the controller object for a repository.
          *
          * @param repository a repository
          * @return controller object
          */
-        public BitbucketRepositoryController getController(
+        public RepositoryController getController(
             final BitbucketRepository repository)
         {
-            if (controller == null) {
-                controller = new BitbucketRepositoryController(
-                    (BitbucketRepositoryProxy) repository, this);
+            if (controller == null || controller.get() == null) {
+                controller = new WeakReference<>(
+                    new BitbucketRepositoryController(repository, this));
             }
-            return controller;
+            return controller.get();
         }
 
         /**

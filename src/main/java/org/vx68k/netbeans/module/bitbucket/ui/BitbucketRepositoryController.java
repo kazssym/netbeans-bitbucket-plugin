@@ -39,6 +39,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
+import org.vx68k.bitbucket.api.BitbucketRepository;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProxy;
@@ -59,7 +60,7 @@ public final class BitbucketRepositoryController implements
     /**
      * Bitbucket Cloud repository.
      */
-    private final BitbucketRepositoryProxy repository;
+    private final BitbucketRepository repository;
 
     /**
      * Repository to apply changes.
@@ -98,7 +99,7 @@ public final class BitbucketRepositoryController implements
      * @param descriptor a repository descriptor
      */
     public BitbucketRepositoryController(
-        final BitbucketRepositoryProxy repository,
+        final BitbucketRepository repository,
         final BitbucketRepositoryProvider.Descriptor descriptor)
     {
         this.repository = repository;
@@ -204,6 +205,8 @@ public final class BitbucketRepositoryController implements
     @Override
     public void populate()
     {
+        fullNameField.setEditable(
+            repository instanceof BitbucketRepositoryProxy);
         fullNameField.setText(repository.getFullName());
         displayNameField.setText(descriptor.getDisplayName());
     }
@@ -251,15 +254,20 @@ public final class BitbucketRepositoryController implements
             displayName = fullName;
         }
 
-        Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
-        if (matcher.matches()) {
-            BitbucketClient client = descriptor.getBitbucketClient();
-            repository.setRepository(
-                client.getRepository(matcher.group(1), matcher.group(2)));
+        if (repository instanceof BitbucketRepositoryProxy) {
+            BitbucketRepositoryProxy proxy =
+                (BitbucketRepositoryProxy) repository;
+            Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+            if (matcher.matches()) {
+                BitbucketClient client = descriptor.getBitbucketClient();
+                proxy.setRepository(
+                    client.getRepository(matcher.group(1), matcher.group(2)));
+            }
+            if (repository.getFullName() != null) {
+                throw new RuntimeException("Repository not found");
+            }
         }
-        if (repository.getFullName() != null) {
-            descriptor.setDisplayName(displayName);
-        }
+        descriptor.setDisplayName(displayName);
     }
 
     /**
