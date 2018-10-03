@@ -24,6 +24,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.IssueController;
@@ -100,7 +101,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public Collection<String> getSubtasks(final BitbucketIssue issue)
     {
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -109,7 +110,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getSummary(final BitbucketIssue issue)
     {
-        return "";
+        return issue.getTitle();
     }
 
     /**
@@ -118,7 +119,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public boolean isNew(final BitbucketIssue issue)
     {
-        return false;
+        return "new".equals(issue.getState());
     }
 
     /**
@@ -127,6 +128,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public boolean isFinished(final BitbucketIssue issue)
     {
+        // @todo Implement this method.
         return false;
     }
 
