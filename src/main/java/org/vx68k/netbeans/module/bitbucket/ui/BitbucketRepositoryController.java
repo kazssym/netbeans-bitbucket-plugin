@@ -20,12 +20,14 @@
 
 package org.vx68k.netbeans.module.bitbucket.ui;
 
+import static org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider
+    .FULL_NAME_PATTERN;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -54,9 +56,9 @@ public final class BitbucketRepositoryController implements
     private static final int TEXT_COLUMNS = 20;
 
     /**
-     * Regular expression pattern to validate the full name.
+     * Bitbucket Cloud repository.
      */
-    private static final String FULL_NAME_PATTERN = "[^/]+/[^/]+";
+    private final BitbucketRepositoryProxy repository;
 
     /**
      * Repository to apply changes.
@@ -97,6 +99,7 @@ public final class BitbucketRepositoryController implements
         final BitbucketRepositoryProxy repository,
         final BitbucketRepositoryProvider.Descriptor descriptor)
     {
+        this.repository = repository;
         this.descriptor = descriptor;
         component = new JPanel(new GridBagLayout());
         fullNameField = new JTextField(TEXT_COLUMNS);
@@ -209,9 +212,13 @@ public final class BitbucketRepositoryController implements
     @Override
     public boolean isValid()
     {
-        Pattern p = Pattern.compile(FULL_NAME_PATTERN); // @todo Reuse.
-        if (!p.matcher(fullNameField.getText()).matches()) {
-            errorMessage = "Repository name must be OWNER/REPO.";
+        String fullName = fullNameField.getText().trim();
+        if ("".equals(fullName)) {
+            errorMessage = "Missing repository name";
+            return false;
+        }
+        if (!FULL_NAME_PATTERN.matcher(fullName).matches()) {
+            errorMessage = "Invalid repository name format";
             return false;
         }
         errorMessage = null;
@@ -235,10 +242,10 @@ public final class BitbucketRepositoryController implements
     {
         assert isValid();
 
-        String fullName = fullNameField.getText();
-        String displayName = displayNameField.getText();
+        String fullName = fullNameField.getText().trim();
+        String displayName = displayNameField.getText().trim();
         // If the display name is blank, the full name is copied.
-        if ("".equals(displayName.trim())) {
+        if ("".equals(displayName)) {
             displayName = fullName;
         }
 
