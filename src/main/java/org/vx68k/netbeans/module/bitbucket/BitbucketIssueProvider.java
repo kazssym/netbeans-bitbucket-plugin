@@ -73,7 +73,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getDisplayName(final BitbucketIssue issue)
     {
-        return "#0";
+        return String.format("##%d: %s", issue.getId(), issue.getTitle());
     }
 
     /**
@@ -91,7 +91,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getID(final BitbucketIssue issue)
     {
-        return "#" + issue.getId();
+        return String.format("#%d", issue.getId());
     }
 
     /**
