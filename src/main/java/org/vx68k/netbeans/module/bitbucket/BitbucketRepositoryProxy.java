@@ -42,6 +42,23 @@ final class BitbucketRepositoryProxy implements BitbucketRepository
     private BitbucketRepository repository = null;
 
     /**
+     * Initializes the object.
+     */
+    BitbucketRepositoryProxy()
+    {
+    }
+
+    /**
+     * Initializes the object and sets the destination repository.
+     *
+     * @param repository the destination repository
+     */
+    BitbucketRepositoryProxy(final BitbucketRepository repository)
+    {
+        setRepository(repository);
+    }
+
+    /**
      * Sets the destination repository.
      *
      * @param newValue new value of the destination repository
