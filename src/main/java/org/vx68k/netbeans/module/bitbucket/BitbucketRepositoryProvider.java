@@ -36,6 +36,7 @@ import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
 import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 
 /**
@@ -109,8 +110,6 @@ public final class BitbucketRepositoryProvider implements
                     m.group(1), m.group(2)));
 
             Descriptor descriptor = getDescriptor(value);
-            descriptor.setId(info.getID());
-            descriptor.setFullName(info.getUrl());
             descriptor.setDisplayName(info.getDisplayName());
         }
         return value;
@@ -122,14 +121,14 @@ public final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
-        RepositoryInfo value = null;
         Descriptor descriptor = getDescriptor(repository);
-        // If the descriptor has an identifier, an info object must be created.
-        if (descriptor.getId() != null) {
+        // If the descriptor has a display name, an info must be created.
+        RepositoryInfo value = null;
+        if (descriptor.getDisplayName() != null) {
             value = new RepositoryInfo(
-                descriptor.getId(), BitbucketConnector.ID,
-                descriptor.getFullName(), descriptor.getDisplayName(),
-                descriptor.getFullName());
+                repository.getFullName(), BitbucketConnector.ID,
+                repository.getFullName(), descriptor.getDisplayName(),
+                repository.getFullName());
         }
         return value;
     }
@@ -266,24 +265,14 @@ public final class BitbucketRepositoryProvider implements
     public final class Descriptor
     {
         /**
+         * Bitbucket API client for the repository.
+         */
+        private final BitbucketClient bitbucketClient;
+
+        /**
          * Property change support object.
          */
         private final PropertyChangeSupport support;
-
-        /**
-         * Controller object.
-         */
-        private BitbucketRepositoryController controller = null;
-
-        /**
-         * Identifier for the repository.
-         */
-        private String id = null;
-
-        /**
-         * Full name for the repository.
-         */
-        private String fullName = null;
 
         /**
          * Display name for the repository.
@@ -291,71 +280,27 @@ public final class BitbucketRepositoryProvider implements
         private String displayName = null;
 
         /**
+         * Controller object.
+         */
+        private BitbucketRepositoryController controller = null;
+
+        /**
          * Initializes this object.
          */
         Descriptor()
         {
-            support = new PropertyChangeSupport(this);
+            this.bitbucketClient = new BitbucketClient();
+            this.support = new PropertyChangeSupport(this);
         }
 
         /**
-         * Returns the controller object for a repository.
+         * Returns the Bitbucket API client for the repository.
          *
-         * @param repository a repository
-         * @return controller object
+         * @return the Bitbucket API client for the repository.
          */
-        public BitbucketRepositoryController getController(
-            final BitbucketRepository repository)
+        public BitbucketClient getBitbucketClient()
         {
-            if (controller == null) {
-                controller = new BitbucketRepositoryController(
-                    (BitbucketRepositoryProxy) repository, this);
-            }
-            return controller;
-        }
-
-        /**
-         * Returns the identifier for the repository.
-         *
-         * @return identifier
-         */
-        public String getId()
-        {
-            return id;
-        }
-
-        /**
-         * Sets the identifier for the repository to a {@link String} value.
-         *
-         * @param newValue new value of the identifier
-         */
-        public void setId(final String newValue)
-        {
-            String oldValue = id;
-            id = newValue;
-            support.firePropertyChange("id", oldValue, newValue);
-        }
-
-        /**
-         * Returns the full name for the repository.
-         *
-         * @return full name
-         */
-        public String getFullName()
-        {
-            return fullName;
-        }
-
-        /**
-         * Sets the full name for the repository to a {@link String} value.
-         *
-         * @param newValue new value of the full name
-         */
-        public void setFullName(final String newValue)
-        {
-            String oldValue = fullName;
-            fullName = newValue;
-            support.firePropertyChange("fullName", oldValue, newValue);
+            return bitbucketClient;
         }
 
         /**
@@ -378,6 +323,22 @@ public final class BitbucketRepositoryProvider implements
             String oldValue = displayName;
             displayName = newValue;
             support.firePropertyChange("displayName", oldValue, newValue);
+        }
+
+        /**
+         * Returns the controller object for a repository.
+         *
+         * @param repository a repository
+         * @return controller object
+         */
+        public BitbucketRepositoryController getController(
+            final BitbucketRepository repository)
+        {
+            if (controller == null) {
+                controller = new BitbucketRepositoryController(
+                    (BitbucketRepositoryProxy) repository, this);
+            }
+            return controller;
         }
 
         /**

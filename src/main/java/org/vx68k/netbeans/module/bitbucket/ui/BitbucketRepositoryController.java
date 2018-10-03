@@ -27,7 +27,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+import java.util.regex.Matcher;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,6 +39,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
+import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProxy;
 
@@ -203,7 +204,7 @@ public final class BitbucketRepositoryController implements
     @Override
     public void populate()
     {
-        fullNameField.setText(descriptor.getFullName());
+        fullNameField.setText(repository.getFullName());
         displayNameField.setText(descriptor.getDisplayName());
     }
 
@@ -250,11 +251,15 @@ public final class BitbucketRepositoryController implements
             displayName = fullName;
         }
 
-        if (descriptor.getId() == null) {
-            descriptor.setId(UUID.randomUUID().toString());
+        Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+        if (matcher.matches()) {
+            BitbucketClient client = descriptor.getBitbucketClient();
+            repository.setRepository(
+                client.getRepository(matcher.group(1), matcher.group(2)));
         }
-        descriptor.setFullName(fullName);
-        descriptor.setDisplayName(displayName);
+        if (repository.getFullName() != null) {
+            descriptor.setDisplayName(displayName);
+        }
     }
 
     /**
