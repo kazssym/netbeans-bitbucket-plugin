@@ -38,6 +38,7 @@ import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
+import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProxy;
 
 /**
  * Implementation of {@link RepositoryController} for Bitbucket Cloud.
@@ -93,6 +94,7 @@ public final class BitbucketRepositoryController implements
      * @param descriptor a repository descriptor
      */
     public BitbucketRepositoryController(
+        final BitbucketRepositoryProxy repository,
         final BitbucketRepositoryProvider.Descriptor descriptor)
     {
         this.descriptor = descriptor;
