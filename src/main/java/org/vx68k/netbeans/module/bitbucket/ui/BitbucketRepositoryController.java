@@ -263,7 +263,7 @@ public final class BitbucketRepositoryController implements
                 proxy.setRepository(
                     client.getRepository(matcher.group(1), matcher.group(2)));
             }
-            if (repository.getFullName() != null) {
+            if (repository.getFullName() == null) {
                 throw new RuntimeException("Repository not found");
             }
         }
