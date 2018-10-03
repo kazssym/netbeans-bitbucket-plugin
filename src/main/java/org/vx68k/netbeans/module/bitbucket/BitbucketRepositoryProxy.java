@@ -1,5 +1,5 @@
 /*
- * BitbucketRepositoryProxy.java - class BitbucketRepositoryProxy
+ * BitbucketRepositoryProxy.java
  * Copyright (C) 2018 Kaz Nishimura
  *
  * This program is free software: you can redistribute it and/or modify it
@@ -34,7 +34,7 @@ import org.vx68k.bitbucket.api.BitbucketRepository;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketRepositoryProxy implements BitbucketRepository
+public final class BitbucketRepositoryProxy implements BitbucketRepository
 {
     /**
      * Destination repository.
@@ -63,7 +63,7 @@ final class BitbucketRepositoryProxy implements BitbucketRepository
      *
      * @param newValue new value of the destination repository
      */
-    public void setRepository(final BitbucketRepository newValue)
+    public final void setRepository(final BitbucketRepository newValue)
     {
         repository = newValue;
     }
