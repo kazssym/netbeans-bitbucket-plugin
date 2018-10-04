@@ -28,7 +28,7 @@ pipelines:
             - sh etc/gpginit.sh
             - export MAVEN_OPTS="-Xquickstart"
             - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
-            - sh etc/upload.sh target/*.nbm
+            - sh etc/upload.sh target/*.nbm target/*.nbm.asc
   bookmarks:
     staging:
       - step:
@@ -40,7 +40,7 @@ pipelines:
             - sh etc/gpginit.sh
             - export MAVEN_OPTS="-Xquickstart"
             - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
-            - sh etc/upload.sh target/*.nbm
+            - sh etc/upload.sh target/*.nbm target/*.nbm.asc
   custom:
     snapshot:
       - step:
@@ -52,4 +52,4 @@ pipelines:
             - sh etc/gpginit.sh
             - export MAVEN_OPTS="-Xquickstart"
             - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
-            - sh etc/upload.sh target/*.nbm
+            - sh etc/upload.sh target/*.nbm target/*.nbm.asc
