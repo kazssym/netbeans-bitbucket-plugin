@@ -30,6 +30,7 @@ import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.netbeans.modules.bugtracking.spi.IssueProvider;
 import org.vx68k.bitbucket.api.BitbucketIssue;
+import org.vx68k.netbeans.module.bitbucket.ui.BitbucketIssueController;
 
 /**
  * Implementation of {@link IssueProvider} for Bitbucket Cloud.
@@ -166,9 +167,9 @@ public final class BitbucketIssueProvider implements
      * {@inheritDoc}
      */
     @Override
-    public IssueController getController(final BitbucketIssue i)
+    public IssueController getController(final BitbucketIssue issue)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new BitbucketIssueController(issue);
     }
 
     /**
@@ -208,7 +209,7 @@ public final class BitbucketIssueProvider implements
          */
         Descriptor()
         {
-            support = new PropertyChangeSupport(this);
+            this.support = new PropertyChangeSupport(this);
         }
 
         /**
