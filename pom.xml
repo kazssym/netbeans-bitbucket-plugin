@@ -189,8 +189,8 @@ Cloud repositories.</description>
 <version>3.0.1</version>
 <configuration>
 <locale>en_US</locale>
-<apiLink>https://docs.oracle.com/javase/8/docs/api</apiLink>
 <links>
+<link>https://docs.oracle.com/javase/8/docs/api</link>
 <link>http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking</link>
 </links>
 </configuration>
@@ -254,6 +254,27 @@ Cloud repositories.</description>
 </plugin>
 </plugins>
 </build>
+
+<reporting>
+
+<plugins>
+
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-javadoc-plugin</artifactId>
+
+<reportSets>
+
+<reportSet>
+<id>javadoc</id>
+<reports>
+<report>javadoc-no-fork</report>
+</reports>
+</reportSet>
+</reportSets>
+</plugin>
+</plugins>
+</reporting>
 
 <profiles>
 
