@@ -26,6 +26,7 @@ import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.netbeans.modules.bugtracking.spi.QueryProvider;
 import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.netbeans.module.bitbucket.ui.BitbucketQueryController;
 
 /**
  * Implementation of {@link QueryProvider} for Bitbucket Cloud.
@@ -112,9 +113,9 @@ public final class BitbucketQueryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public QueryController getController(final BitbucketQuery q)
+    public QueryController getController(final BitbucketQuery query)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new BitbucketQueryController();
     }
 
     /**
