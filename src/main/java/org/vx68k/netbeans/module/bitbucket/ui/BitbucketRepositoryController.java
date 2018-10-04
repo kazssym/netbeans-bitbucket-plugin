@@ -143,10 +143,10 @@ public final class BitbucketRepositoryController implements
     @Override
     public void populate()
     {
-        repositoryNameField = new JTextField(
-            repository.getFullName(), TEXT_COLUMNS);
+        repositoryNameField = new JTextField(descriptor.getId(), TEXT_COLUMNS);
         repositoryNameField.setEditable(
             repository instanceof BitbucketRepositoryProxy);
+
         displayNameField = new JTextField(
             descriptor.getDisplayName(), TEXT_COLUMNS);
 
@@ -218,10 +218,13 @@ public final class BitbucketRepositoryController implements
             errorMessage = "Missing repository name";
             return false;
         }
-        if (!FULL_NAME_PATTERN.matcher(repositoryName).matches()) {
+
+        Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
+        if (!matcher.matches()) {
             errorMessage = "Invalid repository name format";
             return false;
         }
+
         errorMessage = null;
         return true;
     }
@@ -244,24 +247,29 @@ public final class BitbucketRepositoryController implements
         assert isValid();
 
         String repositoryName = repositoryNameField.getText().trim();
+        if (repository instanceof BitbucketRepositoryProxy) {
+            BitbucketRepositoryProxy proxy =
+                (BitbucketRepositoryProxy) repository;
+
+            Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
+            if (!matcher.matches()) {
+                throw new RuntimeException("Something strange");
+            }
+
+            BitbucketClient client = descriptor.getBitbucketClient();
+            BitbucketRepository realRepository =
+                client.getRepository(matcher.group(1), matcher.group(2));
+            proxy.setRepository(realRepository);
+            if (realRepository != null) {
+                repositoryName = realRepository.getFullName();
+            }
+            descriptor.setId(repositoryName);
+        }
+
         String displayName = displayNameField.getText().trim();
         // If the display name is blank, the full name is copied.
         if ("".equals(displayName)) {
             displayName = repositoryName;
-        }
-
-        if (repository instanceof BitbucketRepositoryProxy) {
-            BitbucketRepositoryProxy proxy =
-                (BitbucketRepositoryProxy) repository;
-            Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
-            if (matcher.matches()) {
-                BitbucketClient client = descriptor.getBitbucketClient();
-                proxy.setRepository(client.getRepository(
-                    matcher.group(1), matcher.group(2)));
-            }
-            if (repository.getFullName() == null) {
-                throw new RuntimeException("Repository not found");
-            }
         }
         descriptor.setDisplayName(displayName);
 
