@@ -64,6 +64,12 @@ Cloud repositories.</description>
 
 <dependency>
 <groupId>org.netbeans.api</groupId>
+<artifactId>org-openide-util</artifactId>
+<version>RELEASE82</version>
+</dependency>
+
+<dependency>
+<groupId>org.netbeans.api</groupId>
 <artifactId>org-openide-util-ui</artifactId>
 <version>RELEASE82</version>
 </dependency>
@@ -101,6 +107,11 @@ Cloud repositories.</description>
 </dependencyManagement>
 
 <dependencies>
+
+<dependency>
+<groupId>org.netbeans.api</groupId>
+<artifactId>org-openide-util</artifactId>
+</dependency>
 
 <dependency>
 <groupId>org.netbeans.api</groupId>
