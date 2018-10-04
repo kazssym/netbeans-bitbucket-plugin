@@ -204,7 +204,7 @@ public final class BitbucketIssueProvider implements
         private final PropertyChangeSupport support;
 
         /**
-         * Initializes this object.
+         * Initializes the object.
          */
         Descriptor()
         {
@@ -212,9 +212,9 @@ public final class BitbucketIssueProvider implements
         }
 
         /**
-         * Adds a property change listener.
+         * Adds a property change listener for the issue.
          *
-         * @param listener property change listener to add
+         * @param listener a property change listener
          */
         public void addPropertyChangeListener(
             final PropertyChangeListener listener)
@@ -223,9 +223,9 @@ public final class BitbucketIssueProvider implements
         }
 
         /**
-         * Removes a property change listener.
+         * Removes a property change listener for the issue.
          *
-         * @param listener property change listener to remove
+         * @param listener a property change listener
          */
         public void removePropertyChangeListener(
             final PropertyChangeListener listener)
