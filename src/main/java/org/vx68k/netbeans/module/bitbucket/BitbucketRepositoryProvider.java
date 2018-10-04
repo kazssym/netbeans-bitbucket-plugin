@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
+import org.openide.util.NotImplementedException;
 import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketRepository;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
@@ -181,7 +182,8 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketQuery createQuery(
         final BitbucketRepository repository)
     {
-        return new BitbucketQuery(repository);
+        // @todo Implement this method.
+        throw new NotImplementedException();
     }
 
     /**
@@ -191,7 +193,7 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketIssue createIssue(final BitbucketRepository r)
     {
         // @todo Implement this method.
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
@@ -202,7 +204,7 @@ public final class BitbucketRepositoryProvider implements
         final BitbucketRepository r, final String string, final String string1)
     {
         // @todo Implement this method.
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
@@ -239,7 +241,7 @@ public final class BitbucketRepositoryProvider implements
     @Override
     public boolean canAttachFiles(final BitbucketRepository r)
     {
-        return true;
+        return false;
     }
 
     /**
