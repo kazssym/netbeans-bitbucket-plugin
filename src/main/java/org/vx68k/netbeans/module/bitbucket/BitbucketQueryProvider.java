@@ -53,7 +53,7 @@ public final class BitbucketQueryProvider implements
     BitbucketQueryProvider(final BitbucketConnector connector)
     {
         this.connector = connector;
-        descriptors = new WeakHashMap<>();
+        this.descriptors = new WeakHashMap<>();
     }
 
     /**
