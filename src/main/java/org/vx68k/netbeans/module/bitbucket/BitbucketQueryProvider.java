@@ -174,7 +174,7 @@ public final class BitbucketQueryProvider implements
     /**
      * Query descriptor.
      */
-    public final class Descriptor
+    public static final class Descriptor
     {
         /**
          * Display name for the query.
