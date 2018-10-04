@@ -172,27 +172,27 @@ public final class BitbucketQueryProvider implements
     }
 
     /**
-     * Descriptor for a query.
+     * Query descriptor.
      */
     public final class Descriptor
     {
         /**
-         * Display name.
+         * Display name for the query.
          */
         private String displayName = null;
 
         /**
-         * Tooltip text.
+         * Tooltip text for the query.
          */
         private String tooltip = null;
 
         /**
-         * Issue container object.
+         * Issue container for the query.
          */
         private IssueContainer<BitbucketIssue> issueContainer;
 
         /**
-         * Prevents public initialization.
+         * Initializes the object but denies public instantiation.
          */
         Descriptor()
         {
