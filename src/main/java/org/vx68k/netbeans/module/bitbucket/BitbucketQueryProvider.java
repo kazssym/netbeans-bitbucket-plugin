@@ -204,9 +204,9 @@ public final class BitbucketQueryProvider implements
         }
 
         /**
-         * Returns the display name.
+         * Returns the display name for the query.
          *
-         * @return display name
+         * @return the display name for the query
          */
         public String getDisplayName()
         {
@@ -214,9 +214,9 @@ public final class BitbucketQueryProvider implements
         }
 
         /**
-         * Sets the display name.
+         * Sets the display name for the query.
          *
-         * @param newValue new value of the display name
+         * @param newValue a new value of the display name
          */
         public void setDisplayName(final String newValue)
         {
@@ -224,9 +224,9 @@ public final class BitbucketQueryProvider implements
         }
 
         /**
-         * Returns the tooltip text.
+         * Returns the tooltip text for the query.
          *
-         * @return tooltip text
+         * @return the tooltip text for the query
          */
         public String getTooltip()
         {
@@ -234,9 +234,9 @@ public final class BitbucketQueryProvider implements
         }
 
         /**
-         * Sets the tooltip text.
+         * Sets the tooltip text for the query.
          *
-         * @param newValue new value of the tooltip text
+         * @param newValue a new value of the tooltip text
          */
         public void setTooltip(final String newValue)
         {
@@ -244,9 +244,9 @@ public final class BitbucketQueryProvider implements
         }
 
         /**
-         * Sets the issue container object.
+         * Sets the issue container for the query.
          *
-         * @param newValue new value of the issue container object
+         * @param newValue a new value of the issue container
          */
         public void setIssueContainer(
             final IssueContainer<BitbucketIssue> newValue)
