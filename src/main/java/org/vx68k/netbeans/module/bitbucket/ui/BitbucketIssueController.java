@@ -33,7 +33,7 @@ import org.vx68k.bitbucket.api.BitbucketIssue;
  *
  * @author Kaz Nishimura
  */
-public class BitbucketIssueController implements IssueController
+public final class BitbucketIssueController implements IssueController
 {
     /**
      * Bitbucket Cloud issue.
