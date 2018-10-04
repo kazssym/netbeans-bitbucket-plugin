@@ -68,29 +68,29 @@ public final class BitbucketRepositoryController implements
     private final BitbucketRepositoryProvider.Descriptor descriptor;
 
     /**
+     * Change listeners.
+     */
+    private final Set<ChangeListener> changeListeners;
+
+    /**
      * Visual component.
      */
-    private final JComponent component;
+    private JComponent component = null;
 
     /**
      * Text field for the full name.
      */
-    private final JTextComponent fullNameField;
+    private JTextComponent repositoryNameField = null;
 
     /**
      * Text field for the display name.
      */
-    private final JTextComponent displayNameField;
+    private JTextComponent displayNameField = null;
 
     /**
      * Error message to show if values are not valid.
      */
     private String errorMessage = null;
-
-    /**
-     * Change listeners.
-     */
-    private final Set<ChangeListener> changeListeners;
 
     /**
      * Initializes the object.
@@ -104,49 +104,51 @@ public final class BitbucketRepositoryController implements
     {
         this.repository = repository;
         this.descriptor = descriptor;
-        component = new JPanel(new GridBagLayout());
-        fullNameField = new JTextField(TEXT_COLUMNS);
-        displayNameField = new JTextField(TEXT_COLUMNS);
-        changeListeners = new LinkedHashSet<>();
-
-        initComponents();
+        this.changeListeners = new LinkedHashSet<>();
     }
 
     /**
-     * Initializes visual components.
+     * Fires a change event.
      */
-    private void initComponents()
+    protected void fireStateChanged()
     {
-        JLabel fullNameLabel = new JLabel("Repository name: ");
-        fullNameLabel.setLabelFor(fullNameField);
-        fullNameLabel.setDisplayedMnemonic('R');
+        final ChangeEvent event = new ChangeEvent(this);
+        changeListeners.forEach((listener) -> listener.stateChanged(event));
+    }
 
-        JLabel displayNameLabel = new JLabel("Display name: ");
-        displayNameLabel.setLabelFor(displayNameField);
-        displayNameLabel.setDisplayedMnemonic('D');
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JComponent getComponent()
+    {
+        if (component == null) {
+            component = new JPanel(new GridBagLayout());
+        }
+        return component;
+    }
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.BASELINE_LEADING;
-        // The first row.
-        c.gridy = 0;
-        c.weighty = 0.0;
-        c.weightx = 0.0;
-        component.add(fullNameLabel, c);
-        component.add(fullNameField, c);
-        c.weightx = 1.0;
-        component.add(new JLabel(), c);
-        // The second row.
-        c.gridy++;
-        c.weightx = 0.0;
-        component.add(displayNameLabel, c);
-        component.add(displayNameField, c);
-        c.weightx = 1.0;
-        component.add(new JLabel(), c);
-        // The last row to fill the rest of the vertical space.
-        c.gridy++;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weighty = 1.0;
-        component.add(new JLabel(), c);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HelpCtx getHelpCtx()
+    {
+        return HelpCtx.DEFAULT_HELP;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void populate()
+    {
+        repositoryNameField = new JTextField(
+            repository.getFullName(), TEXT_COLUMNS);
+        repositoryNameField.setEditable(
+            repository instanceof BitbucketRepositoryProxy);
+        displayNameField = new JTextField(
+            descriptor.getDisplayName(), TEXT_COLUMNS);
 
         DocumentListener textUpdate = new DocumentListener() {
             @Override
@@ -166,47 +168,43 @@ public final class BitbucketRepositoryController implements
             {
             }
         };
-        fullNameField.getDocument().addDocumentListener(textUpdate);
+        repositoryNameField.getDocument().addDocumentListener(textUpdate);
         displayNameField.getDocument().addDocumentListener(textUpdate);
-    }
 
-    /**
-     * Fires a change event.
-     */
-    protected void fireStateChanged()
-    {
-        final ChangeEvent event = new ChangeEvent(this);
-        changeListeners.forEach((listener) -> listener.stateChanged(event));
-    }
+        // Labels
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JComponent getComponent()
-    {
-        return component;
-    }
+        JLabel repositoryNameLabel = new JLabel("Repository name: ");
+        repositoryNameLabel.setLabelFor(repositoryNameField);
+        repositoryNameLabel.setDisplayedMnemonic('R');
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HelpCtx getHelpCtx()
-    {
-        return HelpCtx.DEFAULT_HELP;
-    }
+        JLabel displayNameLabel = new JLabel("Display name: ");
+        displayNameLabel.setLabelFor(displayNameField);
+        displayNameLabel.setDisplayedMnemonic('D');
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void populate()
-    {
-        fullNameField.setEditable(
-            repository instanceof BitbucketRepositoryProxy);
-        fullNameField.setText(repository.getFullName());
-        displayNameField.setText(descriptor.getDisplayName());
+        // Population
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.BASELINE_LEADING;
+        // The first row.
+        c.gridy = 0;
+        c.weighty = 0.0;
+        c.weightx = 0.0;
+        component.add(repositoryNameLabel, c);
+        component.add(repositoryNameField, c);
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+        // The second row.
+        c.gridy++;
+        c.weightx = 0.0;
+        component.add(displayNameLabel, c);
+        component.add(displayNameField, c);
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+        // The last row to fill the rest of the vertical space.
+        c.gridy++;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weighty = 1.0;
+        component.add(new JLabel(), c);
     }
 
     /**
@@ -215,12 +213,12 @@ public final class BitbucketRepositoryController implements
     @Override
     public boolean isValid()
     {
-        String fullName = fullNameField.getText().trim();
-        if ("".equals(fullName)) {
+        String repositoryName = repositoryNameField.getText().trim();
+        if ("".equals(repositoryName)) {
             errorMessage = "Missing repository name";
             return false;
         }
-        if (!FULL_NAME_PATTERN.matcher(fullName).matches()) {
+        if (!FULL_NAME_PATTERN.matcher(repositoryName).matches()) {
             errorMessage = "Invalid repository name format";
             return false;
         }
@@ -245,27 +243,31 @@ public final class BitbucketRepositoryController implements
     {
         assert isValid();
 
-        String fullName = fullNameField.getText().trim();
+        String repositoryName = repositoryNameField.getText().trim();
         String displayName = displayNameField.getText().trim();
         // If the display name is blank, the full name is copied.
         if ("".equals(displayName)) {
-            displayName = fullName;
+            displayName = repositoryName;
         }
 
         if (repository instanceof BitbucketRepositoryProxy) {
             BitbucketRepositoryProxy proxy =
                 (BitbucketRepositoryProxy) repository;
-            Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+            Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
             if (matcher.matches()) {
                 BitbucketClient client = descriptor.getBitbucketClient();
-                proxy.setRepository(
-                    client.getRepository(matcher.group(1), matcher.group(2)));
+                proxy.setRepository(client.getRepository(
+                    matcher.group(1), matcher.group(2)));
             }
             if (repository.getFullName() == null) {
                 throw new RuntimeException("Repository not found");
             }
         }
         descriptor.setDisplayName(displayName);
+
+        displayNameField = null;
+        repositoryNameField = null;
+        component = null;
     }
 
     /**
@@ -274,6 +276,9 @@ public final class BitbucketRepositoryController implements
     @Override
     public void cancelChanges()
     {
+        displayNameField = null;
+        repositoryNameField = null;
+        component = null;
     }
 
     /**
