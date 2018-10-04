@@ -87,7 +87,7 @@ public final class BitbucketConnector implements BugtrackingConnector
     {
         this.bitbucketClient = new BitbucketClient();
         this.repositoryProvider = new BitbucketRepositoryProvider(this);
-        this.queryProvider = new BitbucketQueryProvider(this);
+        this.queryProvider = new BitbucketQueryProvider();
         this.issuePriorityProvider = new BitbucketIssuePriorityProvider();
         this.support = new BugtrackingSupport<>(
             repositoryProvider, queryProvider, new BitbucketIssueProvider());
