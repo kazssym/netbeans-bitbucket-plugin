@@ -111,7 +111,9 @@ public final class BitbucketRepositoryProvider implements
                     m.group(1), m.group(2)));
 
             Descriptor descriptor = getDescriptor(value);
+            descriptor.setId(info.getID());
             descriptor.setDisplayName(info.getDisplayName());
+            descriptor.setTooltip(info.getTooltip());
         }
         return value;
     }
@@ -122,11 +124,12 @@ public final class BitbucketRepositoryProvider implements
     @Override
     public RepositoryInfo getInfo(final BitbucketRepository repository)
     {
+        Descriptor descriptor = getDescriptor(repository);
+
         RepositoryInfo value = null;
-        if (repository.getFullName() != null) {
-            Descriptor descriptor = getDescriptor(repository);
+        if (descriptor.getId() != null) {
             value = new RepositoryInfo(
-                repository.getFullName(), BitbucketConnector.ID,
+                descriptor.getId(), BitbucketConnector.ID,
                 repository.getFullName(), descriptor.getDisplayName(),
                 descriptor.getTooltip());
         }
@@ -275,6 +278,11 @@ public final class BitbucketRepositoryProvider implements
         private final PropertyChangeSupport support;
 
         /**
+         * Identifier of the repository.
+         */
+        private String id = null;
+
+        /**
          * Display name for the repository.
          */
         private String displayName = null;
@@ -309,9 +317,31 @@ public final class BitbucketRepositoryProvider implements
         }
 
         /**
+         * Returns the identifier of the repository.
+         *
+         * @return the identifier for the repository
+         */
+        public String getId()
+        {
+            return id;
+        }
+
+        /**
+         * Sets the identifier for the repository.
+         *
+         * @param newValue a new value of the identifier
+         */
+        public void setId(final String newValue)
+        {
+            String oldValue = id;
+            id = newValue;
+            support.firePropertyChange("id", oldValue, newValue);
+        }
+
+        /**
          * Returns the display name for the repository.
          *
-         * @return display name
+         * @return the display name for the repository
          */
         public String getDisplayName()
         {
@@ -319,9 +349,9 @@ public final class BitbucketRepositoryProvider implements
         }
 
         /**
-         * Sets the display name for the repository to a {@link String} value.
+         * Sets the display name for the repository.
          *
-         * @param newValue new value of the display name
+         * @param newValue a new value of the display name
          */
         public void setDisplayName(final String newValue)
         {
@@ -343,7 +373,7 @@ public final class BitbucketRepositoryProvider implements
         /**
          * Sets the tooltip text for the repository.
          *
-         * @param newValue new value of the tooltip text for the repository
+         * @param newValue a new value of the tooltip text
          */
         public void setTooltip(final String newValue)
         {
