@@ -103,18 +103,19 @@ public final class BitbucketRepositoryProvider implements
         BitbucketRepositoryProxy value = new BitbucketRepositoryProxy();
         if (info != null) {
             String fullName = info.getUrl();
-            Matcher m = FULL_NAME_PATTERN.matcher(fullName);
-            if (!m.matches()) {
-                throw new IllegalArgumentException("Invalid full name");
+            Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+            if (!matcher.matches()) {
+                throw new IllegalArgumentException("Invalid repository name");
             }
-            value.setRepository(
-                connector.getBitbucketClient().getRepository(
-                    m.group(1), m.group(2)));
 
             Descriptor descriptor = getDescriptor(value);
             descriptor.setId(info.getID());
             descriptor.setDisplayName(info.getDisplayName());
             descriptor.setTooltip(info.getTooltip());
+
+            BitbucketClient client = descriptor.getBitbucketClient();
+            value.setRepository(
+                client.getRepository(matcher.group(1), matcher.group(2)));
         }
         return value;
     }
