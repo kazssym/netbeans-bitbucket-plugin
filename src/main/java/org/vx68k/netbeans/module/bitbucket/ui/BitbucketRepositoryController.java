@@ -25,7 +25,7 @@ import static org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import javax.swing.JComponent;
@@ -90,7 +90,7 @@ public final class BitbucketRepositoryController implements
     /**
      * Change listeners.
      */
-    private final Set<ChangeListener> changeListenerSet;
+    private final Set<ChangeListener> changeListeners;
 
     /**
      * Initializes the object.
@@ -107,7 +107,7 @@ public final class BitbucketRepositoryController implements
         component = new JPanel(new GridBagLayout());
         fullNameField = new JTextField(TEXT_COLUMNS);
         displayNameField = new JTextField(TEXT_COLUMNS);
-        changeListenerSet = new HashSet<>();
+        changeListeners = new LinkedHashSet<>();
 
         initComponents();
     }
@@ -152,13 +152,13 @@ public final class BitbucketRepositoryController implements
             @Override
             public void insertUpdate(final DocumentEvent event)
             {
-                fireChange();
+                fireStateChanged();
             }
 
             @Override
             public void removeUpdate(final DocumentEvent event)
             {
-                fireChange();
+                fireStateChanged();
             }
 
             @Override
@@ -173,12 +173,10 @@ public final class BitbucketRepositoryController implements
     /**
      * Fires a change event.
      */
-    protected void fireChange()
+    protected void fireStateChanged()
     {
         final ChangeEvent event = new ChangeEvent(this);
-        changeListenerSet.forEach((listener) -> {
-            listener.stateChanged(event);
-        });
+        changeListeners.forEach((listener) -> listener.stateChanged(event));
     }
 
     /**
@@ -284,7 +282,7 @@ public final class BitbucketRepositoryController implements
     @Override
     public void addChangeListener(final ChangeListener listener)
     {
-        changeListenerSet.add(listener);
+        changeListeners.add(listener);
     }
 
     /**
@@ -293,6 +291,6 @@ public final class BitbucketRepositoryController implements
     @Override
     public void removeChangeListener(final ChangeListener listener)
     {
-        changeListenerSet.remove(listener);
+        changeListeners.remove(listener);
     }
 }
