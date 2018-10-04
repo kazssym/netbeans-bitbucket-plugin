@@ -273,6 +273,7 @@ public final class BitbucketRepositoryController implements
         }
         descriptor.setDisplayName(displayName);
 
+        // Releases visual components.
         displayNameField = null;
         repositoryNameField = null;
         component = null;
@@ -284,6 +285,7 @@ public final class BitbucketRepositoryController implements
     @Override
     public void cancelChanges()
     {
+        // Releases visual components.
         displayNameField = null;
         repositoryNameField = null;
         component = null;
