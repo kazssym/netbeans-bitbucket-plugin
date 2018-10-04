@@ -72,7 +72,7 @@ public final class BitbucketRepositoryProvider implements
     BitbucketRepositoryProvider(final BitbucketConnector connector)
     {
         this.connector = connector;
-        descriptors = new WeakHashMap<>();
+        this.descriptors = new WeakHashMap<>();
     }
 
     /**
@@ -215,7 +215,11 @@ public final class BitbucketRepositoryProvider implements
         BitbucketQueryProvider queryProvider = connector.getQueryProvider();
 
         List<BitbucketQuery> value = new ArrayList<>();
-        value.add(queryProvider.getQuery(repository, "All Tasks"));
+
+        BitbucketQuery allIssues = new BitbucketQuery(repository);
+        queryProvider.setDisplayName(allIssues, "All Tasks");
+        value.add(allIssues);
+
         return value;
     }
 

@@ -25,7 +25,6 @@ import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.netbeans.modules.bugtracking.spi.QueryProvider;
 import org.vx68k.bitbucket.api.BitbucketIssue;
-import org.vx68k.bitbucket.api.BitbucketRepository;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketQueryController;
 
 /**
@@ -74,19 +73,15 @@ public final class BitbucketQueryProvider implements
     }
 
     /**
-     * Returns a query for a display name.
+     * Sets the display name for a query.
      *
-     * @param repository a repository
-     * @param displayName display name
-     * @return query
+     * @param query a query
+     * @param newValue a new value of the display name
      */
-    BitbucketQuery getQuery(
-        final BitbucketRepository repository, final String displayName)
+    void setDisplayName(final BitbucketQuery query, final String newValue)
     {
-        BitbucketQuery value = new BitbucketQuery(repository);
-        Descriptor descriptor = getDescriptor(value);
-        descriptor.setDisplayName(displayName);
-        return value;
+        Descriptor descriptor = getDescriptor(query);
+        descriptor.setDisplayName(newValue);
     }
 
     /**
