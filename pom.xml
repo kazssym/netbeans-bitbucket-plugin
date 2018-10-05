@@ -6,7 +6,7 @@
 <artifactId>bitbucket-plugin</artifactId>
 <version>1.0-SNAPSHOT</version>
 <packaging>nbm</packaging>
-<name>Bitbucket Cloud Plugin for NetBeans</name>
+<name>Plugin for Bitbucket Cloud for NetBeans IDE</name>
 <description>This project builds a plugin for NetBeans IDE to manage Bitbucket
 Cloud repositories.</description>
 <url>https://vx68k.bitbucket.io/bitbucket-netbeans-plugin/1/</url>
