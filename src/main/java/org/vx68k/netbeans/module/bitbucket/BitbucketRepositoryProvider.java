@@ -93,31 +93,29 @@ public final class BitbucketRepositoryProvider implements
     }
 
     /**
-     * Returns a repository object for a {@link RepositoryInfo} object.
+     * Sets the properties of a Bitbucket Cloud repository according to a
+     * {@link RepositoryInfo} object.
      *
-     * @param info {@link RepositoryInfo} object
-     * @return repository object
+     * @param repository a Bitbucket Cloud repository
+     * @param info a {@link RepositoryInfo} object
      */
-    BitbucketRepository getRepository(final RepositoryInfo info)
+    void setInfo(
+        final BitbucketRepositoryProxy repository, final RepositoryInfo info)
     {
-        BitbucketRepositoryProxy value = new BitbucketRepositoryProxy();
-        if (info != null) {
-            String fullName = info.getUrl();
-            Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
-            if (!matcher.matches()) {
-                throw new IllegalArgumentException("Invalid repository name");
-            }
-
-            Descriptor descriptor = getDescriptor(value);
-            descriptor.setId(info.getID());
-            descriptor.setDisplayName(info.getDisplayName());
-            descriptor.setTooltip(info.getTooltip());
-
-            BitbucketClient client = descriptor.getBitbucketClient();
-            value.setRepository(
-                client.getRepository(matcher.group(1), matcher.group(2)));
+        String fullName = info.getUrl();
+        Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid repository name");
         }
-        return value;
+
+        Descriptor descriptor = getDescriptor(repository);
+        descriptor.setId(info.getID());
+        descriptor.setDisplayName(info.getDisplayName());
+        descriptor.setTooltip(info.getTooltip());
+
+        BitbucketClient client = descriptor.getBitbucketClient();
+        repository.setRepository(
+            client.getRepository(matcher.group(1), matcher.group(2)));
     }
 
     /**

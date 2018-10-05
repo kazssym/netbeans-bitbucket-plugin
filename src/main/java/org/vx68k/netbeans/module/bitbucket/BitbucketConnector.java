@@ -54,7 +54,7 @@ public final class BitbucketConnector implements BugtrackingConnector
     public static final String TOOLTIP = "Bitbucket Cloud Task Repository";
 
     /**
-     * Repository provider object.
+     * Repository provider.
      */
     private final BitbucketRepositoryProvider repositoryProvider;
 
@@ -103,7 +103,9 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository()
     {
-        return createRepository(null);
+        BitbucketRepositoryProxy repository = new BitbucketRepositoryProxy();
+        return support.createRepository(
+            repository, null, null, issuePriorityProvider, null);
     }
 
     /**
@@ -112,8 +114,9 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository(final RepositoryInfo info)
     {
+        BitbucketRepositoryProxy repository = new BitbucketRepositoryProxy();
+        repositoryProvider.setInfo(repository, info);
         return support.createRepository(
-            repositoryProvider.getRepository(info), null, null,
-            issuePriorityProvider, null);
+            repository, null, null, issuePriorityProvider, null);
     }
 }
