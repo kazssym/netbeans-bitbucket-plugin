@@ -59,11 +59,6 @@ public final class BitbucketConnector implements BugtrackingConnector
     private final BitbucketRepositoryProvider repositoryProvider;
 
     /**
-     * Query provider.
-     */
-    private final BitbucketQueryProvider queryProvider;
-
-    /**
      * Issue priority provider.
      */
     private final BitbucketIssuePriorityProvider issuePriorityProvider;
@@ -79,22 +74,13 @@ public final class BitbucketConnector implements BugtrackingConnector
      */
     public BitbucketConnector()
     {
-        this.repositoryProvider = new BitbucketRepositoryProvider(this);
-        this.queryProvider = new BitbucketQueryProvider();
+        BitbucketQueryProvider queryProvider = new BitbucketQueryProvider();
+        this.repositoryProvider =
+            new BitbucketRepositoryProvider(queryProvider);
         this.issuePriorityProvider = new BitbucketIssuePriorityProvider();
         this.support = new BugtrackingSupport<>(
-            this.repositoryProvider, this.queryProvider,
+            this.repositoryProvider, queryProvider,
             new BitbucketIssueProvider());
-    }
-
-    /**
-     * Returns the query provider.
-     *
-     * @return query provider
-     */
-    BitbucketQueryProvider getQueryProvider()
-    {
-        return queryProvider;
     }
 
     /**

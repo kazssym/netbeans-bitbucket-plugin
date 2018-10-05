@@ -56,9 +56,9 @@ public final class BitbucketRepositoryProvider implements
         Pattern.compile("([^/]+)/([^/]+)");
 
     /**
-     * Bitbucket Cloud connector.
+     * Query provider.
      */
-    private final BitbucketConnector connector;
+    private final BitbucketQueryProvider queryProvider;
 
     /**
      * Map for descriptors.
@@ -68,11 +68,11 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Initializes this object.
      *
-     * @param connector value of the query provider
+     * @param queryProvider a value of the query provider
      */
-    BitbucketRepositoryProvider(final BitbucketConnector connector)
+    BitbucketRepositoryProvider(final BitbucketQueryProvider queryProvider)
     {
-        this.connector = connector;
+        this.queryProvider = queryProvider;
         this.descriptors = new WeakHashMap<>();
     }
 
@@ -213,8 +213,6 @@ public final class BitbucketRepositoryProvider implements
     public Collection<BitbucketQuery> getQueries(
         final BitbucketRepository repository)
     {
-        BitbucketQueryProvider queryProvider = connector.getQueryProvider();
-
         List<BitbucketQuery> value = new ArrayList<>();
 
         BitbucketQuery allIssues = new BitbucketQuery(repository);
