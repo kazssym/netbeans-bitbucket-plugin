@@ -29,7 +29,7 @@ import org.vx68k.bitbucket.api.BitbucketIssue;
  *
  * @author Kaz Nishimura
  */
-public class BitbucketIssuePriorityProvider implements
+public final class BitbucketIssuePriorityProvider implements
     IssuePriorityProvider<BitbucketIssue>
 {
     /**
