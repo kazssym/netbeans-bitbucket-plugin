@@ -93,7 +93,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getID(final BitbucketIssue issue)
     {
-        return String.format("#%d", issue.getId());
+        return Integer.toString(issue.getId());
     }
 
     /**
