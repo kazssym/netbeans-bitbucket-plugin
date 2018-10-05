@@ -4,7 +4,7 @@
 
 <groupId>org.vx68k.netbeans.modules</groupId>
 <artifactId>bitbucket-plugin</artifactId>
-<version>1.0-alpha.4</version>
+<version>1.0-SNAPSHOT</version>
 <packaging>nbm</packaging>
 <name>Bitbucket Cloud Plugin for NetBeans</name>
 <description>This project builds a plugin for NetBeans IDE to manage Bitbucket
@@ -36,7 +36,7 @@ Cloud repositories.</description>
 <scm>
 <connection>scm:hg:https://bitbucket.org/vx68k/bitbucket-netbeans-plugin</connection>
 <developerConnection>scm:hg:ssh://hg@bitbucket.org/vx68k/bitbucket-netbeans-plugin</developerConnection>
-<tag>prerelease/1.0-alpha.4</tag>
+<tag>master</tag>
 <url>https://bitbucket.org/vx68k/bitbucket-netbeans-plugin/src/${project.scm.tag}/</url>
 </scm>
 
