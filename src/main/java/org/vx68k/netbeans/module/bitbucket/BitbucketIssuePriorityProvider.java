@@ -52,7 +52,7 @@ public final class BitbucketIssuePriorityProvider implements
     }
 
     @Override
-    public String getPriorityID(BitbucketIssue issue)
+    public String getPriorityID(final BitbucketIssue issue)
     {
         return issue.getPriority();
     }
