@@ -56,6 +56,11 @@ public final class BitbucketRepositoryProvider implements
         Pattern.compile("([^/]+)/([^/]+)");
 
     /**
+     * Filter expression for open tasks.
+     */
+    private static final String OPEN_TASKS_FILTER = "state < \"open\"";
+
+    /**
      * Query provider.
      */
     private final BitbucketQueryProvider queryProvider;
@@ -218,6 +223,11 @@ public final class BitbucketRepositoryProvider implements
         BitbucketQuery allIssues = new BitbucketQuery(repository);
         queryProvider.setDisplayName(allIssues, "All Tasks");
         value.add(allIssues);
+
+        BitbucketQuery openIssues = new BitbucketQuery(
+            repository, OPEN_TASKS_FILTER);
+        queryProvider.setDisplayName(openIssues, "Open Tasks");
+        value.add(openIssues);
 
         return value;
     }
