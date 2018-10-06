@@ -193,12 +193,12 @@ public final class BitbucketRepositoryProvider implements
 
     /**
      * {@inheritDoc}
+     * <p>This implementation always returns {@code null}.</p>
      */
     @Override
-    public BitbucketIssue createIssue(final BitbucketRepository r)
+    public BitbucketIssue createIssue(final BitbucketRepository repository)
     {
-        // @todo Implement this method.
-        throw new NotImplementedException();
+        return null;
     }
 
     /**
