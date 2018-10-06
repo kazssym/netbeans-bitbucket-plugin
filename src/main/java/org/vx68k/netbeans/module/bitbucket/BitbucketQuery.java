@@ -37,13 +37,50 @@ final class BitbucketQuery
     private final BitbucketRepository repository;
 
     /**
+     * Filter expression.
+     */
+    private String filter;
+
+    /**
      * Initializes the object.
      *
      * @param repository repository to which the query is bound
      */
     BitbucketQuery(final BitbucketRepository repository)
     {
+        this(repository, null);
+    }
+
+    /**
+     * Initializes the object with an initial value of the filter expression.
+     *
+     * @param repository repository to which the query is bound
+     * @param filter an initial value of the filter expression
+     */
+    BitbucketQuery(final BitbucketRepository repository, final String filter)
+    {
         this.repository = repository;
+        this.filter = filter;
+    }
+
+    /**
+     * Returns the filter expression.
+     *
+     * @return the filter expression
+     */
+    public String getFilter()
+    {
+        return filter;
+    }
+
+    /**
+     * Sets the filter expression.
+     *
+     * @param newValue a new value of the filter expression
+     */
+    public void setFilter(final String newValue)
+    {
+        filter = newValue;
     }
 
     /**
@@ -53,6 +90,6 @@ final class BitbucketQuery
      */
     public Collection<BitbucketIssue> issues()
     {
-        return repository.issues();
+        return repository.issues(filter);
     }
 }
