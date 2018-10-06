@@ -58,7 +58,7 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Filter expression for open tasks.
      */
-    private static final String OPEN_TASKS_FILTER = "state < \"open\"";
+    private static final String OPEN_TASKS_FILTER = "state <= \"open\"";
 
     /**
      * Query provider.
