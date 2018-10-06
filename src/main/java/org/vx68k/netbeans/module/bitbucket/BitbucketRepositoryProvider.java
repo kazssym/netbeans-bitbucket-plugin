@@ -119,7 +119,7 @@ public final class BitbucketRepositoryProvider implements
         descriptor.setTooltip(info.getTooltip());
 
         BitbucketClient client = descriptor.getBitbucketClient();
-        repository.setRepository(
+        repository.setRealRepository(
             client.getRepository(matcher.group(1), matcher.group(2)));
     }
 

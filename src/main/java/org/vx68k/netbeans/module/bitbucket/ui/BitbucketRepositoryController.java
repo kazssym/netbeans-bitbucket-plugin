@@ -259,7 +259,7 @@ public final class BitbucketRepositoryController implements
             BitbucketClient client = descriptor.getBitbucketClient();
             BitbucketRepository realRepository =
                 client.getRepository(matcher.group(1), matcher.group(2));
-            proxy.setRepository(realRepository);
+            proxy.setRealRepository(realRepository);
             if (realRepository != null) {
                 repositoryName = realRepository.getFullName();
             }
