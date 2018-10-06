@@ -109,35 +109,13 @@ public final class BitbucketRepositoryController implements
     }
 
     /**
-     * {@inheritDoc}
+     * Initializes the visual components.
      */
-    @Override
-    public JComponent getComponent()
+    private void initComponents()
     {
-        if (component == null) {
-            component = new JPanel(new GridBagLayout());
-        }
-        return component;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HelpCtx getHelpCtx()
-    {
-        return HelpCtx.DEFAULT_HELP;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void populate()
-    {
-        repositoryNameField = new JTextField(descriptor.getId(), TEXT_COLUMNS);
-        displayNameField = new JTextField(
-            descriptor.getDisplayName(), TEXT_COLUMNS);
+        component = new JPanel(new GridBagLayout());
+        repositoryNameField = new JTextField(TEXT_COLUMNS);
+        displayNameField = new JTextField(TEXT_COLUMNS);
 
         DocumentListener textUpdate = new DocumentListener() {
             @Override
@@ -194,6 +172,47 @@ public final class BitbucketRepositoryController implements
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
         component.add(new JLabel(), c);
+    }
+
+    /**
+     * Releases the visual components.
+     */
+    private void releaseComponents()
+    {
+        displayNameField = null;
+        repositoryNameField = null;
+        component = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JComponent getComponent()
+    {
+        if (component == null) {
+            initComponents();
+        }
+        return component;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HelpCtx getHelpCtx()
+    {
+        return HelpCtx.DEFAULT_HELP;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void populate()
+    {
+        repositoryNameField.setText(descriptor.getId());
+        displayNameField.setText(descriptor.getDisplayName());
     }
 
     /**
@@ -260,10 +279,7 @@ public final class BitbucketRepositoryController implements
         }
         descriptor.setDisplayName(displayName);
 
-        // Releases visual components.
-        displayNameField = null;
-        repositoryNameField = null;
-        component = null;
+        releaseComponents();
     }
 
     /**
@@ -272,10 +288,7 @@ public final class BitbucketRepositoryController implements
     @Override
     public void cancelChanges()
     {
-        // Releases visual components.
-        displayNameField = null;
-        repositoryNameField = null;
-        component = null;
+        releaseComponents();
     }
 
     /**
