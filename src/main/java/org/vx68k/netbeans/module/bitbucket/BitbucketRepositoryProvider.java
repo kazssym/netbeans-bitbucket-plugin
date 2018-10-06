@@ -159,7 +159,7 @@ public final class BitbucketRepositoryProvider implements
         final BitbucketRepository repository)
     {
         Descriptor descriptor = getDescriptor(repository);
-        return descriptor.getController(repository);
+        return descriptor.getController();
     }
 
     /**
@@ -318,6 +318,8 @@ public final class BitbucketRepositoryProvider implements
 
         /**
          * Initializes the object.
+         *
+         * @param repository a repository
          */
         protected Descriptor(final BitbucketRepository repository)
         {
@@ -415,11 +417,9 @@ public final class BitbucketRepositoryProvider implements
         /**
          * Returns the controller object for a repository.
          *
-         * @param repository a repository
          * @return controller object
          */
-        public RepositoryController getController(
-            final BitbucketRepository repository)
+        public RepositoryController getController()
         {
             if (controller == null) {
                 controller = new BitbucketRepositoryController(this);
