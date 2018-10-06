@@ -34,7 +34,7 @@ import org.vx68k.bitbucket.api.BitbucketRepository;
  *
  * @author Kaz Nishimura
  */
-public final class BitbucketRepositoryProxy implements BitbucketRepository
+public class BitbucketRepositoryProxy implements BitbucketRepository
 {
     /**
      * Real repository.
@@ -64,13 +64,13 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
      *
      * @param newValue a new value of the real repository
      */
-    public void setRealRepository(final BitbucketRepository newValue)
+    public final void setRealRepository(final BitbucketRepository newValue)
     {
         realRepository = newValue;
     }
 
     @Override
-    public String getSCM()
+    public final String getSCM()
     {
         String value = null;
         if (realRepository != null) {
@@ -80,7 +80,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public BitbucketAccount getOwner()
+    public final BitbucketAccount getOwner()
     {
         BitbucketAccount value = null;
         if (realRepository != null) {
@@ -90,7 +90,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public String getName()
+    public final String getName()
     {
         String value = null;
         if (realRepository != null) {
@@ -100,7 +100,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public UUID getUUID()
+    public final UUID getUUID()
     {
         UUID value = null;
         if (realRepository != null) {
@@ -110,7 +110,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public String getFullName()
+    public final String getFullName()
     {
         String value = null;
         if (realRepository != null) {
@@ -120,7 +120,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public String getDescription()
+    public final String getDescription()
     {
         String value = null;
         if (realRepository != null) {
@@ -130,7 +130,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public BitbucketBranch getMainBranch()
+    public final BitbucketBranch getMainBranch()
     {
         BitbucketBranch value = null;
         if (realRepository != null) {
@@ -140,7 +140,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public boolean isPrivate()
+    public final boolean isPrivate()
     {
         boolean value = false;
         if (realRepository != null) {
@@ -150,7 +150,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Instant getCreated()
+    public final Instant getCreated()
     {
         Instant value = null;
         if (realRepository != null) {
@@ -160,7 +160,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Instant getUpdated()
+    public final Instant getUpdated()
     {
         Instant value = null;
         if (realRepository != null) {
@@ -170,7 +170,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public BitbucketIssue getIssue(final int id)
+    public final BitbucketIssue getIssue(final int id)
     {
         BitbucketIssue value = null;
         if (realRepository != null) {
@@ -180,7 +180,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Collection<BitbucketIssue> issues()
+    public final Collection<BitbucketIssue> issues()
     {
         Collection<BitbucketIssue> value = Collections.emptyList();
         if (realRepository != null) {
@@ -190,7 +190,7 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
     }
 
     @Override
-    public Collection<BitbucketIssue> issues(final String filter)
+    public final Collection<BitbucketIssue> issues(final String filter)
     {
         Collection<BitbucketIssue> value = Collections.emptyList();
         if (realRepository != null) {
