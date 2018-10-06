@@ -92,7 +92,7 @@ public final class BitbucketRepositoryProvider implements
     {
         Descriptor value = descriptors.get(repository);
         if (value == null) {
-            value = new Descriptor();
+            value = new Descriptor(repository);
             descriptors.put(repository, value);
         }
         return value;
@@ -282,6 +282,11 @@ public final class BitbucketRepositoryProvider implements
     public static final class Descriptor
     {
         /**
+         * Weak reference to the repository.
+         */
+        private final WeakReference<BitbucketRepository> repository;
+
+        /**
          * Bitbucket API client for the repository.
          */
         private final BitbucketClient bitbucketClient;
@@ -309,15 +314,26 @@ public final class BitbucketRepositoryProvider implements
         /**
          * Controller object.
          */
-        private WeakReference<RepositoryController> controller = null;
+        private RepositoryController controller = null;
 
         /**
-         * Initializes this object.
+         * Initializes the object.
          */
-        protected Descriptor()
+        protected Descriptor(final BitbucketRepository repository)
         {
+            this.repository = new WeakReference<>(repository);
             this.bitbucketClient = new BitbucketClient();
             this.support = new PropertyChangeSupport(this);
+        }
+
+        /**
+         * Returns the repository.
+         *
+         * @return the repository
+         */
+        public BitbucketRepository getRepository()
+        {
+            return repository.get();
         }
 
         /**
@@ -405,11 +421,10 @@ public final class BitbucketRepositoryProvider implements
         public RepositoryController getController(
             final BitbucketRepository repository)
         {
-            if (controller == null || controller.get() == null) {
-                controller = new WeakReference<>(
-                    new BitbucketRepositoryController(repository, this));
+            if (controller == null) {
+                controller = new BitbucketRepositoryController(this);
             }
-            return controller.get();
+            return controller;
         }
 
         /**

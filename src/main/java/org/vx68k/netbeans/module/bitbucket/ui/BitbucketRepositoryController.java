@@ -58,11 +58,6 @@ public final class BitbucketRepositoryController implements
     private static final int TEXT_COLUMNS = 20;
 
     /**
-     * Bitbucket Cloud repository.
-     */
-    private final BitbucketRepository repository;
-
-    /**
      * Repository to apply changes.
      */
     private final BitbucketRepositoryProvider.Descriptor descriptor;
@@ -95,14 +90,11 @@ public final class BitbucketRepositoryController implements
     /**
      * Initializes the object.
      *
-     * @param repository a repository
      * @param descriptor a repository descriptor
      */
     public BitbucketRepositoryController(
-        final BitbucketRepository repository,
         final BitbucketRepositoryProvider.Descriptor descriptor)
     {
-        this.repository = repository;
         this.descriptor = descriptor;
         this.changeListeners = new LinkedHashSet<>();
     }
@@ -144,9 +136,6 @@ public final class BitbucketRepositoryController implements
     public void populate()
     {
         repositoryNameField = new JTextField(descriptor.getId(), TEXT_COLUMNS);
-        repositoryNameField.setEditable(
-            repository instanceof BitbucketRepositoryProxy);
-
         displayNameField = new JTextField(
             descriptor.getDisplayName(), TEXT_COLUMNS);
 
@@ -246,25 +235,23 @@ public final class BitbucketRepositoryController implements
     {
         assert isValid();
 
+        BitbucketRepositoryProxy repository =
+            (BitbucketRepositoryProxy) descriptor.getRepository();
+
         String repositoryName = repositoryNameField.getText().trim();
-        if (repository instanceof BitbucketRepositoryProxy) {
-            BitbucketRepositoryProxy proxy =
-                (BitbucketRepositoryProxy) repository;
-
-            Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
-            if (!matcher.matches()) {
-                throw new RuntimeException("Something strange");
-            }
-
-            BitbucketClient client = descriptor.getBitbucketClient();
-            BitbucketRepository realRepository =
-                client.getRepository(matcher.group(1), matcher.group(2));
-            proxy.setRealRepository(realRepository);
-            if (realRepository != null) {
-                repositoryName = realRepository.getFullName();
-            }
-            descriptor.setId(repositoryName);
+        Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
+        if (!matcher.matches()) {
+            throw new IllegalStateException("Invalid repository name");
         }
+
+        BitbucketClient client = descriptor.getBitbucketClient();
+        BitbucketRepository realRepository =
+            client.getRepository(matcher.group(1), matcher.group(2));
+        repository.setRealRepository(realRepository);
+        if (realRepository != null) {
+            repositoryName = realRepository.getFullName();
+        }
+        descriptor.setId(repositoryName);
 
         String displayName = displayNameField.getText().trim();
         // If the display name is blank, the full name is copied.
