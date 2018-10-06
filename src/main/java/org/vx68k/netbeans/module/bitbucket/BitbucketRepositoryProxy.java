@@ -187,4 +187,14 @@ public final class BitbucketRepositoryProxy implements BitbucketRepository
         }
         return value;
     }
+
+    @Override
+    public Collection<BitbucketIssue> issues(final String filter)
+    {
+        Collection<BitbucketIssue> value = Collections.emptyList();
+        if (repository != null) {
+            value = repository.issues(filter);
+        }
+        return value;
+    }
 }
