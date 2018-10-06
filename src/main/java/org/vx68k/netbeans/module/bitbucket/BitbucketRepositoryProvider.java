@@ -75,7 +75,8 @@ public final class BitbucketRepositoryProvider implements
      *
      * @param queryProvider a value of the query provider
      */
-    BitbucketRepositoryProvider(final BitbucketQueryProvider queryProvider)
+    protected BitbucketRepositoryProvider(
+        final BitbucketQueryProvider queryProvider)
     {
         this.queryProvider = queryProvider;
         this.descriptors = new WeakHashMap<>();
@@ -87,7 +88,7 @@ public final class BitbucketRepositoryProvider implements
      * @param repository repository
      * @return descriptor
      */
-    Descriptor getDescriptor(final BitbucketRepository repository)
+    protected Descriptor getDescriptor(final BitbucketRepository repository)
     {
         Descriptor value = descriptors.get(repository);
         if (value == null) {
@@ -104,7 +105,7 @@ public final class BitbucketRepositoryProvider implements
      * @param repository a Bitbucket Cloud repository
      * @param info a {@link RepositoryInfo} object
      */
-    void setInfo(
+    protected void setInfo(
         final BitbucketRepositoryProxy repository, final RepositoryInfo info)
     {
         String fullName = info.getUrl();
@@ -313,7 +314,7 @@ public final class BitbucketRepositoryProvider implements
         /**
          * Initializes this object.
          */
-        Descriptor()
+        protected Descriptor()
         {
             this.bitbucketClient = new BitbucketClient();
             this.support = new PropertyChangeSupport(this);
