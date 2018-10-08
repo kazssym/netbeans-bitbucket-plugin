@@ -152,24 +152,30 @@ public final class BitbucketRepositoryController implements
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
+
         // The first row.
         c.gridy = 0;
         c.weighty = 0.0;
         c.weightx = 0.0;
         component.add(repositoryNameLabel, c);
         component.add(repositoryNameField, c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
         component.add(new JLabel(), c);
+
         // The second row.
         c.gridy++;
+        c.gridwidth = 1;
         c.weightx = 0.0;
         component.add(displayNameLabel, c);
         component.add(displayNameField, c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
         component.add(new JLabel(), c);
+
         // The last row to fill the rest of the vertical space.
         c.gridy++;
-        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.gridheight = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
         component.add(new JLabel(), c);
     }
