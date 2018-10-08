@@ -25,6 +25,7 @@ import static org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -140,11 +141,11 @@ public final class BitbucketRepositoryController implements
 
         // Labels
 
-        JLabel repositoryNameLabel = new JLabel("Repository name: ");
+        JLabel repositoryNameLabel = new JLabel("Repository name:");
         repositoryNameLabel.setLabelFor(repositoryNameField);
         repositoryNameLabel.setDisplayedMnemonic('R');
 
-        JLabel displayNameLabel = new JLabel("Display name: ");
+        JLabel displayNameLabel = new JLabel("Display name:");
         displayNameLabel.setLabelFor(displayNameField);
         displayNameLabel.setDisplayedMnemonic('D');
 
@@ -152,6 +153,7 @@ public final class BitbucketRepositoryController implements
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
+        c.insets = new Insets(4, 4, 4, 4);
 
         // The first row.
         c.gridy = 0;
