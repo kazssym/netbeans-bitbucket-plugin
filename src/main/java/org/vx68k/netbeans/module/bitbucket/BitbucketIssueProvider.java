@@ -76,7 +76,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getDisplayName(final BitbucketIssue issue)
     {
-        return String.format("Issue #%d: %s", issue.getId(), issue.getTitle());
+        Descriptor descriptor = getDescriptor(issue);
+        return descriptor.getDisplayName();
     }
 
     /**
@@ -227,6 +228,17 @@ public final class BitbucketIssueProvider implements
          */
         public BitbucketIssue getIssue() {
             return issue.get();
+        }
+
+        /**
+         * Returns the display name of the issue.
+         *
+         * @return the display name of the issue
+         */
+        public String getDisplayName()
+        {
+            return String.format(
+                "#%d: %s", getIssue().getId(), getIssue().getTitle());
         }
 
         /**
