@@ -113,7 +113,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getSummary(final BitbucketIssue issue)
     {
-        return issue.getTitle();
+        Descriptor descriptor = getDescriptor(issue);
+        return descriptor.getSummary();
     }
 
     /**
@@ -239,6 +240,16 @@ public final class BitbucketIssueProvider implements
         {
             return String.format(
                 "#%d: %s", getIssue().getId(), getIssue().getTitle());
+        }
+
+        /**
+         * Returns the summary of the issue.
+         *
+         * @return the summary of the issue
+         */
+        public String getSummary()
+        {
+            return getIssue().getTitle();
         }
 
         /**
