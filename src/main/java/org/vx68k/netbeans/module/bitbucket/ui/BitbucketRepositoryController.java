@@ -37,7 +37,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.JTextComponent;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
 import org.vx68k.bitbucket.api.BitbucketRepository;
@@ -76,12 +75,12 @@ public final class BitbucketRepositoryController implements
     /**
      * Text field for the full name.
      */
-    private JTextComponent repositoryNameField = null;
+    private JTextField repositoryNameField = null;
 
     /**
      * Text field for the display name.
      */
-    private JTextComponent displayNameField = null;
+    private JTextField displayNameField = null;
 
     /**
      * Error message to show if values are not valid.
@@ -115,7 +114,9 @@ public final class BitbucketRepositoryController implements
     private void initComponents()
     {
         component = new JPanel(new GridBagLayout());
+
         repositoryNameField = new JTextField(TEXT_COLUMNS);
+
         displayNameField = new JTextField(TEXT_COLUMNS);
 
         DocumentListener textUpdate = new DocumentListener() {
