@@ -206,7 +206,7 @@ public final class BitbucketIssueProvider implements
         /**
          * Weak reference to the Bitbucket Cloud issue.
          */
-        private WeakReference<BitbucketIssue> issue;
+        private final WeakReference<BitbucketIssue> issue;
 
         /**
          * Property change support object.
@@ -215,6 +215,8 @@ public final class BitbucketIssueProvider implements
 
         /**
          * Initializes the object.
+         *
+         * @param issue a Bitbucket Cloud issue
          */
         protected Descriptor(final BitbucketIssue issue)
         {
