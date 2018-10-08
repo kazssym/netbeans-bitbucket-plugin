@@ -23,6 +23,7 @@ package org.vx68k.netbeans.module.bitbucket;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -54,16 +55,16 @@ public final class BitbucketIssueProvider implements
     }
 
     /**
-     * Returns the descriptor for an issue.
+     * Returns the descriptor for a Bitbucket Cloud issue.
      *
-     * @param issue an issue
-     * @return the descriptor for an issue
+     * @param issue a Bitbucket Cloud issue
+     * @return the descriptor for a Bitbucket Cloud issue
      */
     Descriptor getDescriptor(final BitbucketIssue issue)
     {
         Descriptor value = descriptors.get(issue);
         if (value == null) {
-            value = new Descriptor();
+            value = new Descriptor(issue);
             descriptors.put(issue, value);
         }
         return value;
@@ -169,7 +170,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public IssueController getController(final BitbucketIssue issue)
     {
-        return new BitbucketIssueController(issue);
+        Descriptor descriptor = getDescriptor(issue);
+        return new BitbucketIssueController(descriptor);
     }
 
     /**
@@ -200,6 +202,11 @@ public final class BitbucketIssueProvider implements
     public final class Descriptor
     {
         /**
+         * Weak reference to the Bitbucket Cloud issue.
+         */
+        private WeakReference<BitbucketIssue> issue;
+
+        /**
          * Property change support object.
          */
         private final PropertyChangeSupport support;
@@ -207,9 +214,19 @@ public final class BitbucketIssueProvider implements
         /**
          * Initializes the object.
          */
-        Descriptor()
+        protected Descriptor(final BitbucketIssue issue)
         {
+            this.issue = new WeakReference<>(issue);
             this.support = new PropertyChangeSupport(this);
+        }
+
+        /**
+         * Returns the Bitbucket Cloud issue.
+         *
+         * @return the Bitbucket Cloud issue
+         */
+        public BitbucketIssue getIssue() {
+            return issue.get();
         }
 
         /**

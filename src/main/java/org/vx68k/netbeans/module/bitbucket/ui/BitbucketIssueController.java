@@ -26,7 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
-import org.vx68k.bitbucket.api.BitbucketIssue;
+import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
 
 /**
  * Implementation of {@link IssueController} for Bitbucket Cloud.
@@ -38,7 +38,7 @@ public final class BitbucketIssueController implements IssueController
     /**
      * Bitbucket Cloud issue.
      */
-    private final BitbucketIssue issue;
+    private final BitbucketIssueProvider.Descriptor descriptor;
 
     /**
      * Property change support object.
@@ -46,13 +46,19 @@ public final class BitbucketIssueController implements IssueController
     private final PropertyChangeSupport support;
 
     /**
+     * Visual component.
+     */
+    private JComponent component = null;
+
+    /**
      * Initializes the object.
      *
-     * @param issue a Bitbucket Cloud issue
+     * @param descriptor a Bitbucket Cloud issue
      */
-    public BitbucketIssueController(final BitbucketIssue issue)
+    public BitbucketIssueController(
+        final BitbucketIssueProvider.Descriptor descriptor)
     {
-        this.issue = issue;
+        this.descriptor = descriptor;
         this.support = new PropertyChangeSupport(this);
     }
 
@@ -60,7 +66,7 @@ public final class BitbucketIssueController implements IssueController
     public JComponent getComponent()
     {
         return new JPanel();
-    }
+        }
 
     @Override
     public HelpCtx getHelpCtx()
