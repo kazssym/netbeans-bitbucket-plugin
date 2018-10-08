@@ -53,6 +53,11 @@ public final class BitbucketRepositoryController implements
     RepositoryController
 {
     /**
+     * Length of insets.
+     */
+    private static final int INSET = 4;
+
+    /**
      * Number of columns in text fields.
      */
     private static final int TEXT_COLUMNS = 20;
@@ -154,7 +159,7 @@ public final class BitbucketRepositoryController implements
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
-        c.insets = new Insets(4, 4, 4, 4);
+        c.insets = new Insets(INSET, INSET, INSET, INSET);
 
         // The first row.
         c.gridy = 0;
