@@ -29,7 +29,7 @@ import org.vx68k.bitbucket.api.BitbucketRepository;
  *
  * @author Kaz Nishimura
  */
-final class BitbucketQuery
+public final class BitbucketQuery
 {
     /**
      * Repository where the query searches for issues.
