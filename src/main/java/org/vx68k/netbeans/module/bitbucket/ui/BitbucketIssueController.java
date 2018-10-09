@@ -20,10 +20,19 @@
 
 package org.vx68k.netbeans.module.bitbucket.ui;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
 import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
@@ -36,7 +45,22 @@ import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
 public final class BitbucketIssueController implements IssueController
 {
     /**
-     * Bitbucket Cloud issue.
+     * Length of insets.
+     */
+    private static final int INSET = 4;
+
+    /**
+     * Number of columns in a text field or text area.
+     */
+    private static final int TEXT_COLUMNS = 60;
+
+    /**
+     * Number of rows in a text area.
+     */
+    private static final int TEXT_ROWS = 20;
+
+    /**
+     * Issue descriptor.
      */
     private final BitbucketIssueProvider.Descriptor descriptor;
 
@@ -46,9 +70,24 @@ public final class BitbucketIssueController implements IssueController
     private final PropertyChangeSupport support;
 
     /**
-     * Visual component.
+     * Base visual component.
      */
     private JComponent component = null;
+
+    /**
+     * Heading.
+     */
+    private JLabel heading = null;
+
+    /**
+     * Text field for the summary.
+     */
+    private JTextField summaryField = null;
+
+    /**
+     * Text area for the description.
+     */
+    private JTextArea descriptionArea = null;
 
     /**
      * Initializes the object.
@@ -62,11 +101,82 @@ public final class BitbucketIssueController implements IssueController
         this.support = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Initializes the visual components.
+     */
+    private void initComponents()
+    {
+        component = new JPanel(new GridBagLayout());
+        component.setBackground(Color.WHITE);
+
+        Font f = component.getFont();
+        heading = new JLabel(descriptor.getDisplayName());
+        heading.setFont(f.deriveFont(2.0F * f.getSize2D()));
+
+        summaryField = new JTextField(descriptor.getSummary(), TEXT_COLUMNS);
+        summaryField.setEditable(false);
+
+        descriptionArea = new JTextArea("Sample", TEXT_ROWS, TEXT_COLUMNS);
+        descriptionArea.setEditable(false);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.BASELINE_LEADING;
+        c.insets = new Insets(INSET, INSET, INSET, INSET);
+
+        JLabel summaryLabel = new JLabel("Summary:");
+        summaryLabel.setLabelFor(summaryField);
+        summaryLabel.setDisplayedMnemonic('S');
+
+        JLabel descriptionLabel = new JLabel("Description:");
+        descriptionLabel.setLabelFor(descriptionArea);
+        descriptionLabel.setDisplayedMnemonic('D');
+
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.weighty = 0.0;
+        c.weightx = 0.0;
+        component.add(heading, c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+
+        c.gridy++;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        component.add(summaryLabel, c);
+        component.add(summaryField, c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+
+        c.gridy++;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        component.add(descriptionLabel, c);
+        component.add(new JScrollPane(descriptionArea), c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
+        component.add(new JLabel(), c);
+
+        c.gridy++;
+        c.gridheight = GridBagConstraints.REMAINDER;
+        c.weighty = 1.0;
+        component.add(new JLabel(), c);
+
+        component.setMinimumSize(component.getPreferredSize());
+    }
+
     @Override
     public JComponent getComponent()
     {
-        return new JPanel();
+        if (component == null) {
+            initComponents();
         }
+
+        JScrollPane scrollPane = new JScrollPane(component);
+        scrollPane.setBorder(null);
+        return scrollPane;
+    }
 
     @Override
     public HelpCtx getHelpCtx()
