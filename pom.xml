@@ -54,8 +54,6 @@ Cloud repositories.</description>
 
 <properties>
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<maven.compiler.source>1.8</maven.compiler.source>
-<maven.compiler.target>1.8</maven.compiler.target>
 </properties>
 
 <dependencyManagement>
@@ -169,6 +167,10 @@ Cloud repositories.</description>
 <groupId>org.apache.maven.plugins</groupId>
 <artifactId>maven-compiler-plugin</artifactId>
 <version>3.7.0</version>
+<configuration>
+<source>1.8</source>
+<target>1.8</target>
+</configuration>
 </plugin>
 
 <plugin>
@@ -190,7 +192,7 @@ Cloud repositories.</description>
 <configuration>
 <locale>en_US</locale>
 <links>
-<link>https://docs.oracle.com/javase/8/docs/api</link>
+<link>https://vx68k.bitbucket.io/bitbucket-api-client-java/5/apidocs</link>
 <link>http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking</link>
 </links>
 </configuration>
