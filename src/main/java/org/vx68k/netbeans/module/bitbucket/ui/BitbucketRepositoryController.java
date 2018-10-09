@@ -186,6 +186,8 @@ public final class BitbucketRepositoryController implements
         c.gridheight = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
         component.add(new JLabel(), c);
+
+        component.setMinimumSize(component.getPreferredSize());
     }
 
     /**
