@@ -1,5 +1,5 @@
 /*
- * BitbucketConnector.java - class BitbucketConnector
+ * BitbucketConnector.java
  * Copyright (C) 2018 Kaz Nishimura
  *
  * This program is free software: you can redistribute it and/or modify it
