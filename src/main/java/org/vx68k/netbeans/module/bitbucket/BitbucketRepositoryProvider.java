@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
@@ -166,9 +168,11 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketIssue> getIssues(
-        final BitbucketRepository r, final String... strings)
+        final BitbucketRepository repository, final String... ids)
     {
-        return Collections.emptyList();
+        return Arrays.stream(ids)
+            .map((id) -> repository.getIssue(Integer.parseInt(id)))
+            .collect(Collectors.toList());
     }
 
     /**
