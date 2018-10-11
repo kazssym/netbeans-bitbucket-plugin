@@ -31,7 +31,7 @@ import org.netbeans.modules.bugtracking.spi.IssueFinder;
  *
  * @author Kaz Nishimura
  */
-public class BitbucketIssueFinder implements IssueFinder
+public final class BitbucketIssueFinder implements IssueFinder
 {
     /**
      * Pattern to match an issue string.
