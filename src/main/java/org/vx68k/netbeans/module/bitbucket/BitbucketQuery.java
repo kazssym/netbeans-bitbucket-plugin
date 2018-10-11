@@ -37,7 +37,12 @@ public final class BitbucketQuery
     private final BitbucketRepository repository;
 
     /**
-     * Filter expression.
+     * Display name of the query.
+     */
+    private String displayName;
+
+    /**
+     * Filter expression of the query.
      */
     private String filter;
 
@@ -46,27 +51,35 @@ public final class BitbucketQuery
      *
      * @param repository repository to which the query is bound
      */
-    BitbucketQuery(final BitbucketRepository repository)
-    {
-        this(repository, null);
-    }
-
-    /**
-     * Initializes the object with an initial value of the filter expression.
-     *
-     * @param repository repository to which the query is bound
-     * @param filter an initial value of the filter expression
-     */
-    BitbucketQuery(final BitbucketRepository repository, final String filter)
+    protected BitbucketQuery(final BitbucketRepository repository)
     {
         this.repository = repository;
-        this.filter = filter;
     }
 
     /**
-     * Returns the filter expression.
+     * Returns the display name of the query.
      *
-     * @return the filter expression
+     * @return the display name of the query
+     */
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    /**
+     * Sets the display name of the query
+     *
+     * @param newValue new value of the display name
+     */
+    public void setDisplayName(final String newValue)
+    {
+        displayName = newValue;
+    }
+
+    /**
+     * Returns the filter expression of the query.
+     *
+     * @return the filter expression of the query
      */
     public String getFilter()
     {
@@ -74,7 +87,7 @@ public final class BitbucketQuery
     }
 
     /**
-     * Sets the filter expression.
+     * Sets the filter expression of the query.
      *
      * @param newValue a new value of the filter expression
      */

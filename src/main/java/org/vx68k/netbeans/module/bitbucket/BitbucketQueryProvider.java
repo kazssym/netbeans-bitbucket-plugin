@@ -72,8 +72,7 @@ public final class BitbucketQueryProvider implements
      */
     void setDisplayName(final BitbucketQuery query, final String newValue)
     {
-        Descriptor descriptor = getDescriptor(query);
-        descriptor.setDisplayName(newValue);
+        query.setDisplayName(newValue);
     }
 
     /**
@@ -82,8 +81,7 @@ public final class BitbucketQueryProvider implements
     @Override
     public String getDisplayName(final BitbucketQuery query)
     {
-        Descriptor descriptor = getDescriptor(query);
-        return descriptor.getDisplayName();
+        return query.getDisplayName();
     }
 
     /**
@@ -169,11 +167,6 @@ public final class BitbucketQueryProvider implements
     public static final class Descriptor
     {
         /**
-         * Display name for the query.
-         */
-        private String displayName = null;
-
-        /**
          * Tooltip text for the query.
          */
         private String tooltip = null;
@@ -188,26 +181,6 @@ public final class BitbucketQueryProvider implements
          */
         Descriptor()
         {
-        }
-
-        /**
-         * Returns the display name for the query.
-         *
-         * @return the display name for the query
-         */
-        public String getDisplayName()
-        {
-            return displayName;
-        }
-
-        /**
-         * Sets the display name for the query.
-         *
-         * @param newValue a new value of the display name
-         */
-        public void setDisplayName(final String newValue)
-        {
-            displayName = newValue;
         }
 
         /**

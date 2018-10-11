@@ -222,12 +222,12 @@ public final class BitbucketRepositoryProvider implements
         List<BitbucketQuery> value = new ArrayList<>();
 
         BitbucketQuery allIssues = new BitbucketQuery(repository);
-        queryProvider.setDisplayName(allIssues, "All Tasks");
+        allIssues.setDisplayName("All Tasks");
         value.add(allIssues);
 
-        BitbucketQuery openIssues = new BitbucketQuery(
-            repository, OPEN_TASKS_FILTER);
-        queryProvider.setDisplayName(openIssues, "Open Tasks");
+        BitbucketQuery openIssues = new BitbucketQuery(repository);
+        openIssues.setDisplayName("Open Tasks");
+        openIssues.setFilter(OPEN_TASKS_FILTER);
         value.add(openIssues);
 
         return value;
