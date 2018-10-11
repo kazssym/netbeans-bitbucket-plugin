@@ -46,7 +46,7 @@ public final class BitbucketIssueFinder implements IssueFinder
     }
 
     @Override
-    public int[] getIssueSpans(CharSequence text)
+    public int[] getIssueSpans(final CharSequence text)
     {
         Matcher matcher = ISSUE_PATTERN.matcher(text);
 
@@ -59,7 +59,7 @@ public final class BitbucketIssueFinder implements IssueFinder
     }
 
     @Override
-    public String getIssueId(String text)
+    public String getIssueId(final String text)
     {
         Matcher matcher = ISSUE_PATTERN.matcher(text);
 
