@@ -38,6 +38,13 @@ public final class BitbucketIssueFinder implements IssueFinder
      */
     private static final Pattern ISSUE_PATTERN = Pattern.compile("#(\\d+)");
 
+    /**
+     * Initialized the object while not allowing public instantiation.
+     */
+    protected BitbucketIssueFinder()
+    {
+    }
+
     @Override
     public int[] getIssueSpans(CharSequence text)
     {
