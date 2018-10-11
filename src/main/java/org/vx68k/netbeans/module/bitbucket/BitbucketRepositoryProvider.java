@@ -58,12 +58,7 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Filter expression for open tasks.
      */
-    private static final String OPEN_TASKS_FILTER = "state <= \"open\"";
-
-    /**
-     * Query provider.
-     */
-    private final BitbucketQueryProvider queryProvider;
+    private static final String OPEN_ISSUES_FILTER = "state <= \"open\"";
 
     /**
      * Map for descriptors.
@@ -71,14 +66,10 @@ public final class BitbucketRepositoryProvider implements
     private final Map<BitbucketRepository, Descriptor> descriptors;
 
     /**
-     * Initializes this object.
-     *
-     * @param queryProvider a value of the query provider
+     * Initializes the object.
      */
-    protected BitbucketRepositoryProvider(
-        final BitbucketQueryProvider queryProvider)
+    protected BitbucketRepositoryProvider()
     {
-        this.queryProvider = queryProvider;
         this.descriptors = new WeakHashMap<>();
     }
 
@@ -227,7 +218,7 @@ public final class BitbucketRepositoryProvider implements
 
         BitbucketQuery openIssues = new BitbucketQuery(repository);
         openIssues.setDisplayName("Open Tasks");
-        openIssues.setFilter(OPEN_TASKS_FILTER);
+        openIssues.setFilter(OPEN_ISSUES_FILTER);
         value.add(openIssues);
 
         return value;
