@@ -179,11 +179,9 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public BitbucketQuery createQuery(
-        final BitbucketRepository repository)
+    public BitbucketQuery createQuery(final BitbucketRepository repository)
     {
-        // @todo Implement this method.
-        throw new NotImplementedException();
+        return new BitbucketQuery(repository);
     }
 
     /**
@@ -201,7 +199,8 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public BitbucketIssue createIssue(
-        final BitbucketRepository r, final String string, final String string1)
+        final BitbucketRepository repository, final String summary,
+        final String description)
     {
         // @todo Implement this method.
         throw new NotImplementedException();
