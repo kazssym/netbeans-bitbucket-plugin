@@ -67,7 +67,7 @@ public final class BitbucketQuery
     }
 
     /**
-     * Sets the display name of the query
+     * Sets the display name of the query.
      *
      * @param newValue new value of the display name
      */
