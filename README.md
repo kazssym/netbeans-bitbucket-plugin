@@ -2,10 +2,11 @@ This file documents the Plugin for Bitbucket Cloud for NetBeans IDE project.
 
 # Introduction
 
-The [Plugin for Bitbucket Cloud for NetBeans IDE] integrates Bitbucket Cloud
-repositories to the Tasks window of NetBeans IDE.
+The *[Plugin for Bitbucket® Cloud for NetBeans IDE]* integrates Bitbucket Cloud
+repositories into NetBeans IDE.
 
-[Plugin for Bitbucket Cloud for NetBeans IDE]: https://vx68k.bitbucket.io/netbeans-bitbucket-plugin/
+[Plugin for Bitbucket® Cloud for NetBeans IDE]: https://vx68k.bitbucket.io/netbeans-bitbucket-plugin/
+[Bitbucket® Cloud]: https://bitbucket.org/
 
 [![(GNU General Public License v3.0 or later)](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)][GPL-3.0-or-later]
 [![(Open issues)](https://img.shields.io/bitbucket/issues/vx68k/netbeans-bitbucket-plugin.svg)][open issues]
@@ -21,3 +22,19 @@ If you would like, you can [back VX68k.org][Salt checkout] at [Bountysource Salt
 
 [Salt checkout]: https://salt.bountysource.com/checkout/amount?team=vx68k
 [Bountysource Salt]: https://salt.bountysource.com/
+
+---
+
+# See also
+
+  - The [repository wiki].
+
+  - The [Bitbucket API Clients](https://trello.com/b/IqXdEIN5) board at
+    [Trello].
+
+  - The [#bitbucketapiclients](https://vx68k.slack.com/messages/CBZ6HDNAJ)
+    channel at [VX68k.org Slack].
+
+[Repository wiki]: https://bitbucket.org/vx68k/netbeans-bitbucket-plugin/wiki/
+[Trello]: https://trello.com/
+[VX68k.org Slack]: https://vx68k.slack.com/
