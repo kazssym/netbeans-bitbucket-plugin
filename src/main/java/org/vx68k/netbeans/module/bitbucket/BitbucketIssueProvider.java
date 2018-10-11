@@ -86,7 +86,7 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getTooltip(final BitbucketIssue issue)
     {
-        return null;
+        return issue.getState();
     }
 
     /**
