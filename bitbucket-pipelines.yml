@@ -14,8 +14,9 @@ pipelines:
     - step:
         caches:
           - maven
+          - java
         script:
-          - export MAVEN_OPTS="-Xquickstart"
+          - export MAVEN_OPTS="-Xshareclasses -Xquickstart"
           - mvn -B -s etc/settings.xml test
   branches:
     production:
@@ -53,3 +54,6 @@ pipelines:
             - export MAVEN_OPTS="-Xquickstart"
             - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
             - sh etc/upload.sh target/*.nbm target/*.nbm.asc
+definitions:
+  caches:
+    java: /tmp/javasharedresources
