@@ -42,30 +42,30 @@ public final class BitbucketIssueProvider implements
     IssueProvider<BitbucketIssue>
 {
     /**
-     * Map for descriptors.
+     * Map to adapters.
      */
-    private final Map<BitbucketIssue, Descriptor> descriptors;
+    private final Map<BitbucketIssue, Adapter> adapterMap;
 
     /**
      * Initializes the object.
      */
     public BitbucketIssueProvider()
     {
-        descriptors = new WeakHashMap<>();
+        adapterMap = new WeakHashMap<>();
     }
 
     /**
-     * Returns the descriptor for a Bitbucket Cloud issue.
+     * Returns the adapter for a Bitbucket Cloud issue.
      *
      * @param issue a Bitbucket Cloud issue
-     * @return the descriptor for a Bitbucket Cloud issue
+     * @return the adapter for a Bitbucket Cloud issue
      */
-    Descriptor getDescriptor(final BitbucketIssue issue)
+    Adapter getAdapter(final BitbucketIssue issue)
     {
-        Descriptor value = descriptors.get(issue);
+        Adapter value = adapterMap.get(issue);
         if (value == null) {
-            value = new Descriptor(issue);
-            descriptors.put(issue, value);
+            value = new Adapter(issue);
+            adapterMap.put(issue, value);
         }
         return value;
     }
@@ -74,10 +74,20 @@ public final class BitbucketIssueProvider implements
      * {@inheritDoc}
      */
     @Override
+    public String getID(final BitbucketIssue issue)
+    {
+        Adapter adapter = getAdapter(issue);
+        return adapter.getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDisplayName(final BitbucketIssue issue)
     {
-        Descriptor descriptor = getDescriptor(issue);
-        return descriptor.getDisplayName();
+        Adapter adapter = getAdapter(issue);
+        return adapter.getDisplayName();
     }
 
     /**
@@ -86,16 +96,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getTooltip(final BitbucketIssue issue)
     {
-        return issue.getState();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getID(final BitbucketIssue issue)
-    {
-        return Integer.toString(issue.getId());
+        Adapter adapter = getAdapter(issue);
+        return adapter.getTooltip();
     }
 
     /**
@@ -113,8 +115,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public String getSummary(final BitbucketIssue issue)
     {
-        Descriptor descriptor = getDescriptor(issue);
-        return descriptor.getSummary();
+        Adapter adapter = getAdapter(issue);
+        return adapter.getSummary();
     }
 
     /**
@@ -172,8 +174,8 @@ public final class BitbucketIssueProvider implements
     @Override
     public IssueController getController(final BitbucketIssue issue)
     {
-        Descriptor descriptor = getDescriptor(issue);
-        return new BitbucketIssueController(descriptor);
+        Adapter adapter = getAdapter(issue);
+        return adapter.getController();
     }
 
     /**
@@ -181,10 +183,10 @@ public final class BitbucketIssueProvider implements
      */
     @Override
     public void addPropertyChangeListener(
-        final BitbucketIssue issue, final PropertyChangeListener listener)
+        final BitbucketIssue issue, final PropertyChangeListener l)
     {
-        Descriptor descriptor = getDescriptor(issue);
-        descriptor.addPropertyChangeListener(listener);
+        Adapter adapter = getAdapter(issue);
+        adapter.addPropertyChangeListener(l);
     }
 
     /**
@@ -192,16 +194,16 @@ public final class BitbucketIssueProvider implements
      */
     @Override
     public void removePropertyChangeListener(
-        final BitbucketIssue issue, final PropertyChangeListener listener)
+        final BitbucketIssue issue, final PropertyChangeListener l)
     {
-        Descriptor descriptor = getDescriptor(issue);
-        descriptor.removePropertyChangeListener(listener);
+        Adapter adapter = getAdapter(issue);
+        adapter.removePropertyChangeListener(l);
     }
 
     /**
-     * Issue descriptor.
+     * Issue adapter.
      */
-    public final class Descriptor
+    public final class Adapter
     {
         /**
          * Weak reference to the Bitbucket Cloud issue.
@@ -214,11 +216,16 @@ public final class BitbucketIssueProvider implements
         private final PropertyChangeSupport support;
 
         /**
+         * Controller for the issue.
+         */
+        private BitbucketIssueController controller = null;
+
+        /**
          * Initializes the object.
          *
          * @param issue a Bitbucket Cloud issue
          */
-        protected Descriptor(final BitbucketIssue issue)
+        protected Adapter(final BitbucketIssue issue)
         {
             this.issue = new WeakReference<>(issue);
             this.support = new PropertyChangeSupport(this);
@@ -234,6 +241,16 @@ public final class BitbucketIssueProvider implements
         }
 
         /**
+         * Returns the identifier for the issue.
+         *
+         * @return the identifier for the issue
+         */
+        public String getId()
+        {
+            return Integer.toString(getIssue().getId());
+        }
+
+        /**
          * Returns the display name of the issue.
          *
          * @return the display name of the issue
@@ -245,6 +262,16 @@ public final class BitbucketIssueProvider implements
         }
 
         /**
+         * Returns the tooltip text of the issue.
+         *
+         * @return the tooltip text of the issue
+         */
+        public String getTooltip()
+        {
+            return getIssue().getState();
+        }
+
+        /**
          * Returns the summary of the issue.
          *
          * @return the summary of the issue
@@ -252,6 +279,27 @@ public final class BitbucketIssueProvider implements
         public String getSummary()
         {
             return getIssue().getTitle();
+        }
+
+        /**
+         * Returns the controller for the issue.
+         *
+         * @return the controller for the issue
+         */
+        public BitbucketIssueController getController()
+        {
+            if (controller == null) {
+                controller = new BitbucketIssueController(this);
+            }
+            return controller;
+        }
+
+        /**
+         * Resets the controller for the issue.
+         */
+        public void resetController()
+        {
+            controller = null;
         }
 
         /**

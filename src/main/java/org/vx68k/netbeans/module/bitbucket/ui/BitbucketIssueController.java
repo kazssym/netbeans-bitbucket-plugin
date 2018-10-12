@@ -21,6 +21,7 @@
 package org.vx68k.netbeans.module.bitbucket.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,10 +30,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
 import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
@@ -52,17 +56,17 @@ public final class BitbucketIssueController implements IssueController
     /**
      * Number of columns in a text field or text area.
      */
-    private static final int TEXT_COLUMNS = 60;
+    private static final int COLUMNS = 60;
 
     /**
-     * Number of rows in a text area.
+     * Number of rows in the description text area.
      */
-    private static final int TEXT_ROWS = 20;
+    private static final int DESCRIPTION_ROWS = 20;
 
     /**
-     * Issue descriptor.
+     * Issue adapter.
      */
-    private final BitbucketIssueProvider.Descriptor descriptor;
+    private final BitbucketIssueProvider.Adapter issueAdapter;
 
     /**
      * Property change support object.
@@ -70,7 +74,7 @@ public final class BitbucketIssueController implements IssueController
     private final PropertyChangeSupport support;
 
     /**
-     * Base visual component.
+     * Visual component.
      */
     private JComponent component = null;
 
@@ -82,23 +86,45 @@ public final class BitbucketIssueController implements IssueController
     /**
      * Text field for the summary.
      */
-    private JTextField summaryField = null;
+    private JTextField summary = null;
 
     /**
      * Text area for the description.
      */
-    private JTextArea descriptionArea = null;
+    private JTextArea description = null;
+
+    /**
+     * {@code true} if and only if any property was changed.
+     */
+    private boolean changed = false;
 
     /**
      * Initializes the object.
      *
-     * @param descriptor a Bitbucket Cloud issue
+     * @param issueAdapter an issue adapter
      */
     public BitbucketIssueController(
-        final BitbucketIssueProvider.Descriptor descriptor)
+        final BitbucketIssueProvider.Adapter issueAdapter)
     {
-        this.descriptor = descriptor;
+        this.issueAdapter = issueAdapter;
         this.support = new PropertyChangeSupport(this);
+    }
+
+    /**
+     * Creates a new label for a component.
+     *
+     * @param text a label text
+     * @param mnemonic a mnemonic character
+     * @param forComponent a component for which a new label is
+     * @return a new label.
+     */
+    protected static JLabel createLabel(
+        final String text, final char mnemonic, final Component forComponent)
+    {
+        JLabel label = new JLabel(text);
+        label.setDisplayedMnemonic(mnemonic);
+        label.setLabelFor(forComponent);
+        return label;
     }
 
     /**
@@ -106,64 +132,87 @@ public final class BitbucketIssueController implements IssueController
      */
     private void initComponents()
     {
-        component = new JPanel(new GridBagLayout());
-        component.setBackground(Color.WHITE);
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Color.WHITE);
 
-        Font f = component.getFont();
-        heading = new JLabel(descriptor.getDisplayName());
-        heading.setFont(f.deriveFont(2.0F * f.getSize2D()));
+        component = new JScrollPane(panel);
+        component.setBorder(null);
 
-        summaryField = new JTextField(descriptor.getSummary(), TEXT_COLUMNS);
-        summaryField.setEditable(false);
+        Font panelFont = panel.getFont();
 
-        descriptionArea = new JTextArea("Sample", TEXT_ROWS, TEXT_COLUMNS);
-        descriptionArea.setEditable(false);
+        heading = new JLabel();
+        heading.setFont(panelFont.deriveFont(2.0F * panelFont.getSize2D()));
+
+        summary = new JTextField(COLUMNS);
+        description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
+
+        DocumentListener textChange = new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent event)
+            {
+                setChanged(true);
+            }
+
+            @Override
+            public void removeUpdate(final DocumentEvent event)
+            {
+                setChanged(true);
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent event)
+            {
+            }
+        };
+        summary.getDocument().addDocumentListener(textChange);
+        description.getDocument().addDocumentListener(textChange);
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
         c.insets = new Insets(INSET, INSET, INSET, INSET);
 
-        JLabel summaryLabel = new JLabel("Summary:");
-        summaryLabel.setLabelFor(summaryField);
-        summaryLabel.setDisplayedMnemonic('S');
-
-        JLabel descriptionLabel = new JLabel("Description:");
-        descriptionLabel.setLabelFor(descriptionArea);
-        descriptionLabel.setDisplayedMnemonic('D');
-
         c.gridy = 0;
-        c.gridwidth = 2;
         c.weighty = 0.0;
-        c.weightx = 0.0;
-        component.add(heading, c);
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 1.0;
-        component.add(new JLabel(), c);
+        panel.add(heading, c);
 
         c.gridy++;
         c.gridwidth = 1;
         c.weightx = 0.0;
-        component.add(summaryLabel, c);
-        component.add(summaryField, c);
+        panel.add(createLabel("Summary:", 'S', summary), c);
+        panel.add(summary, c);
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
-        component.add(new JLabel(), c);
+        panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridwidth = 1;
         c.weightx = 0.0;
-        component.add(descriptionLabel, c);
-        component.add(new JScrollPane(descriptionArea), c);
+        panel.add(createLabel("Description:", 'D', description), c);
+        panel.add(new JScrollPane(description), c);
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
-        component.add(new JLabel(), c);
+        panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridheight = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
-        component.add(new JLabel(), c);
+        panel.add(new JLabel(), c);
 
-        component.setMinimumSize(component.getPreferredSize());
+        panel.setMinimumSize(panel.getPreferredSize());
+    }
+
+    /**
+     * Sets the value which indicate some change.
+     *
+     * @param newValue new value
+     */
+    protected void setChanged(final boolean newValue)
+    {
+        boolean oldValue = changed;
+        changed = newValue;
+        support.firePropertyChange("changed", oldValue, newValue);
+        support.firePropertyChange(PROP_CHANGED, oldValue, newValue);
     }
 
     @Override
@@ -172,10 +221,7 @@ public final class BitbucketIssueController implements IssueController
         if (component == null) {
             initComponents();
         }
-
-        JScrollPane scrollPane = new JScrollPane(component);
-        scrollPane.setBorder(null);
-        return scrollPane;
+        return component;
     }
 
     @Override
@@ -187,42 +233,48 @@ public final class BitbucketIssueController implements IssueController
     @Override
     public void opened()
     {
+        heading.setText(issueAdapter.getDisplayName());
+        summary.setText(issueAdapter.getSummary());
+        description.setText("Sample text");
+        setChanged(false);
     }
 
     @Override
     public void closed()
     {
+        issueAdapter.resetController();
     }
 
     @Override
     public boolean saveChanges()
     {
+        JOptionPane.showMessageDialog(
+            null, "Your changes cannot be saved yet.", "Not implemented",
+            JOptionPane.INFORMATION_MESSAGE);
         return false;
     }
 
     @Override
     public boolean discardUnsavedChanges()
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isChanged()
     {
-        return false;
+        return changed;
     }
 
     @Override
-    public void addPropertyChangeListener(
-        final PropertyChangeListener listener)
+    public void addPropertyChangeListener(final PropertyChangeListener l)
     {
-        support.addPropertyChangeListener(listener);
+        support.addPropertyChangeListener(l);
     }
 
     @Override
-    public void removePropertyChangeListener(
-        final PropertyChangeListener listener)
+    public void removePropertyChangeListener(final PropertyChangeListener l)
     {
-        support.removePropertyChangeListener(listener);
+        support.removePropertyChangeListener(l);
     }
 }
