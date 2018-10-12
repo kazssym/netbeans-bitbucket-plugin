@@ -20,9 +20,11 @@
 
 package org.vx68k.netbeans.module.bitbucket.ui;
 
+import java.awt.GridBagLayout;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.netbeans.modules.bugtracking.spi.QueryController;
 import org.openide.util.HelpCtx;
@@ -35,24 +37,21 @@ import org.openide.util.HelpCtx;
 public final class BitbucketQueryController implements QueryController
 {
     /**
-     * Visual component.
-     */
-    private final JPanel component;
-
-    /**
      * Property change support.
      */
     private final PropertyChangeSupport support;
+
+    /**
+     * Visual component.
+     */
+    private JPanel component = null;
 
     /**
      * Initializes the object.
      */
     public BitbucketQueryController()
     {
-        this.component = new JPanel();
         this.support = new PropertyChangeSupport(this);
-
-        initComponents();
     }
 
     /**
@@ -60,6 +59,11 @@ public final class BitbucketQueryController implements QueryController
      */
     private void initComponents()
     {
+        component = new JPanel(new GridBagLayout());
+
+        component.add(new JLabel("Not implemented."));
+
+        component.setMinimumSize(component.getPreferredSize());
     }
 
     @Override
@@ -71,6 +75,9 @@ public final class BitbucketQueryController implements QueryController
     @Override
     public JComponent getComponent(final QueryMode mode)
     {
+        if (component == null) {
+            initComponents();
+        }
         return component;
     }
 
