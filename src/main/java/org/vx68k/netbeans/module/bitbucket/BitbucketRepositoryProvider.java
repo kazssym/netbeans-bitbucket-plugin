@@ -394,6 +394,12 @@ public final class BitbucketRepositoryProvider implements
             support.firePropertyChange("tooltip", oldValue, newValue);
         }
 
+        /**
+         * Returns the issue tracker for the full name if found.
+         *
+         * @return the issue tracker for the full name if found; [@code null}
+         * otherwise
+         */
         public BitbucketIssueTracker getIssueTracker()
         {
             Matcher m = REPOSITORY_NAME_PATTERN.matcher(fullName);
