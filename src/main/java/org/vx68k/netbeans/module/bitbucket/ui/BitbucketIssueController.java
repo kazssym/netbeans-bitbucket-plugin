@@ -235,7 +235,7 @@ public final class BitbucketIssueController implements IssueController
     {
         heading.setText(issueAdapter.getDisplayName());
         summary.setText(issueAdapter.getSummary());
-        description.setText("Sample text");
+        description.setText(issueAdapter.getDescription());
         setChanged(false);
     }
 
