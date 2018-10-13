@@ -49,7 +49,8 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
  * @author Kaz Nishimura
  */
 public final class BitbucketRepositoryProvider implements
-    RepositoryProvider<BitbucketIssueTracker, BitbucketQuery, BitbucketIssue>
+    RepositoryProvider<
+        BitbucketIssueTrackerProxy, BitbucketQuery, BitbucketIssue>
 {
     /**
      * Regular expression pattern for a full name.
@@ -65,14 +66,14 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Map for descriptors.
      */
-    private final Map<BitbucketIssueTracker, Descriptor> descriptors;
+    private final Map<BitbucketIssueTrackerProxy, Adapter> adapterMap;
 
     /**
      * Initializes the object.
      */
     protected BitbucketRepositoryProvider()
     {
-        this.descriptors = new WeakHashMap<>();
+        this.adapterMap = new WeakHashMap<>();
     }
 
     /**
@@ -81,12 +82,12 @@ public final class BitbucketRepositoryProvider implements
      * @param repository repository
      * @return descriptor
      */
-    protected Descriptor getDescriptor(final BitbucketIssueTracker repository)
+    protected Adapter getAdapter(final BitbucketIssueTrackerProxy repository)
     {
-        Descriptor value = descriptors.get(repository);
+        Adapter value = adapterMap.get(repository);
         if (value == null) {
-            value = new Descriptor(repository);
-            descriptors.put(repository, value);
+            value = new Adapter(repository);
+            adapterMap.put(repository, value);
         }
         return value;
     }
@@ -101,18 +102,18 @@ public final class BitbucketRepositoryProvider implements
     protected void setInfo(
         final BitbucketIssueTrackerProxy repository, final RepositoryInfo info)
     {
-        String fullName = info.getUrl();
-        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(fullName);
+        String repositoryName = info.getUrl();
+        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repositoryName);
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid repository name");
         }
 
-        Descriptor descriptor = getDescriptor(repository);
-        descriptor.setId(info.getID());
-        descriptor.setDisplayName(info.getDisplayName());
-        descriptor.setTooltip(info.getTooltip());
+        Adapter adapter = getAdapter(repository);
+        adapter.setFullName(repositoryName);
+        adapter.setDisplayName(info.getDisplayName());
+        adapter.setTooltip(info.getTooltip());
 
-        BitbucketClient client = descriptor.getBitbucketClient();
+        BitbucketClient client = adapter.getBitbucketClient();
         repository.setTarget(
             (BitbucketIssueTracker) // @todo Remove this cast.
             client.getRepository(matcher.group(1), matcher.group(2)));
@@ -122,16 +123,16 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryInfo getInfo(final BitbucketIssueTracker repository)
+    public RepositoryInfo getInfo(final BitbucketIssueTrackerProxy repository)
     {
-        Descriptor descriptor = getDescriptor(repository);
+        Adapter adapter = getAdapter(repository);
 
         RepositoryInfo value = null;
-        if (descriptor.getId() != null) {
+        if (adapter.getFullName() != null) {
             value = new RepositoryInfo(
-                descriptor.getId(), BitbucketConnector.ID,
-                descriptor.getId(), descriptor.getDisplayName(),
-                descriptor.getTooltip());
+                adapter.getFullName(), BitbucketConnector.ID,
+                adapter.getFullName(), adapter.getDisplayName(),
+                adapter.getTooltip());
         }
         return value;
     }
@@ -140,7 +141,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public Image getIcon(final BitbucketIssueTracker r)
+    public Image getIcon(final BitbucketIssueTrackerProxy repository)
     {
         return null;
     }
@@ -149,18 +150,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryController getController(
-        final BitbucketIssueTracker repository)
-    {
-        Descriptor descriptor = getDescriptor(repository);
-        return descriptor.getController();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removed(final BitbucketIssueTracker repository)
+    public void removed(final BitbucketIssueTrackerProxy repository)
     {
     }
 
@@ -169,7 +159,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketIssue> getIssues(
-        final BitbucketIssueTracker repository, final String... ids)
+        final BitbucketIssueTrackerProxy repository, final String... ids)
     {
         return Arrays.stream(ids)
             .map((id) -> repository.getIssue(Integer.parseInt(id)))
@@ -180,7 +170,8 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public BitbucketQuery createQuery(final BitbucketIssueTracker repository)
+    public BitbucketQuery createQuery(
+        final BitbucketIssueTrackerProxy repository)
     {
         return new BitbucketQuery(repository);
     }
@@ -190,7 +181,8 @@ public final class BitbucketRepositoryProvider implements
      * <p>This implementation always returns {@code null}.</p>
      */
     @Override
-    public BitbucketIssue createIssue(final BitbucketIssueTracker repository)
+    public BitbucketIssue createIssue(
+        final BitbucketIssueTrackerProxy repository)
     {
         return null;
     }
@@ -200,7 +192,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public BitbucketIssue createIssue(
-        final BitbucketIssueTracker repository, final String summary,
+        final BitbucketIssueTrackerProxy repository, final String summary,
         final String description)
     {
         // @todo Implement this method.
@@ -212,7 +204,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketQuery> getQueries(
-        final BitbucketIssueTracker repository)
+        final BitbucketIssueTrackerProxy repository)
     {
         List<BitbucketQuery> value = new ArrayList<>();
 
@@ -233,7 +225,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketIssue> simpleSearch(
-        final BitbucketIssueTracker r, final String string)
+        final BitbucketIssueTrackerProxy repository, final String criteria)
     {
         return Collections.emptyList();
     }
@@ -242,9 +234,20 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public boolean canAttachFiles(final BitbucketIssueTracker r)
+    public boolean canAttachFiles(final BitbucketIssueTrackerProxy repository)
     {
-        return false;
+        return false; // @todo This should be true.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RepositoryController getController(
+        final BitbucketIssueTrackerProxy repository)
+    {
+        Adapter adapter = getAdapter(repository);
+        return adapter.getController();
     }
 
     /**
@@ -252,11 +255,11 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public void addPropertyChangeListener(
-        final BitbucketIssueTracker repository,
+        final BitbucketIssueTrackerProxy repository,
         final PropertyChangeListener listener)
     {
-        Descriptor descriptor = getDescriptor(repository);
-        descriptor.addPropertyChangeListener(listener);
+        Adapter adapter = getAdapter(repository);
+        adapter.addPropertyChangeListener(listener);
     }
 
     /**
@@ -264,22 +267,22 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public void removePropertyChangeListener(
-        final BitbucketIssueTracker repository,
+        final BitbucketIssueTrackerProxy repository,
         final PropertyChangeListener listener)
     {
-        Descriptor descriptor = getDescriptor(repository);
-        descriptor.removePropertyChangeListener(listener);
+        Adapter adapter = getAdapter(repository);
+        adapter.removePropertyChangeListener(listener);
     }
 
     /**
-     * Descriptor of a repository.
+     * Repository adapter.
      */
-    public static final class Descriptor
+    public static final class Adapter
     {
         /**
          * Weak reference to the repository.
          */
-        private final WeakReference<BitbucketIssueTracker> repository;
+        private final WeakReference<BitbucketIssueTrackerProxy> repository;
 
         /**
          * Bitbucket API client for the repository.
@@ -292,9 +295,9 @@ public final class BitbucketRepositoryProvider implements
         private final PropertyChangeSupport support;
 
         /**
-         * Identifier of the repository.
+         * Full name of the repository.
          */
-        private String id = null;
+        private String fullName = null;
 
         /**
          * Display name for the repository.
@@ -316,7 +319,7 @@ public final class BitbucketRepositoryProvider implements
          *
          * @param repository a repository
          */
-        protected Descriptor(final BitbucketIssueTracker repository)
+        protected Adapter(final BitbucketIssueTrackerProxy repository)
         {
             this.repository = new WeakReference<>(repository);
             this.bitbucketClient = new BitbucketClient();
@@ -328,7 +331,7 @@ public final class BitbucketRepositoryProvider implements
          *
          * @return the repository
          */
-        public BitbucketIssueTracker getRepository()
+        public BitbucketIssueTrackerProxy getRepository()
         {
             return repository.get();
         }
@@ -348,9 +351,9 @@ public final class BitbucketRepositoryProvider implements
          *
          * @return the identifier for the repository
          */
-        public String getId()
+        public String getFullName()
         {
-            return id;
+            return fullName;
         }
 
         /**
@@ -358,11 +361,11 @@ public final class BitbucketRepositoryProvider implements
          *
          * @param newValue a new value of the identifier
          */
-        public void setId(final String newValue)
+        public void setFullName(final String newValue)
         {
-            String oldValue = id;
-            id = newValue;
-            support.firePropertyChange("id", oldValue, newValue);
+            String oldValue = fullName;
+            fullName = newValue;
+            support.firePropertyChange("fullName", oldValue, newValue);
         }
 
         /**
@@ -420,6 +423,14 @@ public final class BitbucketRepositoryProvider implements
                 controller = new BitbucketRepositoryController(this);
             }
             return controller;
+        }
+
+        /**
+         * Reset the controller object.
+         */
+        public void resetController()
+        {
+            controller = null;
         }
 
         /**

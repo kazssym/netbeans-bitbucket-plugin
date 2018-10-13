@@ -25,7 +25,6 @@ import org.netbeans.modules.bugtracking.spi.BugtrackingConnector;
 import org.netbeans.modules.bugtracking.spi.BugtrackingSupport;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.vx68k.bitbucket.api.BitbucketIssue;
-import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 
 /**
  * Implementation of {@link BugtrackingConnector} for Bitbucket Cloud.
@@ -72,7 +71,7 @@ public final class BitbucketConnector implements BugtrackingConnector
      * Support object.
      */
     private final BugtrackingSupport<
-        BitbucketIssueTracker, BitbucketQuery, BitbucketIssue> support;
+        BitbucketIssueTrackerProxy, BitbucketQuery, BitbucketIssue> support;
 
     /**
      * Initializes this object.
