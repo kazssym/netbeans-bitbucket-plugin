@@ -39,8 +39,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
-import org.vx68k.bitbucket.api.BitbucketIssueTracker;
-import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
 
 /**
@@ -258,24 +256,17 @@ public final class BitbucketRepositoryController implements
     public void applyChanges()
     {
         String repositoryNameText = repositoryName.getText().trim();
-        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repositoryNameText);
-        if (!matcher.matches()) {
-            throw new IllegalStateException("Invalid repository name");
-        }
-
-        BitbucketClient client = repositoryAdapter.getBitbucketClient();
-        BitbucketIssueTracker issueTracker =
-            (BitbucketIssueTracker) // @todo Remove this cast.
-            client.getRepository(matcher.group(1), matcher.group(2));
-        repositoryAdapter.getRepository().setTarget(issueTracker);
-        repositoryAdapter.setFullName(repositoryNameText);
-
         String displayNameText = displayName.getText().trim();
         // If the display name is blank, the full name is copied.
         if ("".equals(displayNameText)) {
             displayNameText = repositoryNameText;
         }
+
+        repositoryAdapter.setFullName(repositoryNameText);
         repositoryAdapter.setDisplayName(displayNameText);
+
+        repositoryAdapter.getRepository()
+            .setTarget(repositoryAdapter.getIssueTracker());
 
         repositoryAdapter.resetController();
     }

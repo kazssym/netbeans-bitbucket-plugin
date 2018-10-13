@@ -102,21 +102,13 @@ public final class BitbucketRepositoryProvider implements
     protected void setInfo(
         final BitbucketIssueTrackerProxy repository, final RepositoryInfo info)
     {
-        String repositoryName = info.getUrl();
-        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repositoryName);
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException("Invalid repository name");
-        }
-
         Adapter adapter = getAdapter(repository);
-        adapter.setFullName(repositoryName);
+
+        adapter.setFullName(info.getUrl());
         adapter.setDisplayName(info.getDisplayName());
         adapter.setTooltip(info.getTooltip());
 
-        BitbucketClient client = adapter.getBitbucketClient();
-        repository.setTarget(
-            (BitbucketIssueTracker) // @todo Remove this cast.
-            client.getRepository(matcher.group(1), matcher.group(2)));
+        repository.setTarget(adapter.getIssueTracker());
     }
 
     /**
@@ -337,16 +329,6 @@ public final class BitbucketRepositoryProvider implements
         }
 
         /**
-         * Returns the Bitbucket API client for the repository.
-         *
-         * @return the Bitbucket API client for the repository.
-         */
-        public BitbucketClient getBitbucketClient()
-        {
-            return bitbucketClient;
-        }
-
-        /**
          * Returns the identifier of the repository.
          *
          * @return the identifier for the repository
@@ -410,6 +392,17 @@ public final class BitbucketRepositoryProvider implements
             String oldValue = tooltip;
             tooltip = newValue;
             support.firePropertyChange("tooltip", oldValue, newValue);
+        }
+
+        public BitbucketIssueTracker getIssueTracker()
+        {
+            Matcher m = REPOSITORY_NAME_PATTERN.matcher(fullName);
+            if (!m.matches()) {
+                throw new IllegalArgumentException("Invalid repository name");
+            }
+
+            return (BitbucketIssueTracker) // @todo Remove this cast.
+                bitbucketClient.getRepository(m.group(1), m.group(2));
         }
 
         /**
