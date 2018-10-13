@@ -31,6 +31,7 @@ import java.util.WeakHashMap;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.netbeans.modules.bugtracking.spi.IssueProvider;
 import org.vx68k.bitbucket.api.BitbucketIssue;
+import org.vx68k.bitbucket.api.BitbucketRendered;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketIssueController;
 
 /**
@@ -279,6 +280,22 @@ public final class BitbucketIssueProvider implements
         public String getSummary()
         {
             return getIssue().getTitle();
+        }
+
+        /**
+         * Returns the description of the issue.
+         *
+         * @return the description of the issue
+         */
+        public String getDescription()
+        {
+            BitbucketRendered content = getIssue().getContent();
+
+            String value = null;
+            if (content != null) {
+                value = content.getRaw();
+            }
+            return value;
         }
 
         /**
