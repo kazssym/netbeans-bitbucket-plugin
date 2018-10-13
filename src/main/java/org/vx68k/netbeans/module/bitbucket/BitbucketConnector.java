@@ -93,7 +93,8 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository()
     {
-        BitbucketIssueTrackerProxy repository = new BitbucketIssueTrackerProxy();
+        BitbucketIssueTrackerProxy repository =
+            new BitbucketIssueTrackerProxy();
         return support.createRepository(
             repository, null, null, issuePriorityProvider, issueFinder);
     }
@@ -104,7 +105,8 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository(final RepositoryInfo info)
     {
-        BitbucketIssueTrackerProxy repository = new BitbucketIssueTrackerProxy();
+        BitbucketIssueTrackerProxy repository =
+            new BitbucketIssueTrackerProxy();
         repositoryProvider.setInfo(repository, info);
         return support.createRepository(
             repository, null, null, issuePriorityProvider, issueFinder);
