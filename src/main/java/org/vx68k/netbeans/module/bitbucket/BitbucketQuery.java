@@ -22,7 +22,7 @@ package org.vx68k.netbeans.module.bitbucket;
 
 import java.util.Collection;
 import org.vx68k.bitbucket.api.BitbucketIssue;
-import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 
 /**
  * Query for Bitbucket Cloud.
@@ -34,7 +34,7 @@ public final class BitbucketQuery
     /**
      * Repository where the query searches for issues.
      */
-    private final BitbucketRepository repository;
+    private final BitbucketIssueTracker repository;
 
     /**
      * Display name of the query.
@@ -51,7 +51,7 @@ public final class BitbucketQuery
      *
      * @param repository repository to which the query is bound
      */
-    protected BitbucketQuery(final BitbucketRepository repository)
+    protected BitbucketQuery(final BitbucketIssueTracker repository)
     {
         this.repository = repository;
     }

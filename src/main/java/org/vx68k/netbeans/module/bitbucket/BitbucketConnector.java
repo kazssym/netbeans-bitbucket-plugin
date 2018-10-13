@@ -25,7 +25,7 @@ import org.netbeans.modules.bugtracking.spi.BugtrackingConnector;
 import org.netbeans.modules.bugtracking.spi.BugtrackingSupport;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.vx68k.bitbucket.api.BitbucketIssue;
-import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 
 /**
  * Implementation of {@link BugtrackingConnector} for Bitbucket Cloud.
@@ -72,7 +72,7 @@ public final class BitbucketConnector implements BugtrackingConnector
      * Support object.
      */
     private final BugtrackingSupport<
-        BitbucketRepository, BitbucketQuery, BitbucketIssue> support;
+        BitbucketIssueTracker, BitbucketQuery, BitbucketIssue> support;
 
     /**
      * Initializes this object.
@@ -93,7 +93,7 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository()
     {
-        BitbucketRepositoryProxy repository = new BitbucketRepositoryProxy();
+        BitbucketIssueTrackerProxy repository = new BitbucketIssueTrackerProxy();
         return support.createRepository(
             repository, null, null, issuePriorityProvider, issueFinder);
     }
@@ -104,7 +104,7 @@ public final class BitbucketConnector implements BugtrackingConnector
     @Override
     public Repository createRepository(final RepositoryInfo info)
     {
-        BitbucketRepositoryProxy repository = new BitbucketRepositoryProxy();
+        BitbucketIssueTrackerProxy repository = new BitbucketIssueTrackerProxy();
         repositoryProvider.setInfo(repository, info);
         return support.createRepository(
             repository, null, null, issuePriorityProvider, issueFinder);

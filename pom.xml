@@ -81,7 +81,7 @@ Cloud repositories.</description>
 <dependency>
 <groupId>org.vx68k.bitbucket</groupId>
 <artifactId>bitbucket-api-client</artifactId>
-<version>5.0-alpha.5</version>
+<version>5.0-alpha.6</version>
 </dependency>
 
 <dependency>

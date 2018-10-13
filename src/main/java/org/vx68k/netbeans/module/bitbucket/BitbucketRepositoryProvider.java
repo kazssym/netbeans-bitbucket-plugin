@@ -39,7 +39,7 @@ import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
 import org.openide.util.NotImplementedException;
 import org.vx68k.bitbucket.api.BitbucketIssue;
-import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
 
@@ -49,12 +49,12 @@ import org.vx68k.netbeans.module.bitbucket.ui.BitbucketRepositoryController;
  * @author Kaz Nishimura
  */
 public final class BitbucketRepositoryProvider implements
-    RepositoryProvider<BitbucketRepository, BitbucketQuery, BitbucketIssue>
+    RepositoryProvider<BitbucketIssueTracker, BitbucketQuery, BitbucketIssue>
 {
     /**
      * Regular expression pattern for a full name.
      */
-    public static final Pattern FULL_NAME_PATTERN =
+    public static final Pattern REPOSITORY_NAME_PATTERN =
         Pattern.compile("([^/]+)/([^/]+)");
 
     /**
@@ -65,7 +65,7 @@ public final class BitbucketRepositoryProvider implements
     /**
      * Map for descriptors.
      */
-    private final Map<BitbucketRepository, Descriptor> descriptors;
+    private final Map<BitbucketIssueTracker, Descriptor> descriptors;
 
     /**
      * Initializes the object.
@@ -81,7 +81,7 @@ public final class BitbucketRepositoryProvider implements
      * @param repository repository
      * @return descriptor
      */
-    protected Descriptor getDescriptor(final BitbucketRepository repository)
+    protected Descriptor getDescriptor(final BitbucketIssueTracker repository)
     {
         Descriptor value = descriptors.get(repository);
         if (value == null) {
@@ -99,10 +99,10 @@ public final class BitbucketRepositoryProvider implements
      * @param info a {@link RepositoryInfo} object
      */
     protected void setInfo(
-        final BitbucketRepositoryProxy repository, final RepositoryInfo info)
+        final BitbucketIssueTrackerProxy repository, final RepositoryInfo info)
     {
         String fullName = info.getUrl();
-        Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(fullName);
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid repository name");
         }
@@ -113,7 +113,8 @@ public final class BitbucketRepositoryProvider implements
         descriptor.setTooltip(info.getTooltip());
 
         BitbucketClient client = descriptor.getBitbucketClient();
-        repository.setRealRepository(
+        repository.setTarget(
+            (BitbucketIssueTracker) // @todo Remove this cast.
             client.getRepository(matcher.group(1), matcher.group(2)));
     }
 
@@ -121,7 +122,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public RepositoryInfo getInfo(final BitbucketRepository repository)
+    public RepositoryInfo getInfo(final BitbucketIssueTracker repository)
     {
         Descriptor descriptor = getDescriptor(repository);
 
@@ -129,7 +130,7 @@ public final class BitbucketRepositoryProvider implements
         if (descriptor.getId() != null) {
             value = new RepositoryInfo(
                 descriptor.getId(), BitbucketConnector.ID,
-                repository.getFullName(), descriptor.getDisplayName(),
+                descriptor.getId(), descriptor.getDisplayName(),
                 descriptor.getTooltip());
         }
         return value;
@@ -139,7 +140,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public Image getIcon(final BitbucketRepository r)
+    public Image getIcon(final BitbucketIssueTracker r)
     {
         return null;
     }
@@ -149,7 +150,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public RepositoryController getController(
-        final BitbucketRepository repository)
+        final BitbucketIssueTracker repository)
     {
         Descriptor descriptor = getDescriptor(repository);
         return descriptor.getController();
@@ -159,7 +160,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public void removed(final BitbucketRepository repository)
+    public void removed(final BitbucketIssueTracker repository)
     {
     }
 
@@ -168,7 +169,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketIssue> getIssues(
-        final BitbucketRepository repository, final String... ids)
+        final BitbucketIssueTracker repository, final String... ids)
     {
         return Arrays.stream(ids)
             .map((id) -> repository.getIssue(Integer.parseInt(id)))
@@ -179,7 +180,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public BitbucketQuery createQuery(final BitbucketRepository repository)
+    public BitbucketQuery createQuery(final BitbucketIssueTracker repository)
     {
         return new BitbucketQuery(repository);
     }
@@ -189,7 +190,7 @@ public final class BitbucketRepositoryProvider implements
      * <p>This implementation always returns {@code null}.</p>
      */
     @Override
-    public BitbucketIssue createIssue(final BitbucketRepository repository)
+    public BitbucketIssue createIssue(final BitbucketIssueTracker repository)
     {
         return null;
     }
@@ -199,7 +200,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public BitbucketIssue createIssue(
-        final BitbucketRepository repository, final String summary,
+        final BitbucketIssueTracker repository, final String summary,
         final String description)
     {
         // @todo Implement this method.
@@ -211,7 +212,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketQuery> getQueries(
-        final BitbucketRepository repository)
+        final BitbucketIssueTracker repository)
     {
         List<BitbucketQuery> value = new ArrayList<>();
 
@@ -232,7 +233,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public Collection<BitbucketIssue> simpleSearch(
-        final BitbucketRepository r, final String string)
+        final BitbucketIssueTracker r, final String string)
     {
         return Collections.emptyList();
     }
@@ -241,7 +242,7 @@ public final class BitbucketRepositoryProvider implements
      * {@inheritDoc}
      */
     @Override
-    public boolean canAttachFiles(final BitbucketRepository r)
+    public boolean canAttachFiles(final BitbucketIssueTracker r)
     {
         return false;
     }
@@ -251,7 +252,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public void addPropertyChangeListener(
-        final BitbucketRepository repository,
+        final BitbucketIssueTracker repository,
         final PropertyChangeListener listener)
     {
         Descriptor descriptor = getDescriptor(repository);
@@ -263,7 +264,7 @@ public final class BitbucketRepositoryProvider implements
      */
     @Override
     public void removePropertyChangeListener(
-        final BitbucketRepository repository,
+        final BitbucketIssueTracker repository,
         final PropertyChangeListener listener)
     {
         Descriptor descriptor = getDescriptor(repository);
@@ -278,7 +279,7 @@ public final class BitbucketRepositoryProvider implements
         /**
          * Weak reference to the repository.
          */
-        private final WeakReference<BitbucketRepository> repository;
+        private final WeakReference<BitbucketIssueTracker> repository;
 
         /**
          * Bitbucket API client for the repository.
@@ -315,7 +316,7 @@ public final class BitbucketRepositoryProvider implements
          *
          * @param repository a repository
          */
-        protected Descriptor(final BitbucketRepository repository)
+        protected Descriptor(final BitbucketIssueTracker repository)
         {
             this.repository = new WeakReference<>(repository);
             this.bitbucketClient = new BitbucketClient();
@@ -327,7 +328,7 @@ public final class BitbucketRepositoryProvider implements
          *
          * @return the repository
          */
-        public BitbucketRepository getRepository()
+        public BitbucketIssueTracker getRepository()
         {
             return repository.get();
         }

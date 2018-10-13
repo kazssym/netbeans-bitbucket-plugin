@@ -21,7 +21,7 @@
 package org.vx68k.netbeans.module.bitbucket.ui;
 
 import static org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider
-    .FULL_NAME_PATTERN;
+    .REPOSITORY_NAME_PATTERN;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -39,10 +39,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.openide.util.HelpCtx;
-import org.vx68k.bitbucket.api.BitbucketRepository;
+import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
 import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProvider;
-import org.vx68k.netbeans.module.bitbucket.BitbucketRepositoryProxy;
+import org.vx68k.netbeans.module.bitbucket.BitbucketIssueTrackerProxy;
 
 /**
  * Implementation of {@link RepositoryController} for Bitbucket Cloud.
@@ -243,7 +243,7 @@ public final class BitbucketRepositoryController implements
             return false;
         }
 
-        Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
+        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repositoryName);
         if (!matcher.matches()) {
             errorMessage = "Invalid repository name format";
             return false;
@@ -270,22 +270,20 @@ public final class BitbucketRepositoryController implements
     {
         assert isValid();
 
-        BitbucketRepositoryProxy repository =
-            (BitbucketRepositoryProxy) descriptor.getRepository();
+        BitbucketIssueTrackerProxy repository =
+            (BitbucketIssueTrackerProxy) descriptor.getRepository();
 
         String repositoryName = repositoryNameField.getText().trim();
-        Matcher matcher = FULL_NAME_PATTERN.matcher(repositoryName);
+        Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repositoryName);
         if (!matcher.matches()) {
             throw new IllegalStateException("Invalid repository name");
         }
 
         BitbucketClient client = descriptor.getBitbucketClient();
-        BitbucketRepository realRepository =
+        BitbucketIssueTracker realRepository =
+            (BitbucketIssueTracker) // @todo Remove this cast.
             client.getRepository(matcher.group(1), matcher.group(2));
-        repository.setRealRepository(realRepository);
-        if (realRepository != null) {
-            repositoryName = realRepository.getFullName();
-        }
+        repository.setTarget(realRepository);
         descriptor.setId(repositoryName);
 
         String displayName = displayNameField.getText().trim();
