@@ -1,5 +1,5 @@
 OpenIDE-Module: org.vx68k.netbeans.module.bitbucket
-OpenIDE-Module-Specification-Version: 1.0.4
+OpenIDE-Module-Specification-Version: 1.0.5
 OpenIDE-Module-Name: Bitbucket Cloud
 OpenIDE-Module-Display-Category: Base IDE
 OpenIDE-Module-Short-Description: Bitbucket Cloud task repositories.
