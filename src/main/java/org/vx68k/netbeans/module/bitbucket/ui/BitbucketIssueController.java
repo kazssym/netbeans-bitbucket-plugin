@@ -169,6 +169,7 @@ public final class BitbucketIssueController implements IssueController
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
+        c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(INSET, INSET, INSET, INSET);
 
         c.gridy = 0;
