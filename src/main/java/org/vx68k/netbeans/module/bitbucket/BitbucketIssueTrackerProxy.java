@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketIssueTracker;
+import org.vx68k.bitbucket.api.BitbucketRepository;
 
 /**
  * Issue tracker proxy for Bitbucket Cloud.
@@ -92,6 +93,16 @@ public class BitbucketIssueTrackerProxy implements BitbucketIssueTracker
         Collection<BitbucketIssue> value = Collections.emptyList();
         if (target != null) {
             value = target.issues(filter);
+        }
+        return value;
+    }
+
+    @Override
+    public BitbucketRepository getRepository()
+    {
+        BitbucketRepository value = null;
+        if (target != null) {
+            value = target.getRepository();
         }
         return value;
     }

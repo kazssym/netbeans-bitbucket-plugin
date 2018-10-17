@@ -407,8 +407,8 @@ public final class BitbucketRepositoryProvider implements
                 throw new IllegalArgumentException("Invalid repository name");
             }
 
-            return (BitbucketIssueTracker) // @todo Remove this cast.
-                bitbucketClient.getRepository(m.group(1), m.group(2));
+            return bitbucketClient.getRepository(m.group(1), m.group(2))
+                .getIssueTracker();
         }
 
         /**
