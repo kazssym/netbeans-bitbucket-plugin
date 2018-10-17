@@ -26,8 +26,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.IssueController;
@@ -82,6 +85,16 @@ public final class BitbucketIssueController implements IssueController
      * Label for the heading.
      */
     private JLabel heading = null;
+
+    /**
+     * Tool bar for actions.
+     */
+    private JToolBar actions = null;
+
+    /**
+     * Label for the state.
+     */
+    private JLabel state = null;
 
     /**
      * Text field for the summary.
@@ -143,6 +156,17 @@ public final class BitbucketIssueController implements IssueController
         heading = new JLabel();
         heading.setFont(panelFont.deriveFont(2.0F * panelFont.getSize2D()));
 
+        actions = new JToolBar();
+        actions.setFloatable(false);
+        actions.add(new AbstractAction("Resolve")
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+            }
+        }).setEnabled(false);
+
+        state = new JLabel();
         summary = new JTextField(COLUMNS);
         description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
 
@@ -177,6 +201,18 @@ public final class BitbucketIssueController implements IssueController
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
         panel.add(heading, c);
+
+        c.gridy++;
+        panel.add(actions, c);
+
+        c.gridy++;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        panel.add(new JLabel("State:"), c);
+        panel.add(state, c);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
+        panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridwidth = 1;
@@ -236,6 +272,7 @@ public final class BitbucketIssueController implements IssueController
     public void opened()
     {
         heading.setText(issueAdapter.getDisplayName());
+        state.setText(issueAdapter.getIssue().getState().toUpperCase());
         summary.setText(issueAdapter.getSummary());
         description.setText(issueAdapter.getDescription());
         setChanged(false);
