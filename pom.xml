@@ -191,6 +191,7 @@ Cloud repositories.</description>
 <version>3.0.1</version>
 <configuration>
 <locale>en_US</locale>
+<notimestamp>true</notimestamp>
 <links>
 <link>https://vx68k.bitbucket.io/bitbucket-api-client-java/5/apidocs</link>
 <link>http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking</link>
