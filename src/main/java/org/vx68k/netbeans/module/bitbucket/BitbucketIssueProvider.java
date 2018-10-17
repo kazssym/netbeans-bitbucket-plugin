@@ -204,7 +204,7 @@ public final class BitbucketIssueProvider implements
     /**
      * Issue adapter.
      */
-    public final class Adapter
+    public static final class Adapter
     {
         /**
          * Weak reference to the Bitbucket Cloud issue.
