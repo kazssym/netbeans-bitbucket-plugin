@@ -248,11 +248,11 @@ Cloud repositories.</description>
 <artifactId>nbm-maven-plugin</artifactId>
 <extensions>true</extensions>
 <configuration>
-<sourceManifestFile>${basedir}/src/main/nbm/MANIFEST.MF</sourceManifestFile>
+<sourceManifestFile>${project.basedir}/src/main/nbm/MANIFEST.MF</sourceManifestFile>
 <!-- Using OSGi dependencies properly in a plugin was too hard. -->
 <useOSGiDependencies>false</useOSGiDependencies>
 <licenseName>GNU General Public License</licenseName>
-<licenseFile>${basedir}/COPYING</licenseFile>
+<licenseFile>${project.basedir}/COPYING</licenseFile>
 </configuration>
 </plugin>
 </plugins>
