@@ -98,7 +98,7 @@ public class BitbucketIssueTrackerProxy implements BitbucketIssueTracker
     }
 
     @Override
-    public BitbucketRepository getRepository()
+    public final BitbucketRepository getRepository()
     {
         BitbucketRepository value = null;
         if (target != null) {
