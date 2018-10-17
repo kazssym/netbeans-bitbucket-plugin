@@ -158,10 +158,9 @@ public final class BitbucketIssueController implements IssueController
 
         actions = new JToolBar();
         actions.setFloatable(false);
-        actions.add(new AbstractAction("Resolve")
-        {
+        actions.add(new AbstractAction("Resolve") {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(final ActionEvent e)
             {
             }
         }).setEnabled(false);
