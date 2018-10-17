@@ -175,6 +175,7 @@ public final class BitbucketIssueController implements IssueController
         c.gridy = 0;
         c.weighty = 0.0;
         c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
         panel.add(heading, c);
 
         c.gridy++;
