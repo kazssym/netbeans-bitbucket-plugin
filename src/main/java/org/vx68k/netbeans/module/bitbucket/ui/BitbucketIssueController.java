@@ -79,7 +79,7 @@ public final class BitbucketIssueController implements IssueController
     private JComponent component = null;
 
     /**
-     * Heading.
+     * Label for the heading.
      */
     private JLabel heading = null;
 
