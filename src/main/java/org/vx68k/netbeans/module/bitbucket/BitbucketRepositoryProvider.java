@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -104,6 +105,7 @@ public final class BitbucketRepositoryProvider implements
     {
         Adapter adapter = getAdapter(repository);
 
+        adapter.setId(info.getID());
         adapter.setFullName(info.getUrl());
         adapter.setDisplayName(info.getDisplayName());
         adapter.setTooltip(info.getTooltip());
@@ -120,9 +122,9 @@ public final class BitbucketRepositoryProvider implements
         Adapter adapter = getAdapter(repository);
 
         RepositoryInfo value = null;
-        if (adapter.getFullName() != null) {
+        if (adapter.getId() != null) {
             value = new RepositoryInfo(
-                adapter.getFullName(), BitbucketConnector.ID,
+                adapter.getId(), BitbucketConnector.ID,
                 adapter.getFullName(), adapter.getDisplayName(),
                 adapter.getTooltip());
         }
@@ -287,6 +289,11 @@ public final class BitbucketRepositoryProvider implements
         private final PropertyChangeSupport support;
 
         /**
+         * Identifier of the repository.
+         */
+        private String id = null;
+
+        /**
          * Full name of the repository.
          */
         private String fullName = null;
@@ -333,9 +340,9 @@ public final class BitbucketRepositoryProvider implements
          *
          * @return the identifier for the repository
          */
-        public String getFullName()
+        public String getId()
         {
-            return fullName;
+            return id;
         }
 
         /**
@@ -343,11 +350,38 @@ public final class BitbucketRepositoryProvider implements
          *
          * @param newValue a new value of the identifier
          */
+        public void setId(final String newValue)
+        {
+            String oldValue = id;
+            id = newValue;
+            support.firePropertyChange("id", oldValue, newValue);
+        }
+
+        /**
+         * Returns the full name of the repository.
+         *
+         * @return the full name for the repository
+         */
+        public String getFullName()
+        {
+            return fullName;
+        }
+
+        /**
+         * Sets the full name for the repository.
+         *
+         * @param newValue a new value of the full name
+         */
         public void setFullName(final String newValue)
         {
             String oldValue = fullName;
             fullName = newValue;
             support.firePropertyChange("fullName", oldValue, newValue);
+
+            // If the identifier is not set, one must be generated.
+            if (newValue != null && getId() == null) {
+                setId(UUID.randomUUID().toString());
+            }
         }
 
         /**
