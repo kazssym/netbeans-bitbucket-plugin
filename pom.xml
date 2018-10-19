@@ -7,8 +7,8 @@
 <version>1.0-SNAPSHOT</version>
 <packaging>nbm</packaging>
 <name>Plugin for Bitbucket Cloud for NetBeans</name>
-<description>This project builds a plugin to integrate Bitbucket Cloud
-repositories into the NetBeans IDE.</description>
+<description>This project builds a plugin to integrate support for Bitbucket
+Cloud repositories into the NetBeans IDE.</description>
 <url>https://vx68k.bitbucket.io/bitbucket-netbeans-plugin/1/</url>
 <inceptionYear>2018</inceptionYear>
 <organization>
