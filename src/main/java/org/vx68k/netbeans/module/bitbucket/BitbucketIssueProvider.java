@@ -42,6 +42,27 @@ public final class BitbucketIssueProvider implements
     IssueProvider<BitbucketIssue>
 {
     /**
+     * Possible values for the issue kind.
+     */
+    public static final String[] KINDS = new String[] {
+        "bug",
+        "enhancement",
+        "proposal",
+        "task",
+    };
+
+    /**
+     * Possible values for the issue priority.
+     */
+    public static final String[] PRIORITIES = new String[] {
+        "blocker",
+        "critical",
+        "major",
+        "minor",
+        "trivial",
+    };
+
+    /**
      * Map to adapters.
      */
     private final Map<BitbucketIssue, Adapter> adapterMap;
