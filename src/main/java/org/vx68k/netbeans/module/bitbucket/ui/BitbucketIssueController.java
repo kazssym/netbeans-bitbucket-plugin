@@ -66,7 +66,7 @@ public final class BitbucketIssueController implements IssueController
     /**
      * Number of rows in the description text area.
      */
-    private static final int DESCRIPTION_ROWS = 20;
+    private static final int DESCRIPTION_ROWS = 10;
 
     /**
      * Issue adapter.
