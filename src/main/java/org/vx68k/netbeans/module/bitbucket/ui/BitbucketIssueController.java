@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.AbstractAction;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -97,14 +98,24 @@ public final class BitbucketIssueController implements IssueController
     private JLabel state = null;
 
     /**
-     * Text field for the summary.
+     * Text field for the title.
      */
-    private JTextField summary = null;
+    private JTextField title = null;
 
     /**
      * Text area for the description.
      */
     private JTextArea description = null;
+
+    /**
+     * Combo box for the kind.
+     */
+    private JComboBox<String> kind = null;
+
+    /**
+     * Combo box for the priority.
+     */
+    private JComboBox<String> priority = null;
 
     /**
      * {@code true} if and only if any property was changed.
@@ -166,8 +177,10 @@ public final class BitbucketIssueController implements IssueController
         }).setEnabled(false);
 
         state = new JLabel();
-        summary = new JTextField(COLUMNS);
+        title = new JTextField(COLUMNS);
         description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
+        kind = new JComboBox<>();
+        priority = new JComboBox<>();
 
         DocumentListener textChange = new DocumentListener() {
             @Override
@@ -187,7 +200,7 @@ public final class BitbucketIssueController implements IssueController
             {
             }
         };
-        summary.getDocument().addDocumentListener(textChange);
+        title.getDocument().addDocumentListener(textChange);
         description.getDocument().addDocumentListener(textChange);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -211,10 +224,10 @@ public final class BitbucketIssueController implements IssueController
 
         c.gridy++;
         c.weightx = 0.0;
-        panel.add(createLabel("Summary:", 'S', summary), c);
+        panel.add(createLabel("Summary:", 'S', title), c);
         c.weightx = 1.0;
         c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(summary, c);
+        panel.add(title, c);
 
         c.gridy++;
         c.weightx = 0.0;
@@ -223,6 +236,19 @@ public final class BitbucketIssueController implements IssueController
         c.weightx = 1.0;
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(new JScrollPane(description), c);
+
+        c.gridy++;
+        c.weightx = 0.0;
+        c.fill = GridBagConstraints.NONE;
+        panel.add(createLabel("Kind:", 'K', kind), c);
+        c.weightx = 1.0;
+        panel.add(kind, c);
+
+        c.gridy++;
+        c.weightx = 0.0;
+        panel.add(createLabel("Priority:", 'P', priority), c);
+        c.weightx = 1.0;
+        panel.add(priority, c);
 
         c.gridy++;
         c.weighty = 1.0;
@@ -265,7 +291,7 @@ public final class BitbucketIssueController implements IssueController
     {
         heading.setText(issueAdapter.getDisplayName());
         state.setText(issueAdapter.getIssue().getState().toUpperCase());
-        summary.setText(issueAdapter.getSummary());
+        title.setText(issueAdapter.getSummary());
         description.setText(issueAdapter.getDescription());
         setChanged(false);
     }
