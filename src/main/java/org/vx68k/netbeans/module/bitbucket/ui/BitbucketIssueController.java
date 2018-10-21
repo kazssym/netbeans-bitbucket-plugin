@@ -180,8 +180,8 @@ public final class BitbucketIssueController implements IssueController
         state = new JLabel();
         title = new JTextField(COLUMNS);
         description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
-        kind = new JComboBox<>();
-        priority = new JComboBox<>();
+        kind = new JComboBox<>(BitbucketIssueProvider.KINDS);
+        priority = new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
 
         DocumentListener textChange = new DocumentListener() {
             @Override
@@ -295,6 +295,8 @@ public final class BitbucketIssueController implements IssueController
         state.setText(issue.getState().toUpperCase());
         title.setText(issue.getTitle());
         description.setText(issue.getContent().getRaw());
+        kind.setSelectedItem(issue.getKind());
+        priority.setSelectedItem(issue.getPriority());
         setChanged(false);
     }
 
