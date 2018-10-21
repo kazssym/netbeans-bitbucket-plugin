@@ -192,52 +192,41 @@ public final class BitbucketIssueController implements IssueController
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
-        c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(INSET, INSET, INSET, INSET);
 
         c.gridy = 0;
-        c.weighty = 0.0;
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 1.0;
         panel.add(heading, c);
 
         c.gridy++;
+        c.fill = GridBagConstraints.BOTH;
         panel.add(actions, c);
 
         c.gridy++;
         c.gridwidth = 1;
-        c.weightx = 0.0;
+        c.fill = GridBagConstraints.NONE;
         panel.add(new JLabel("State:"), c);
         c.weightx = 1.0;
         panel.add(state, c);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 0.0;
-        panel.add(new JLabel(), c);
 
         c.gridy++;
-        c.gridwidth = 1;
         c.weightx = 0.0;
         panel.add(createLabel("Summary:", 'S', summary), c);
         c.weightx = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(summary, c);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 0.0;
-        panel.add(new JLabel(), c);
 
         c.gridy++;
-        c.gridwidth = 1;
         c.weightx = 0.0;
+        c.fill = GridBagConstraints.NONE;
         panel.add(createLabel("Description:", 'D', description), c);
         c.weightx = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(new JScrollPane(description), c);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 0.0;
-        panel.add(new JLabel(), c);
 
         c.gridy++;
-        c.gridheight = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
-        c.weightx = 1.0;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(new JLabel(), c);
 
         panel.setMinimumSize(panel.getPreferredSize());
