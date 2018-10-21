@@ -208,32 +208,36 @@ public final class BitbucketIssueController implements IssueController
         c.gridwidth = 1;
         c.weightx = 0.0;
         panel.add(new JLabel("State:"), c);
+        c.weightx = 1.0;
         panel.add(state, c);
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 1.0;
+        c.weightx = 0.0;
         panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridwidth = 1;
         c.weightx = 0.0;
         panel.add(createLabel("Summary:", 'S', summary), c);
+        c.weightx = 1.0;
         panel.add(summary, c);
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 1.0;
+        c.weightx = 0.0;
         panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridwidth = 1;
         c.weightx = 0.0;
         panel.add(createLabel("Description:", 'D', description), c);
+        c.weightx = 1.0;
         panel.add(new JScrollPane(description), c);
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.weightx = 1.0;
+        c.weightx = 0.0;
         panel.add(new JLabel(), c);
 
         c.gridy++;
         c.gridheight = GridBagConstraints.REMAINDER;
         c.weighty = 1.0;
+        c.weightx = 1.0;
         panel.add(new JLabel(), c);
 
         panel.setMinimumSize(panel.getPreferredSize());
