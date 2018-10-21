@@ -310,7 +310,7 @@ public final class BitbucketIssueController implements IssueController
     public boolean saveChanges()
     {
         JOptionPane.showMessageDialog(
-            null, "Your changes cannot be saved yet.", "Not implemented",
+            null, "Changes cannot be saved yet.", "Not implemented",
             JOptionPane.INFORMATION_MESSAGE);
         return false;
     }
