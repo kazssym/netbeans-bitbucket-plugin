@@ -43,6 +43,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
+import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
 
 /**
@@ -289,10 +290,11 @@ public final class BitbucketIssueController implements IssueController
     @Override
     public void opened()
     {
+        BitbucketIssue issue = issueAdapter.getIssue();
         heading.setText(issueAdapter.getDisplayName());
-        state.setText(issueAdapter.getIssue().getState().toUpperCase());
-        title.setText(issueAdapter.getSummary());
-        description.setText(issueAdapter.getDescription());
+        state.setText(issue.getState().toUpperCase());
+        title.setText(issue.getTitle());
+        description.setText(issue.getContent().getRaw());
         setChanged(false);
     }
 
