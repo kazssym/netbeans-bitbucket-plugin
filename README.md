@@ -26,6 +26,16 @@ If you would like, you can [back VX68k.org][Salt checkout] at [Bountysource Salt
 
 ---
 
+# Requirements
+
+This plugin requires the following software at build time:
+
+  - JDK 1.8 or later.
+  - Apache Maven 3.5.0 or later.
+    (Earlier versions might work but were not tested.)
+
+---
+
 # See also
 
 ## References
