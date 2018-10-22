@@ -28,14 +28,14 @@ If you would like, you can [back VX68k.org][Salt checkout] at [Bountysource Salt
 
 # See also
 
-  - The [repository wiki].
+## References
 
-  - The [Bitbucket API Clients](https://trello.com/b/IqXdEIN5) board at
-    [Trello].
+  - NetBeans [Bugtracking SPI/API](http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking/index.html).
 
-  - The [#bitbucketapiclients](https://vx68k.slack.com/messages/CBZ6HDNAJ)
-    channel at [VX68k.org Slack].
+## Other resources
 
-[Repository wiki]: https://bitbucket.org/vx68k/netbeans-bitbucket-plugin/wiki/
+  - The [repository wiki](https://bitbucket.org/vx68k/netbeans-bitbucket-plugin/wiki/).
+
+  - The [Bitbucket API Clients](https://trello.com/b/IqXdEIN5) board at [Trello].
+
 [Trello]: https://trello.com/
-[VX68k.org Slack]: https://vx68k.slack.com/
