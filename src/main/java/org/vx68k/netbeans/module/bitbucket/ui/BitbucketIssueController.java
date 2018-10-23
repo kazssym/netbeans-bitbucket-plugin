@@ -22,6 +22,7 @@ package org.vx68k.netbeans.module.bitbucket.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -67,6 +68,11 @@ public final class BitbucketIssueController implements IssueController
      * Number of rows in the description text area.
      */
     private static final int DESCRIPTION_ROWS = 10;
+
+    /**
+     * Preferred width of combo boxes.
+     */
+    private static final int COMBO_BOX_WIDTH = 160;
 
     /**
      * Issue adapter.
@@ -181,7 +187,11 @@ public final class BitbucketIssueController implements IssueController
         title = new JTextField(COLUMNS);
         description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
         kind = new JComboBox<>(BitbucketIssueProvider.KINDS);
+        kind.setPreferredSize(
+            new Dimension(COMBO_BOX_WIDTH, kind.getPreferredSize().height));
         priority = new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
+        priority.setPreferredSize(
+            new Dimension(COMBO_BOX_WIDTH, priority.getPreferredSize().height));
 
         DocumentListener textChange = new DocumentListener() {
             @Override
