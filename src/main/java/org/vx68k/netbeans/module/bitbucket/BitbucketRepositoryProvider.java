@@ -35,10 +35,10 @@ import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 import org.netbeans.modules.bugtracking.spi.RepositoryController;
 import org.netbeans.modules.bugtracking.spi.RepositoryInfo;
 import org.netbeans.modules.bugtracking.spi.RepositoryProvider;
-import org.openide.util.NotImplementedException;
 import org.vx68k.bitbucket.api.BitbucketIssue;
 import org.vx68k.bitbucket.api.BitbucketIssueTracker;
 import org.vx68k.bitbucket.api.client.BitbucketClient;
@@ -178,6 +178,9 @@ public final class BitbucketRepositoryProvider implements
     public BitbucketIssue createIssue(
         final BitbucketIssueTrackerProxy repository)
     {
+        JOptionPane.showMessageDialog(
+            null, "Issues cannot be created yet.", "Not implemented",
+            JOptionPane.INFORMATION_MESSAGE);
         return null;
     }
 
@@ -189,8 +192,10 @@ public final class BitbucketRepositoryProvider implements
         final BitbucketIssueTrackerProxy repository, final String summary,
         final String description)
     {
-        // @todo Implement this method.
-        throw new NotImplementedException();
+        JOptionPane.showMessageDialog(
+            null, "Issues cannot be created yet.", "Not implemented",
+            JOptionPane.INFORMATION_MESSAGE);
+        return null;
     }
 
     /**
