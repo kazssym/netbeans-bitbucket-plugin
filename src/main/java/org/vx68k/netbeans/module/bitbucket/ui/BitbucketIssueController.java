@@ -28,24 +28,21 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.html.HTMLEditorKit;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
 import org.vx68k.bitbucket.api.BitbucketIssue;
@@ -76,22 +73,22 @@ public final class BitbucketIssueController implements IssueController
     /**
      * Length of insets.
      */
-    private static final int INSET = 4;
-
-    /**
-     * Issue viewer.
-     */
-    private final Viewer viewer = new Viewer();
-
-    /**
-     * Issue editor.
-     */
-    private final Editor editor = new Editor();
+    private static final int INSET = 5;
 
     /**
      * Issue adapter.
      */
     private final BitbucketIssueProvider.Adapter issueAdapter;
+
+    /**
+     * Issue viewer.
+     */
+    private final Viewer viewer;
+
+    /**
+     * Issue editor.
+     */
+    private final Editor editor;
 
     /**
      * Property change support object.
@@ -114,11 +111,6 @@ public final class BitbucketIssueController implements IssueController
     private final JScrollPane component = new JScrollPane();
 
     /**
-     * Tool bar for actions.
-     */
-    private JToolBar actions = null;
-
-    /**
      * {@code true} if and only if any property was changed.
      */
     private boolean changed = false;
@@ -132,6 +124,8 @@ public final class BitbucketIssueController implements IssueController
         final BitbucketIssueProvider.Adapter issueAdapter)
     {
         this.issueAdapter = issueAdapter;
+        this.viewer = new Viewer();
+        this.editor = new Editor();
         this.support = new PropertyChangeSupport(this);
 
         Font font = heading.getFont();
@@ -167,18 +161,13 @@ public final class BitbucketIssueController implements IssueController
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
 
-        actions = new JToolBar();
-        actions.setFloatable(false);
-        actions.add(new AbstractAction("Resolve") {
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-            }
-        }).setEnabled(false);
+        Box actionBox = new Box(BoxLayout.LINE_AXIS);
+        actionBox.setBackground(Color.LIGHT_GRAY);
+        actionBox.add(state);
 
         JPanel cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(editor.getComponent());
         cardPanel.add(viewer.getComponent());
+        cardPanel.add(editor.getComponent());
 
         // Adding subcomponents to the main panel.
 
@@ -188,22 +177,18 @@ public final class BitbucketIssueController implements IssueController
 
         c.gridx = 0;
         c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
         panel.add(heading, c);
         c.gridwidth = 1;
 
         c.gridx = 0;
-        c.weightx = 0.0;
-        panel.add(new JLabel("State:"), c);
-        c.gridx++;
-        c.weightx = 1.0;
-        panel.add(state, c);
-
-        c.gridx = 0;
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1.0;
-        c.weighty = 1.0;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0, 0, 0, 0);
+        panel.add(actionBox, c);
+
+        c.weighty = 1.0;
         panel.add(cardPanel, c);
 
         panel.setMinimumSize(panel.getPreferredSize());
@@ -299,7 +284,7 @@ public final class BitbucketIssueController implements IssueController
         /**
          * Component for the description.
          */
-        private final JEditorPane description = new JEditorPane();
+        private final JLabel description = new JLabel();
 
         /**
          * Root component.
@@ -311,8 +296,6 @@ public final class BitbucketIssueController implements IssueController
          */
         public Viewer()
         {
-            description.setEditable(false);
-
             initComponent();
         }
 
@@ -368,8 +351,8 @@ public final class BitbucketIssueController implements IssueController
         public void update(final BitbucketIssue issue)
         {
             title.setText(issue.getTitle());
-            description.setEditorKit(new HTMLEditorKit());
-            description.setText(issue.getContent().getHtml());
+            description.setText(
+                "<html>" + issue.getContent().getHtml() + "</html>");
         }
     }
 
