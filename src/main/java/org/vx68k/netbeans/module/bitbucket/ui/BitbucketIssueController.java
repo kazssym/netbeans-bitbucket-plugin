@@ -28,6 +28,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.AbstractAction;
@@ -55,11 +56,6 @@ import org.vx68k.netbeans.module.bitbucket.BitbucketIssueProvider;
 public final class BitbucketIssueController implements IssueController
 {
     /**
-     * Length of insets.
-     */
-    private static final int INSET = 4;
-
-    /**
      * Number of columns in a text field or text area.
      */
     private static final int COLUMNS = 60;
@@ -70,9 +66,14 @@ public final class BitbucketIssueController implements IssueController
     private static final int DESCRIPTION_ROWS = 10;
 
     /**
-     * Preferred width of combo boxes.
+     * Common preferred width of subcomponents.
      */
-    private static final int COMBO_BOX_WIDTH = 160;
+    private static final int COMMON_WIDTH = 160;
+
+    /**
+     * Length of insets.
+     */
+    private static final int INSET = 4;
 
     /**
      * Issue adapter.
@@ -186,12 +187,6 @@ public final class BitbucketIssueController implements IssueController
         state = new JLabel();
         title = new JTextField(COLUMNS);
         description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
-        kind = new JComboBox<>(BitbucketIssueProvider.KINDS);
-        kind.setPreferredSize(
-            new Dimension(COMBO_BOX_WIDTH, kind.getPreferredSize().height));
-        priority = new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
-        priority.setPreferredSize(
-            new Dimension(COMBO_BOX_WIDTH, priority.getPreferredSize().height));
 
         DocumentListener textChange = new DocumentListener() {
             @Override
@@ -213,6 +208,19 @@ public final class BitbucketIssueController implements IssueController
         };
         title.getDocument().addDocumentListener(textChange);
         description.getDocument().addDocumentListener(textChange);
+
+        kind = new JComboBox<>(BitbucketIssueProvider.KINDS);
+        kind.setPreferredSize(
+            new Dimension(COMMON_WIDTH, kind.getPreferredSize().height));
+        priority = new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
+        priority.setPreferredSize(
+            new Dimension(COMMON_WIDTH, priority.getPreferredSize().height));
+
+        ActionListener toChangeOnAction = (event) -> setChanged(true);
+        kind.addActionListener(toChangeOnAction);
+        priority.addActionListener(toChangeOnAction);
+
+        // Adding subcomponents to the main panel.
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.BASELINE_LEADING;
