@@ -20,6 +20,7 @@
 
 package org.vx68k.netbeans.module.bitbucket.ui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,6 +35,7 @@ import java.beans.PropertyChangeSupport;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -43,6 +45,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.html.HTMLEditorKit;
 import org.netbeans.modules.bugtracking.spi.IssueController;
 import org.openide.util.HelpCtx;
 import org.vx68k.bitbucket.api.BitbucketIssue;
@@ -76,6 +79,16 @@ public final class BitbucketIssueController implements IssueController
     private static final int INSET = 4;
 
     /**
+     * Issue viewer.
+     */
+    private final Viewer viewer = new Viewer();
+
+    /**
+     * Issue editor.
+     */
+    private final Editor editor = new Editor();
+
+    /**
      * Issue adapter.
      */
     private final BitbucketIssueProvider.Adapter issueAdapter;
@@ -86,44 +99,24 @@ public final class BitbucketIssueController implements IssueController
     private final PropertyChangeSupport support;
 
     /**
-     * Visual component.
+     * Component for the heading.
      */
-    private JComponent component = null;
+    private final JLabel heading = new JLabel();
 
     /**
-     * Label for the heading.
+     * Component for the state.
      */
-    private JLabel heading = null;
+    private final JLabel state = new JLabel();
+
+    /**
+     * Root component.
+     */
+    private final JScrollPane component = new JScrollPane();
 
     /**
      * Tool bar for actions.
      */
     private JToolBar actions = null;
-
-    /**
-     * Label for the state.
-     */
-    private JLabel state = null;
-
-    /**
-     * Text field for the title.
-     */
-    private JTextField title = null;
-
-    /**
-     * Text area for the description.
-     */
-    private JTextArea description = null;
-
-    /**
-     * Combo box for the kind.
-     */
-    private JComboBox<String> kind = null;
-
-    /**
-     * Combo box for the priority.
-     */
-    private JComboBox<String> priority = null;
 
     /**
      * {@code true} if and only if any property was changed.
@@ -140,6 +133,11 @@ public final class BitbucketIssueController implements IssueController
     {
         this.issueAdapter = issueAdapter;
         this.support = new PropertyChangeSupport(this);
+
+        Font font = heading.getFont();
+        heading.setFont(font.deriveFont(2.0F * font.getSize2D()));
+
+        initComponent();
     }
 
     /**
@@ -160,20 +158,14 @@ public final class BitbucketIssueController implements IssueController
     }
 
     /**
-     * Initializes the visual components.
+     * Initializes the root component.
      */
-    private void initComponents()
+    private void initComponent()
     {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.WHITE);
-
-        component = new JScrollPane(panel);
         component.setBorder(null);
 
-        Font panelFont = panel.getFont();
-
-        heading = new JLabel();
-        heading.setFont(panelFont.deriveFont(2.0F * panelFont.getSize2D()));
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Color.WHITE);
 
         actions = new JToolBar();
         actions.setFloatable(false);
@@ -184,41 +176,9 @@ public final class BitbucketIssueController implements IssueController
             }
         }).setEnabled(false);
 
-        state = new JLabel();
-        title = new JTextField(COLUMNS);
-        description = new JTextArea(DESCRIPTION_ROWS, COLUMNS);
-
-        DocumentListener textChange = new DocumentListener() {
-            @Override
-            public void insertUpdate(final DocumentEvent event)
-            {
-                setChanged(true);
-            }
-
-            @Override
-            public void removeUpdate(final DocumentEvent event)
-            {
-                setChanged(true);
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent event)
-            {
-            }
-        };
-        title.getDocument().addDocumentListener(textChange);
-        description.getDocument().addDocumentListener(textChange);
-
-        kind = new JComboBox<>(BitbucketIssueProvider.KINDS);
-        kind.setPreferredSize(
-            new Dimension(COMMON_WIDTH, kind.getPreferredSize().height));
-        priority = new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
-        priority.setPreferredSize(
-            new Dimension(COMMON_WIDTH, priority.getPreferredSize().height));
-
-        ActionListener toChangeOnAction = (event) -> setChanged(true);
-        kind.addActionListener(toChangeOnAction);
-        priority.addActionListener(toChangeOnAction);
+        JPanel cardPanel = new JPanel(new CardLayout());
+        cardPanel.add(editor.getComponent());
+        cardPanel.add(viewer.getComponent());
 
         // Adding subcomponents to the main panel.
 
@@ -226,55 +186,29 @@ public final class BitbucketIssueController implements IssueController
         c.anchor = GridBagConstraints.BASELINE_LEADING;
         c.insets = new Insets(INSET, INSET, INSET, INSET);
 
-        c.gridy = 0;
+        c.gridx = 0;
         c.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(heading, c);
-
-        c.gridy++;
-        c.fill = GridBagConstraints.BOTH;
-        panel.add(actions, c);
-
-        c.gridy++;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
+
+        c.gridx = 0;
+        c.weightx = 0.0;
         panel.add(new JLabel("State:"), c);
+        c.gridx++;
         c.weightx = 1.0;
         panel.add(state, c);
 
-        c.gridy++;
-        c.weightx = 0.0;
-        panel.add(createLabel("Summary:", 'S', title), c);
-        c.weightx = 1.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(title, c);
-
-        c.gridy++;
-        c.weightx = 0.0;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(createLabel("Description:", 'D', description), c);
-        c.weightx = 1.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(new JScrollPane(description), c);
-
-        c.gridy++;
-        c.weightx = 0.0;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(createLabel("Kind:", 'K', kind), c);
-        c.weightx = 1.0;
-        panel.add(kind, c);
-
-        c.gridy++;
-        c.weightx = 0.0;
-        panel.add(createLabel("Priority:", 'P', priority), c);
-        c.weightx = 1.0;
-        panel.add(priority, c);
-
-        c.gridy++;
-        c.weighty = 1.0;
+        c.gridx = 0;
         c.gridwidth = GridBagConstraints.REMAINDER;
-        panel.add(new JLabel(), c);
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 0, 0, 0);
+        panel.add(cardPanel, c);
 
         panel.setMinimumSize(panel.getPreferredSize());
+
+        component.setViewportView(panel);
     }
 
     /**
@@ -293,9 +227,6 @@ public final class BitbucketIssueController implements IssueController
     @Override
     public JComponent getComponent()
     {
-        if (component == null) {
-            initComponents();
-        }
         return component;
     }
 
@@ -311,10 +242,8 @@ public final class BitbucketIssueController implements IssueController
         BitbucketIssue issue = issueAdapter.getIssue();
         heading.setText(issueAdapter.getDisplayName());
         state.setText(issue.getState().toUpperCase());
-        title.setText(issue.getTitle());
-        description.setText(issue.getContent().getRaw());
-        kind.setSelectedItem(issue.getKind());
-        priority.setSelectedItem(issue.getPriority());
+        viewer.update(issue);
+        editor.update(issue);
         setChanged(false);
     }
 
@@ -355,5 +284,240 @@ public final class BitbucketIssueController implements IssueController
     public void removePropertyChangeListener(final PropertyChangeListener l)
     {
         support.removePropertyChangeListener(l);
+    }
+
+    /**
+     * Issue viewer.
+     */
+    protected final class Viewer
+    {
+        /**
+         * Component for the title.
+         */
+        private final JLabel title = new JLabel();
+
+        /**
+         * Component for the description.
+         */
+        private final JEditorPane description = new JEditorPane();
+
+        /**
+         * Root component.
+         */
+        private final JPanel component = new JPanel(new GridBagLayout());
+
+        /**
+         * Initializes the object.
+         */
+        public Viewer()
+        {
+            description.setEditable(false);
+
+            initComponent();
+        }
+
+        /**
+         * Initializes the root component.
+         */
+        private void initComponent()
+        {
+            component.setBackground(Color.WHITE);
+
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.BASELINE_LEADING;
+            c.insets = new Insets(INSET, INSET, INSET, INSET);
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            component.add(new JLabel("Title:"), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            component.add(title, c);
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            component.add(new JLabel("Description:"), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            component.add(description, c);
+
+            c.gridx = 0;
+            c.gridwidth = GridBagConstraints.REMAINDER;
+            c.weightx = 1.0;
+            c.weighty = 1.0;
+            component.add(new JPanel(), c);
+        }
+
+        /**
+         * Returns the root component of the viewer.
+         *
+         * @return the root component of the viewer
+         */
+        public JComponent getComponent()
+        {
+            return component;
+        }
+
+        /**
+         * Updates the contents.
+         *
+         * @param issue an issue
+         */
+        public void update(final BitbucketIssue issue)
+        {
+            title.setText(issue.getTitle());
+            description.setEditorKit(new HTMLEditorKit());
+            description.setText(issue.getContent().getHtml());
+        }
+    }
+
+    /**
+     * Issue editor.
+     */
+    protected final class Editor
+    {
+        /**
+         * Component for the title.
+         */
+        private final JTextField title = new JTextField();
+
+        /**
+         * Component for the description.
+         */
+        private JTextArea description = new JTextArea(DESCRIPTION_ROWS, 0);
+
+        /**
+         * Component for the kind.
+         */
+        private JComboBox<String> kind =
+            new JComboBox<>(BitbucketIssueProvider.KINDS);
+
+        /**
+         * Component for the priority.
+         */
+        private JComboBox<String> priority =
+            new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
+
+        /**
+         * Root component.
+         */
+        private final JPanel component = new JPanel(new GridBagLayout());
+
+        /**
+         * Initializes the object.
+         */
+        public Editor()
+        {
+            title.setPreferredSize(new Dimension(
+                COMMON_WIDTH, title.getPreferredSize().height));
+            description.setPreferredSize(new Dimension(
+                COMMON_WIDTH, description.getPreferredSize().height));
+            kind.setPreferredSize(new Dimension(
+                COMMON_WIDTH, kind.getPreferredSize().height));
+            priority.setPreferredSize(new Dimension(
+                COMMON_WIDTH, priority.getPreferredSize().height));
+
+            DocumentListener changeOnDocument = new DocumentListener() {
+                @Override
+                public void insertUpdate(final DocumentEvent event)
+                {
+                    setChanged(true);
+                }
+
+                @Override
+                public void removeUpdate(final DocumentEvent event)
+                {
+                    setChanged(true);
+                }
+
+                @Override
+                public void changedUpdate(final DocumentEvent event)
+                {
+                }
+            };
+            title.getDocument().addDocumentListener(changeOnDocument);
+            description.getDocument().addDocumentListener(changeOnDocument);
+
+            ActionListener changeOnAction = (event) -> setChanged(true);
+            kind.addActionListener(changeOnAction);
+            priority.addActionListener(changeOnAction);
+
+            initComponent();
+        }
+
+        /**
+         * Initializes the root component.
+         */
+        private void initComponent()
+        {
+            component.setBackground(Color.WHITE);
+
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.BASELINE_LEADING;
+            c.insets = new Insets(INSET, INSET, INSET, INSET);
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            component.add(createLabel("Title:", 'T', title), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            component.add(title, c);
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            c.fill = GridBagConstraints.NONE;
+            component.add(createLabel("Description:", 'D', description), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            component.add(new JScrollPane(description), c);
+            c.fill = GridBagConstraints.NONE;
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            component.add(createLabel("Kind:", 'K', kind), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            component.add(kind, c);
+
+            c.gridx = 0;
+            c.weightx = 0.0;
+            component.add(createLabel("Priority:", 'P', priority), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            component.add(priority, c);
+
+            c.gridx = 0;
+            c.gridwidth = GridBagConstraints.REMAINDER;
+            c.weightx = 1.0;
+            c.weighty = 1.0;
+            component.add(new JPanel(), c);
+        }
+
+        /**
+         * Returns the root component of the editor.
+         *
+         * @return the root component of the editor
+         */
+        public JComponent getComponent()
+        {
+            return component;
+        }
+
+        /**
+         * Updates the contents.
+         *
+         * @param issue an issue
+         */
+        public void update(final BitbucketIssue issue)
+        {
+            title.setText(issue.getTitle());
+            description.setText(issue.getContent().getRaw());
+            kind.setSelectedItem(issue.getKind());
+            priority.setSelectedItem(issue.getPriority());
+        }
     }
 }
