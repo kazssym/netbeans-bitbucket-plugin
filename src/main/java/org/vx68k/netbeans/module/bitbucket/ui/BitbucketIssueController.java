@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.IssueController;
@@ -130,6 +131,7 @@ public final class BitbucketIssueController implements IssueController
 
         Font font = heading.getFont();
         heading.setFont(font.deriveFont(2.0F * font.getSize2D()));
+        state.setForeground(Color.WHITE);
 
         initComponent();
     }
@@ -162,7 +164,9 @@ public final class BitbucketIssueController implements IssueController
         panel.setBackground(Color.WHITE);
 
         Box actionBox = new Box(BoxLayout.LINE_AXIS);
-        actionBox.setBackground(Color.LIGHT_GRAY);
+        actionBox.setBorder(new EmptyBorder(INSET, INSET, INSET, INSET));
+        actionBox.setOpaque(true);
+        actionBox.setBackground(Color.GRAY);
         actionBox.add(state);
 
         JPanel cardPanel = new JPanel(new CardLayout());
@@ -319,18 +323,16 @@ public final class BitbucketIssueController implements IssueController
             component.add(title, c);
 
             c.gridx = 0;
-            c.weightx = 0.0;
-            component.add(new JLabel("Description:"), c);
-            c.gridx++;
+            c.gridwidth = 2;
             c.weightx = 1.0;
             c.fill = GridBagConstraints.HORIZONTAL;
             component.add(description, c);
 
             c.gridx = 0;
             c.gridwidth = GridBagConstraints.REMAINDER;
-            c.weightx = 1.0;
             c.weighty = 1.0;
-            component.add(new JPanel(), c);
+            c.fill = GridBagConstraints.BOTH;
+            component.add(new JLabel(), c);
         }
 
         /**
