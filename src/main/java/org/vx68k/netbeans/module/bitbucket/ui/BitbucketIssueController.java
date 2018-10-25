@@ -129,10 +129,6 @@ public final class BitbucketIssueController implements IssueController
         this.editor = new Editor();
         this.support = new PropertyChangeSupport(this);
 
-        Font font = heading.getFont();
-        heading.setFont(font.deriveFont(2.0F * font.getSize2D()));
-        state.setForeground(Color.WHITE);
-
         initComponent();
     }
 
@@ -162,6 +158,11 @@ public final class BitbucketIssueController implements IssueController
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
+
+        Font baseFont = panel.getFont();
+        heading.setFont(baseFont.deriveFont(2.0F * baseFont.getSize2D()));
+        state.setForeground(Color.WHITE);
+        state.setFont(baseFont.deriveFont(Font.BOLD));
 
         Box actionBox = new Box(BoxLayout.LINE_AXIS);
         actionBox.setBorder(new EmptyBorder(INSET, INSET, INSET, INSET));
