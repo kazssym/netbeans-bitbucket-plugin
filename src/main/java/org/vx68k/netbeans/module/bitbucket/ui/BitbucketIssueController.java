@@ -284,6 +284,11 @@ public final class BitbucketIssueController implements IssueController
     protected final class Viewer
     {
         /**
+         * Component for the reporter.
+         */
+        private final JLabel reporter = new JLabel();
+
+        /**
          * Component for the title.
          */
         private final JLabel title = new JLabel();
@@ -318,17 +323,24 @@ public final class BitbucketIssueController implements IssueController
             c.insets = new Insets(INSET, INSET, INSET, INSET);
 
             c.gridx = 0;
+            c.gridwidth = 1;
+            c.weightx = 0.0;
+            component.add(new JLabel("Reported by:"), c);
+            c.gridx++;
+            c.weightx = 1.0;
+            component.add(reporter, c);
+
+            c.gridx = 0;
+            c.gridwidth = 1;
             c.weightx = 0.0;
             component.add(new JLabel("Title:"), c);
             c.gridx++;
             c.weightx = 1.0;
-            c.fill = GridBagConstraints.HORIZONTAL;
             component.add(title, c);
 
             c.gridx = 0;
             c.gridwidth = 2;
             c.weightx = 1.0;
-            c.fill = GridBagConstraints.HORIZONTAL;
             component.add(description, c);
 
             c.gridx = 0;
@@ -356,6 +368,7 @@ public final class BitbucketIssueController implements IssueController
         public void update(final BitbucketIssue issue)
         {
             title.setText(issue.getTitle());
+            reporter.setText(issue.getReporter().getDisplayName());
             description.setText(
                 "<html>" + issue.getContent().getHtml() + "</html>");
         }
