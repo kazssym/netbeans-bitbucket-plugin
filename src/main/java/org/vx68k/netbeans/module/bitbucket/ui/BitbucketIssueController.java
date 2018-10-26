@@ -230,7 +230,8 @@ public final class BitbucketIssueController implements IssueController
     public void opened()
     {
         BitbucketIssue issue = issueAdapter.getIssue();
-        heading.setText(issueAdapter.getDisplayName());
+        heading.setText(String.format(
+            "Issue #%d: %s", issue.getId(), issue.getTitle()));
         state.setText(issue.getState().toUpperCase());
         viewer.update(issue);
         editor.update(issue);
