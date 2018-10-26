@@ -374,18 +374,19 @@ public final class BitbucketIssueController implements IssueController
         /**
          * Component for the description.
          */
-        private JTextArea description = new JTextArea(DESCRIPTION_ROWS, 0);
+        private final JTextArea description =
+            new JTextArea(DESCRIPTION_ROWS, 0);
 
         /**
          * Component for the kind.
          */
-        private JComboBox<String> kind =
+        private final JComboBox<String> kind =
             new JComboBox<>(BitbucketIssueProvider.KINDS);
 
         /**
          * Component for the priority.
          */
-        private JComboBox<String> priority =
+        private final JComboBox<String> priority =
             new JComboBox<>(BitbucketIssueProvider.PRIORITIES);
 
         /**
