@@ -31,6 +31,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -41,7 +42,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.netbeans.modules.bugtracking.spi.IssueController;
@@ -165,7 +165,8 @@ public final class BitbucketIssueController implements IssueController
         state.setFont(baseFont.deriveFont(Font.BOLD));
 
         Box actionBox = new Box(BoxLayout.LINE_AXIS);
-        actionBox.setBorder(new EmptyBorder(INSET, INSET, INSET, INSET));
+        actionBox.setBorder(
+            BorderFactory.createEmptyBorder(INSET, INSET, INSET, INSET));
         actionBox.setOpaque(true);
         actionBox.setBackground(Color.GRAY);
         actionBox.add(state);
