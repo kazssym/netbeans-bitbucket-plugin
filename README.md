@@ -36,7 +36,15 @@ This plugin requires the following software at build time:
 
 ## References
 
-  - NetBeans [Bugtracking SPI/API](http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking/index.html).
+  - The [NetBeans Bugtracking SPI/API].
+
+[NetBeans Bugtracking SPI/API]: http://bits.netbeans.org/dev/javadoc/org-netbeans-modules-bugtracking/
+
+## Related projects
+
+  - The [Java Client API for Bitbucket Cloud] project.
+
+[Java Client API for Bitbucket Cloud]: https://vx68k.bitbucket.io/bitbucket-api-client-java/
 
 ## Other resources
 
