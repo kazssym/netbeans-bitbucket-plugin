@@ -3,6 +3,7 @@ syntax: regexp
 (^|/)\.env$
 (^|/)\.project$
 (^|/)\.classpath$
+(^|/)\.factorypath$
 (^|/)\.settings$
 \.log$
 \.rej$
