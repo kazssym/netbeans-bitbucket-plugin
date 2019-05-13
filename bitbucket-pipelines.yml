@@ -1,5 +1,5 @@
 # bitbucket-pipelines.yml - Bitbucket Pipelines configuration
-# Copyright (C) 2016-2018 Kaz Nishimura
+# Copyright (C) 2016-2019 Kaz Nishimura
 #
 # Copying and distribution of this file, with or without modification, are
 # permitted in any medium without royalty provided the copyright notice and
@@ -16,7 +16,7 @@ pipelines:
           - maven
           - java
         script:
-          - export MAVEN_OPTS="-Xshareclasses -Xquickstart"
+          - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml test
   branches:
     production:
