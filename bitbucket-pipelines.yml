@@ -11,16 +11,19 @@
 definitions:
   caches:
     openj9: /root/javasharedresources
-image: adoptopenjdk/maven-openjdk8-openj9:latest
-pipelines:
-  default:
-    - step:
+  steps:
+    - step: &test
+        name: Test
         caches:
           - maven
           - openj9
         script:
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml test
+image: adoptopenjdk/maven-openjdk8-openj9:latest
+pipelines:
+  default:
+    - step: *test
   branches:
     production:
       - step:
