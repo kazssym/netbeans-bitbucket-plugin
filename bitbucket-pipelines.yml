@@ -10,8 +10,8 @@
 ---
 definitions:
   caches:
-    openj9: /tmp/javasharedresources
-image: maven:3-ibmjava-8
+    openj9: /root/javasharedresources
+image: adoptopenjdk/maven-openjdk8-openj9:latest
 pipelines:
   default:
     - step:
