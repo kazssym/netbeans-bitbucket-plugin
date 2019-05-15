@@ -18,6 +18,7 @@ definitions:
           - maven
           - openj9
         script:
+          - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml test
     - step: &deploy
@@ -28,6 +29,7 @@ definitions:
         script:
           - export GNUPGHOME=`mktemp -d`
           - sh etc/gpginit.sh
+          - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
         artifacts:
@@ -46,7 +48,8 @@ pipelines:
           script:
             - export GNUPGHOME=`mktemp -d`
             - sh etc/gpginit.sh
-            - export MAVEN_OPTS="-Xquickstart"
+            - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
+            - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
             - mvn -B -s etc/settings.xml ${OSSRHUSERNAME+-P ossrh} -Dmaven.deploy.skip deploy
             - sh etc/upload.sh target/*.nbm target/*.nbm.asc
     deployment/test:
