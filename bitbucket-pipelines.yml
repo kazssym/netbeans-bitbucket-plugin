@@ -20,7 +20,7 @@ definitions:
         script:
           - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
-          - mvn -B -s etc/settings.xml test
+          - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} test
     - step: &deploy
         name: Deploy
         caches:
