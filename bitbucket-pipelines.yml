@@ -36,6 +36,10 @@ definitions:
           - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} -Dmaven.deploy.skip deploy
         artifacts:
           - target/*
+    - step: &upload-bitbucket
+        name: Upload to Bitbucket Cloud
+        script:
+          - sh etc/upload.sh target/*.nbm target/*.nbm.asc
 image: adoptopenjdk/maven-openjdk8-openj9:latest
 pipelines:
   branches:
@@ -60,3 +64,4 @@ pipelines:
       - step:
           <<: *deploy
           deployment: test
+      - step: *upload-bitbucket
