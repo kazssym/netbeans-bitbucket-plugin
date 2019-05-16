@@ -14,6 +14,7 @@ definitions:
   steps:
     - step: &test
         name: Test
+        image: adoptopenjdk/maven-openjdk8-openj9:latest
         caches:
           - maven
           - openj9
@@ -23,6 +24,7 @@ definitions:
           - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} test
     - step: &deploy
         name: Deploy
+        image: adoptopenjdk/maven-openjdk8-openj9:latest
         caches:
           - maven
           - openj9
@@ -40,7 +42,6 @@ definitions:
         name: Upload to Bitbucket Cloud
         script:
           - sh etc/upload.sh target/*.nbm target/*.nbm.asc
-image: adoptopenjdk/maven-openjdk8-openj9:latest
 pipelines:
   branches:
     default:
