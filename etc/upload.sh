@@ -11,7 +11,7 @@ REPOSITORY=vx68k/netbeans-bitbucket-plugin
 test -n "$USERNAME" || exit 0
 
 for f in "$@"; do
-    FILES="$FILES --form 'files=@$f'"
+    FILES="$FILES --form files=@\"$f\""
 done
 test -n "$FILES" || exit 1
 
