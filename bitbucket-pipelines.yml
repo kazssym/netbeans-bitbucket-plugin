@@ -46,22 +46,13 @@ pipelines:
     default:
       - step: *test
   bookmarks:
-    staging:
-      - step:
-          deployment: staging
-          caches:
-            - maven
-          script:
-            - apt-get update --quiet=2
-            - apt-get install --quiet=2 --no-install-recommends gpg gpg-agent
-            - export GNUPGHOME=`mktemp -d`
-            - sh etc/gpginit.sh
-            - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
-            - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
-            - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} -Dmaven.deploy.skip deploy
-            - sh etc/upload.sh target/*.nbm target/*.nbm.asc
     deployment/test:
       - step:
           <<: *deploy
           deployment: test
+      - step: *upload-bitbucket
+    deployment/staging:
+      - step:
+          <<: *deploy
+          deployment: staging
       - step: *upload-bitbucket
