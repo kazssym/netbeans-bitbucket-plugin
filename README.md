@@ -9,12 +9,13 @@ The *[Plugin for Bitbucket® Cloud for NetBeans]* integrates support for
 [Bitbucket® Cloud]: https://bitbucket.org/
 [NetBeans]: https://netbeans.apache.org/
 
-[![(GNU General Public License v3.0 or later)](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)][GPL-3.0-or-later]
-[![(Open issues)](https://img.shields.io/bitbucket/issues/vx68k/netbeans-bitbucket-plugin.svg)][open issues]
-![(Latest release version)](https://img.shields.io/maven-central/v/org.vx68k.netbeans.modules/bitbucket-plugin.svg)
-![(Latest snapshot version)](https://img.shields.io/nexus/s/https/oss.sonatype.org/org.vx68k.netbeans.modules/bitbucket-plugin.svg)
+[![(License)](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)][GPL-3.0-or-later]
+[![(Chat)](https://img.shields.io/gitter/room/vx68k/netbeans-bitbucket-plugin.svg)][Gitter room]
+[![(Issues)](https://img.shields.io/bitbucket/issues/vx68k/netbeans-bitbucket-plugin.svg)][open issues]
 
-[GPL-3.0-or-later]: https://spdx.org/licenses/GPL-3.0-or-later.html "GNU General Public License v3.0 or later"
+[GPL-3.0-or-later]: https://spdx.org/licenses/GPL-3.0-or-later.html
+    "GNU General Public License v3.0 or later"
+[Gitter room]: https://gitter.im/vx68k/netbeans-bitbucket-plugin
 [Open issues]: https://bitbucket.org/vx68k/netbeans-bitbucket-plugin/issues?status=new&status=open
 
 ## Backing
