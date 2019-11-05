@@ -44,9 +44,8 @@ definitions:
           - sh etc/upload.sh target/*.nbm target/*.nbm.asc
 pipelines:
   branches:
-    default:
+    master:
       - step: *test
-  bookmarks:
     deployment/test:
       - step:
           <<: *deploy
