@@ -14,7 +14,7 @@ definitions:
   steps:
     - step: &test
         name: Test
-        image: adoptopenjdk/maven-openjdk8-openj9:latest
+        image: maven:3-jdk-8-openj9
         caches:
           - maven
           - openj9
@@ -24,7 +24,7 @@ definitions:
           - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} test
     - step: &deploy
         name: Deploy
-        image: adoptopenjdk/maven-openjdk8-openj9:latest
+        image: maven:3-jdk-8-openj9
         caches:
           - maven
           - openj9
@@ -44,9 +44,8 @@ definitions:
           - sh etc/upload.sh target/*.nbm target/*.nbm.asc
 pipelines:
   branches:
-    default:
+    master:
       - step: *test
-  bookmarks:
     deployment/test:
       - step:
           <<: *deploy
