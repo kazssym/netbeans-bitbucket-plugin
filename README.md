@@ -1,12 +1,12 @@
-This file documents the *Plugin for Bitbucket Cloud for NetBeans* project.
+This file documents the *Plugin for Bitbucket Cloud for NetBeans IDE* project.
 
 # Introduction
 
-The *[Plugin for Bitbucket® Cloud for NetBeans]* integrates support for
-[Bitbucket® Cloud] repositories into the [NetBeans] IDE.
+The *[Plugin for Bitbucket® Cloud for NetBeans IDE][project]* integrates
+support for [Bitbucket® Cloud][Bitbucket] repositories into the [NetBeans] IDE.
 
-[Plugin for Bitbucket® Cloud for NetBeans]: https://vx68k.bitbucket.io/netbeans-bitbucket-plugin/
-[Bitbucket® Cloud]: https://bitbucket.org/
+[Project]: https://vx68k.bitbucket.io/netbeans-bitbucket-plugin/
+[Bitbucket]: https://bitbucket.org/
 [NetBeans]: https://netbeans.apache.org/
 
 [![(License)](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)][GPL-3.0-or-later]
