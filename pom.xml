@@ -54,6 +54,7 @@ Cloud repositories into the NetBeans IDE.</description>
 
 <properties>
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<netbeans.api.version>RELEASE110</netbeans.api.version>
 </properties>
 
 <dependencyManagement>
@@ -63,19 +64,19 @@ Cloud repositories into the NetBeans IDE.</description>
 <dependency>
 <groupId>org.netbeans.api</groupId>
 <artifactId>org-openide-util</artifactId>
-<version>RELEASE82</version>
+<version>${netbeans.api.version}</version>
 </dependency>
 
 <dependency>
 <groupId>org.netbeans.api</groupId>
 <artifactId>org-openide-util-ui</artifactId>
-<version>RELEASE82</version>
+<version>${netbeans.api.version}</version>
 </dependency>
 
 <dependency>
 <groupId>org.netbeans.api</groupId>
 <artifactId>org-netbeans-modules-bugtracking</artifactId>
-<version>RELEASE82</version>
+<version>${netbeans.api.version}</version>
 </dependency>
 
 <dependency>
