@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+    http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 <modelVersion>4.0.0</modelVersion>
 
 <groupId>org.vx68k.netbeans.modules</groupId>
@@ -11,6 +13,7 @@
 Cloud repositories into the NetBeans IDE.</description>
 <url>https://vx68k.bitbucket.io/bitbucket-netbeans-plugin/1/</url>
 <inceptionYear>2018</inceptionYear>
+
 <organization>
 <name>Kaz Nishimura</name>
 </organization>
@@ -21,21 +24,22 @@ Cloud repositories into the NetBeans IDE.</description>
 <name>GNU General Public License v3.0 or later</name>
 <url>https://www.gnu.org/licenses/gpl.txt</url>
 <distribution>repo</distribution>
-<comments>Version 3 or any later version.</comments>
 </license>
+
 </licenses>
 
 <developers>
 
 <developer>
 <name>Kaz Nishimura</name>
-<email>kazssym@vx68k.org</email>
+<email>kazssym@linuxfront.com</email>
 </developer>
+
 </developers>
 
 <scm>
-<connection>scm:hg:https://bitbucket.org/vx68k/bitbucket-netbeans-plugin</connection>
-<developerConnection>scm:hg:ssh://hg@bitbucket.org/vx68k/bitbucket-netbeans-plugin</developerConnection>
+<connection>scm:git:https://bitbucket.org/vx68k/bitbucket-netbeans-plugin.git</connection>
+<developerConnection>scm:git:ssh://git@bitbucket.org/vx68k/bitbucket-netbeans-plugin.git</developerConnection>
 <tag>master</tag>
 <url>https://bitbucket.org/vx68k/bitbucket-netbeans-plugin/src/${project.scm.tag}/</url>
 </scm>
