@@ -54,3 +54,6 @@ pipelines:
           <<: *deploy
           deployment: staging
       - step: *upload-bitbucket
+  pull-requests:
+    "**":
+      - step: *test
