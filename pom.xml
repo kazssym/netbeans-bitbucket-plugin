@@ -101,11 +101,19 @@ Cloud repositories into the NetBeans IDE.</description>
 </dependency>
 
 <dependency>
+<groupId>javax.activation</groupId>
+<artifactId>javax.activation-api</artifactId>
+<version>1.2.0</version>
+</dependency>
+
+<dependency>
 <groupId>junit</groupId>
 <artifactId>junit</artifactId>
 <version>4.12</version>
 </dependency>
+
 </dependencies>
+
 </dependencyManagement>
 
 <dependencies>
@@ -133,13 +141,19 @@ Cloud repositories into the NetBeans IDE.</description>
 <dependency>
 <groupId>org.glassfish</groupId>
 <artifactId>javax.json</artifactId>
-<scope>compile</scope>
+<scope>compile</scope><!-- This should be 'runtime'. -->
 </dependency>
 
 <dependency>
 <groupId>org.glassfish.jersey.core</groupId>
 <artifactId>jersey-client</artifactId>
-<scope>compile</scope>
+<scope>compile</scope><!-- This should be 'runtime'. -->
+</dependency>
+
+<dependency>
+<groupId>javax.activation</groupId>
+<artifactId>javax.activation-api</artifactId>
+<scope>compile</scope><!-- This should be 'runtime'. -->
 </dependency>
 
 <dependency>
@@ -147,6 +161,7 @@ Cloud repositories into the NetBeans IDE.</description>
 <artifactId>junit</artifactId>
 <scope>test</scope>
 </dependency>
+
 </dependencies>
 
 <repositories>
