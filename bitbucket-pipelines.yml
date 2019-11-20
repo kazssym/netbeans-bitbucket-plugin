@@ -19,7 +19,6 @@ definitions:
           - maven
           - openj9
         script:
-          - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} test
     - step: &deploy
@@ -33,7 +32,6 @@ definitions:
           - apt-get install --quiet=2 --no-install-recommends gpg gpg-agent
           - export GNUPGHOME=`mktemp -d`
           - sh etc/gpginit.sh
-          - export OPENJ9_JAVA_OPTIONS="-Xtune:virtualized"
           - export MAVEN_OPTS="-Xgcpolicy:optthruput -Xshareclasses"
           - mvn -B -s etc/settings.xml ${OSSRH_USERNAME+-P ossrh} -Dmaven.deploy.skip deploy
         artifacts:
